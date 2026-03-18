@@ -10,6 +10,11 @@ import 'package:safqaseller/features/auth/view_model/logout/logout_view_model.da
 import 'package:safqaseller/features/auth/view_model/register/register_view_model.dart';
 import 'package:safqaseller/features/forgot_password/model/repositories/forgot_password_repository.dart';
 import 'package:safqaseller/features/forgot_password/view_model/forgot_password_view_model.dart';
+import 'package:safqaseller/features/wallet/model/repositories/wallet_repository.dart';
+import 'package:safqaseller/features/wallet/view_model/add_card/add_card_view_model.dart';
+import 'package:safqaseller/features/wallet/view_model/deposit/deposit_view_model.dart';
+import 'package:safqaseller/features/wallet/view_model/wallet/wallet_view_model.dart';
+import 'package:safqaseller/features/wallet/view_model/withdrawal/withdrawal_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final getIt = GetIt.instance;
@@ -19,10 +24,9 @@ Future<void> setupServiceLocator() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton(() => sharedPreferences);
 
-  // 2. Core — storage first, then network (DioHelper depends on CacheHelper)
+  // 2. Core
   getIt.registerLazySingleton(() => CacheHelper(sharedPreferences: getIt()));
 
-  // Ensure a stable DeviceId is persisted on first launch
   final cacheHelper = getIt<CacheHelper>();
   if (cacheHelper.getData(key: CacheKeys.deviceId) == null) {
     final deviceId = _generateDeviceId();
@@ -38,16 +42,22 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton(
     () => ForgotPasswordRepository(dioHelper: getIt()),
   );
+  getIt.registerLazySingleton(
+    () => WalletRepository(dioHelper: getIt()),
+  );
 
-  // 4. ViewModels (factory = new instance per registration)
+  // 4. ViewModels (factory = new instance per call)
   getIt.registerFactory(() => RegisterViewModel(getIt()));
   getIt.registerFactory(() => LoginViewModel(getIt()));
   getIt.registerFactory(() => ConfirmEmailViewModel(getIt()));
   getIt.registerFactory(() => ForgotPasswordViewModel(getIt()));
   getIt.registerFactory(() => LogoutViewModel(getIt()));
+  getIt.registerFactory(() => WalletViewModel(getIt()));
+  getIt.registerFactory(() => AddCardViewModel(getIt()));
+  getIt.registerFactory(() => DepositViewModel(getIt()));
+  getIt.registerFactory(() => WithdrawalViewModel(getIt()));
 }
 
-/// Generates a cryptographically random 32-byte hex string as a unique device ID.
 String _generateDeviceId() {
   final random = Random.secure();
   return List.generate(

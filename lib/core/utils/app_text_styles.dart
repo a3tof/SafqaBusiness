@@ -30,6 +30,10 @@ abstract class TextStyles {
     return TextStyle(fontSize: 14.sp, fontWeight: FontWeight.normal);
   }
 
+  static TextStyle medium14(BuildContext context) {
+    return TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w500);
+  }
+
   static TextStyle semiBold14(BuildContext context) {
     return TextStyle(fontSize: 14.sp, fontWeight: FontWeight.w600);
   }
@@ -68,6 +72,14 @@ abstract class TextStyles {
 
   static TextStyle regular20(BuildContext context) {
     return TextStyle(fontSize: 20.sp, fontWeight: FontWeight.normal);
+  }
+
+  static TextStyle medium20(BuildContext context) {
+    return TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w500);
+  }
+
+  static TextStyle semiBold20(BuildContext context) {
+    return TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600);
   }
 
   static TextStyle regular22(BuildContext context) {

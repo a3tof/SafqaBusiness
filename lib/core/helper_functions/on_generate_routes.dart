@@ -13,9 +13,16 @@ import 'package:safqaseller/features/home/view/home_screen_view.dart';
 import 'package:safqaseller/features/on_boarding/view/on_boarding_view.dart';
 import 'package:safqaseller/features/splash/view/splash_screen_view.dart';
 import 'package:safqaseller/features/terms_and_conditions/view/terms_and_conditions_view.dart';
+import 'package:safqaseller/features/wallet/view/add_card_view.dart';
+import 'package:safqaseller/features/wallet/view/deposit_view.dart';
+import 'package:safqaseller/features/wallet/view/saved_cards_view.dart';
+import 'package:safqaseller/features/wallet/view/transaction_history_view.dart';
+import 'package:safqaseller/features/wallet/view/wallet_view.dart';
+import 'package:safqaseller/features/wallet/view/withdrawal_view.dart';
 
 Route<dynamic> onGenerateRoutes(RouteSettings settings) {
   switch (settings.name) {
+    // ── Adaptive layout ────────────────────────────────────────────────────
     case TabletLayout.routeName:
       return MaterialPageRoute(builder: (_) => const TabletLayout());
     case DesktopLayout.routeName:
@@ -24,30 +31,48 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const AdaptiveLayoutView());
     case MobileLayout.routeName:
       return MaterialPageRoute(builder: (_) => const MobileLayout());
+
+    // ── Auth ───────────────────────────────────────────────────────────────
     case SigninView.routeName:
       return MaterialPageRoute(builder: (_) => const SigninView());
     case SignupView.routeName:
       return MaterialPageRoute(builder: (_) => const SignupView());
+    case ForgotPasswordView.routeName:
+      return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
+    case VerificationCodeView.routeName:
+      final args = settings.arguments as VerificationCodeArgs;
+      return MaterialPageRoute(
+          builder: (_) => VerificationCodeView(args: args));
+    case CreatePasswordView.routeName:
+      final args = settings.arguments as CreatePasswordArgs;
+      return MaterialPageRoute(
+          builder: (_) => CreatePasswordView(args: args));
+
+    // ── Core screens ───────────────────────────────────────────────────────
     case SplashView.routeName:
       return MaterialPageRoute(builder: (_) => const SplashView());
     case OnBoardingView.routeName:
       return MaterialPageRoute(builder: (_) => const OnBoardingView());
     case HomeScreenView.routeName:
       return MaterialPageRoute(builder: (_) => const HomeScreenView());
-    case ForgotPasswordView.routeName:
-      return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
     case TermsAndConditionsView.routeName:
       return MaterialPageRoute(
           builder: (_) => const TermsAndConditionsView());
 
-    case VerificationCodeView.routeName:
-      final args = settings.arguments as VerificationCodeArgs;
+    // ── Wallet ─────────────────────────────────────────────────────────────
+    case WalletView.routeName:
+      return MaterialPageRoute(builder: (_) => const WalletView());
+    case SavedCardsView.routeName:
+      return MaterialPageRoute(builder: (_) => const SavedCardsView());
+    case AddCardView.routeName:
+      return MaterialPageRoute(builder: (_) => const AddCardView());
+    case DepositView.routeName:
+      return MaterialPageRoute(builder: (_) => const DepositView());
+    case WithdrawalView.routeName:
+      return MaterialPageRoute(builder: (_) => const WithdrawalView());
+    case TransactionHistoryView.routeName:
       return MaterialPageRoute(
-          builder: (_) => VerificationCodeView(args: args));
-
-    case CreatePasswordView.routeName:
-      final args = settings.arguments as CreatePasswordArgs;
-      return MaterialPageRoute(builder: (_) => CreatePasswordView(args: args));
+          builder: (_) => const TransactionHistoryView());
 
     default:
       return MaterialPageRoute(builder: (_) => const SplashView());

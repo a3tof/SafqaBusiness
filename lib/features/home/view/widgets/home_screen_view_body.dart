@@ -76,18 +76,20 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                     SizedBox(height: 16.h),
                     Row(
                       children: [
-                        HomeActionCard(
-                          label: 'History',
-                          width: (343.w - 8.w) / 2,
-                          backgroundImage: Assets.imagesFrame1,
-                          onTap: () {},
+                        Expanded(
+                          child: HomeActionCard(
+                            label: 'History',
+                            backgroundImage: Assets.imagesFrame1,
+                            onTap: () {},
+                          ),
                         ),
                         SizedBox(width: 8.w),
-                        HomeActionCard(
-                          label: 'Statistics',
-                          width: (343.w - 8.w) / 2,
-                          backgroundImage: Assets.imagesFrame2,
-                          onTap: () {},
+                        Expanded(
+                          child: HomeActionCard(
+                            label: 'Statistics',
+                            backgroundImage: Assets.imagesFrame2,
+                            onTap: () {},
+                          ),
                         ),
                       ],
                     ),
@@ -161,10 +163,11 @@ class _GreetingRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Avatar + text
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
+        Flexible(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
               width: 70.w,
               height: 70.w,
               decoration: BoxDecoration(
@@ -183,29 +186,34 @@ class _GreetingRow extends StatelessWidget {
             ),
             SizedBox(width: 8.w),
             // Constrained to 103 px as in the Figma spec
-            SizedBox(
-              width: 103.w,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Welcome!',
-                    style: TextStyles.regular18(context).copyWith(
-                      color: const Color(0xFF808080),
+            Flexible(
+              child: SizedBox(
+                width: 103.w,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Welcome!',
+                      style: TextStyles.regular18(context).copyWith(
+                        color: const Color(0xFF808080),
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(
-                    'Hello, Seller!',
-                    style: TextStyles.medium18(context).copyWith(
-                      color: AppColors.primaryColor,
+                    SizedBox(height: 2.h),
+                    Text(
+                      'Hello, Seller!',
+                      style: TextStyles.medium18(context).copyWith(
+                        color: AppColors.primaryColor,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
+        ),
         ),
 
         // Notification + profile icons (28 sp, primary colour)

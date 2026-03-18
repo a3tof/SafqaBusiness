@@ -32,7 +32,7 @@ AppBar buildAppBar({required BuildContext context, required String title}) {
         fontSize: 28.sp,
         fontWeight: FontWeight.w700,
         color: AppColors.primaryColor,
-        fontFamily: isArabic ? 'Cairo' : 'Alegreya SC',
+        fontFamily: isArabic ? 'Cairo' : 'AlegreyaSC',
       ),
     ),
   );
