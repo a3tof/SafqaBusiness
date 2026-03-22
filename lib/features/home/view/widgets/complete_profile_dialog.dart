@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
+import 'package:safqaseller/features/complete_profile/view/account_type_view.dart';
 
 /// Dialog shown when the seller has not yet completed their profile.
 class CompleteProfileDialog extends StatelessWidget {
@@ -71,7 +72,7 @@ class CompleteProfileDialog extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
-                    onComplete();
+                    Navigator.of(context).pushNamed(AccountTypeView.routeName);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,

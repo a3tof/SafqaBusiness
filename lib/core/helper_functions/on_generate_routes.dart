@@ -11,6 +11,12 @@ import 'package:safqaseller/features/auth/view/signup_view.dart';
 import 'package:safqaseller/features/auth/view/verification_code_view.dart';
 import 'package:safqaseller/features/home/view/home_screen_view.dart';
 import 'package:safqaseller/features/on_boarding/view/on_boarding_view.dart';
+import 'package:safqaseller/features/complete_profile/view/account_type_view.dart';
+import 'package:safqaseller/features/complete_profile/view/financial_details_view.dart';
+import 'package:safqaseller/features/complete_profile/view/identity_verification_view.dart';
+import 'package:safqaseller/features/complete_profile/view/legal_documents_view.dart';
+import 'package:safqaseller/features/complete_profile/view/seller_information_view.dart';
+import 'package:safqaseller/features/complete_profile/view/store_information_view.dart';
 import 'package:safqaseller/features/profile/view/profile_view.dart';
 import 'package:safqaseller/features/splash/view/splash_screen_view.dart';
 import 'package:safqaseller/features/subscription/view/subscription_view.dart';
@@ -63,6 +69,27 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
     // ── Profile ────────────────────────────────────────────────────────────
     case ProfileView.routeName:
       return MaterialPageRoute(builder: (_) => const ProfileView());
+
+    // ── Complete Profile ───────────────────────────────────────────────────
+    case AccountTypeView.routeName:
+      return MaterialPageRoute(builder: (_) => const AccountTypeView());
+    case SellerInformationView.routeName:
+      final args = settings.arguments;
+      return MaterialPageRoute(
+        builder: (_) => SellerInformationView(accountType: args),
+      );
+    case IdentityVerificationView.routeName:
+      final isBusinessFlow = settings.arguments == true;
+      return MaterialPageRoute(
+        builder: (_) =>
+            IdentityVerificationView(isBusinessFlow: isBusinessFlow),
+      );
+    case StoreInformationView.routeName:
+      return MaterialPageRoute(builder: (_) => const StoreInformationView());
+    case LegalDocumentsView.routeName:
+      return MaterialPageRoute(builder: (_) => const LegalDocumentsView());
+    case FinancialDetailsView.routeName:
+      return MaterialPageRoute(builder: (_) => const FinancialDetailsView());
 
     // ── Wallet ─────────────────────────────────────────────────────────────
     case WalletView.routeName:
