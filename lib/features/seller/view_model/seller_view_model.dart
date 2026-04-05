@@ -4,6 +4,9 @@ import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/features/seller/model/repositories/seller_repository.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model_state.dart';
+import 'package:safqaseller/core/service_locator.dart';
+import 'package:safqaseller/features/auth/model/repositories/auth_repository.dart';
+import 'package:safqaseller/features/auth/model/models/social_auth_models.dart';
 
 class SellerViewModel extends Cubit<SellerViewModelState> {
   final SellerRepository sellerRepository;
@@ -45,8 +48,9 @@ class SellerViewModel extends Cubit<SellerViewModelState> {
       );
 
       final isMessageSuccess = response.message?.toLowerCase().contains('seller created successfully') == true;
+      final sellerExists = response.errors.any((e) => e.toLowerCase().contains('seller already exists'));
 
-      if ((response.isSuccess && response.sellerId != null) || isMessageSuccess) {
+      if ((response.isSuccess && response.sellerId != null) || isMessageSuccess || sellerExists) {
         if (response.sellerId != null) {
           _sellerId = response.sellerId;
           await cacheHelper.saveData(
@@ -54,6 +58,26 @@ class SellerViewModel extends Cubit<SellerViewModelState> {
             value: response.sellerId!,
           );
         }
+
+        if (response.token != null && response.token!.isNotEmpty) {
+          await cacheHelper.saveData(
+            key: CacheKeys.token,
+            value: response.token,
+          );
+        }
+
+        // Force a token refresh so the backend signs the new JWT with "Seller" Role Claim
+        // This is necessary to avoid 403 Forbidden on the subsequent Identity Verification screen.
+        try {
+          final refreshTokenStr = cacheHelper.getData(key: CacheKeys.refreshToken) as String?;
+          if (refreshTokenStr != null) {
+            final authRepo = getIt<AuthRepository>();
+            await authRepo.refreshToken(RefreshTokenRequestModel(refreshToken: refreshTokenStr));
+          }
+        } catch (_) {
+          // If refresh fails, we still proceed, though it may trigger 403 later
+        }
+
         emit(SellerCreated(sellerId: response.sellerId ?? 0));
       } else {
         final errorMsg = response.errors.isNotEmpty
@@ -62,7 +86,21 @@ class SellerViewModel extends Cubit<SellerViewModelState> {
         emit(SellerError(errorMsg));
       }
     } catch (e) {
-      emit(SellerError(_clean(e)));
+      final errorMsg = _clean(e);
+      if (errorMsg.toLowerCase().contains('seller already exists')) {
+        // Force a token refresh since the seller already exists and we need the role claim
+        try {
+          final refreshTokenStr = cacheHelper.getData(key: CacheKeys.refreshToken) as String?;
+          if (refreshTokenStr != null) {
+            final authRepo = getIt<AuthRepository>();
+            await authRepo.refreshToken(RefreshTokenRequestModel(refreshToken: refreshTokenStr));
+          }
+        } catch (_) {}
+        
+        emit(const SellerCreated(sellerId: 0));
+      } else {
+        emit(SellerError(errorMsg));
+      }
     }
   }
 
