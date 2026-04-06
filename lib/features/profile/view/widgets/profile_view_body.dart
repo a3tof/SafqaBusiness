@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/service_locator.dart';
+import 'package:safqaseller/core/storage/cache_helper.dart';
+import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/features/auth/view_model/logout/logout_view_model.dart';
 import 'package:safqaseller/features/profile/view/widgets/profile_header_section.dart';
 import 'package:safqaseller/features/profile/view/widgets/profile_info_field.dart';
 import 'package:safqaseller/features/profile/view/widgets/profile_menu_item.dart';
 import 'package:safqaseller/features/profile/view/widgets/profile_metrics_row.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
+import 'package:safqaseller/main.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({super.key});
@@ -78,6 +82,14 @@ class ProfileViewBody extends StatelessWidget {
             ),
             SizedBox(height: 12.h),
             ProfileMenuItem(
+              icon: Icons.language_outlined,
+              label: 'Change Language',
+              onTap: () {
+                _showLanguageSheet(context);
+              },
+            ),
+            SizedBox(height: 12.h),
+            ProfileMenuItem(
               icon: Icons.logout_rounded,
               label: 'Logout',
               iconColor: Colors.red,
@@ -90,6 +102,61 @@ class ProfileViewBody extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  void _showLanguageSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 16.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Select Language',
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                ListTile(
+                  title: const Text('English'),
+                  onTap: () async {
+                    Navigator.pop(ctx);
+                    await getIt<CacheHelper>().saveData(
+                      key: CacheKeys.language,
+                      value: 'english',
+                    );
+                    if (context.mounted) {
+                      SafqaSeller.of(context)?.setLocale(const Locale('en'));
+                    }
+                  },
+                ),
+                ListTile(
+                  title: const Text('العربية'),
+                  onTap: () async {
+                    Navigator.pop(ctx);
+                    await getIt<CacheHelper>().saveData(
+                      key: CacheKeys.language,
+                      value: 'arabic',
+                    );
+                    if (context.mounted) {
+                      SafqaSeller.of(context)?.setLocale(const Locale('ar'));
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
