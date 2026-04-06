@@ -76,7 +76,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                       HomeActionCard(
                         label: 'New Lot Auction',
                         showAddIcon: true,
-                        backgroundImage: Assets.imagesHammer,
+                        backgroundImage: Assets.imagesFrame1,
                         onTap: () {
                           Navigator.pushNamed(context, WalletView.routeName);
                         },
@@ -85,7 +85,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                       HomeActionCard(
                         label: 'New Single Auction',
                         showAddIcon: true,
-                        backgroundImage: Assets.imagesHammer,
+                        backgroundImage: Assets.imagesFrame1,
                         onTap: () {},
                       ),
                       SizedBox(height: 16.h),
