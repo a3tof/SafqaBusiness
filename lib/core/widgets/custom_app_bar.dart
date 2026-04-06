@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
-import 'package:safqaseller/generated/l10n.dart';
 
 AppBar buildAppBar({required BuildContext context, required String title}) {
   final isArabic = Localizations.localeOf(context).languageCode == 'ar';
