@@ -14,6 +14,7 @@ import 'package:safqaseller/features/profile/view_model/profile_view_model_state
 import 'package:safqaseller/features/notifications/view/notifications_view.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
 import 'package:safqaseller/generated/l10n.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreenViewBody extends StatefulWidget {
   const HomeScreenViewBody({super.key});
@@ -52,69 +53,76 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: BlocListener<ProfileViewModel, ProfileViewModelState>(
+        child: BlocConsumer<ProfileViewModel, ProfileViewModelState>(
           listener: (context, state) {
             // If profile just became completed, no further action needed
             // The dialog will not show again since isProfileCompleted is true
           },
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 4.h),
-              const Center(child: _SafqaBusinessLogo()),
-              SizedBox(height: 24.h),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: const _GreetingRow(),
-              ),
-              SizedBox(height: 32.h),
-              Expanded(
-                child: SingleChildScrollView(
-                  padding:
-                      EdgeInsets.only(left: 16.w, right: 16.w, bottom: 24.h),
-                  child: Column(
-                    children: [
-                      HomeActionCard(
-                        label: S.of(context).kNewLotAuction,
-                        showAddIcon: true,
-                        backgroundImage: Assets.imagesFrame1,
-                        onTap: () {
-                          Navigator.pushNamed(context, WalletView.routeName);
-                        },
-                      ),
-                      SizedBox(height: 16.h),
-                      HomeActionCard(
-                        label: S.of(context).kNewSingleAuction,
-                        showAddIcon: true,
-                        backgroundImage: Assets.imagesFrame1,
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 16.h),
-                      Row(
+          builder: (context, state) {
+            final isLoading = state is ProfileInitial;
+            return Skeletonizer(
+              enabled: isLoading,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: 4.h),
+                  const Center(child: _SafqaBusinessLogo()),
+                  SizedBox(height: 24.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: const _GreetingRow(),
+                  ),
+                  SizedBox(height: 32.h),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.only(
+                          left: 16.w, right: 16.w, bottom: 24.h),
+                      child: Column(
                         children: [
-                          Expanded(
-                            child: HomeActionCard(
-                              label: S.of(context).kHistory,
-                              backgroundImage: Assets.imagesFrame1,
-                              onTap: () {},
-                            ),
+                          HomeActionCard(
+                            label: S.of(context).kNewLotAuction,
+                            showAddIcon: true,
+                            backgroundImage: Assets.imagesFrame1,
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, WalletView.routeName);
+                            },
                           ),
-                          SizedBox(width: 8.w),
-                          Expanded(
-                            child: HomeActionCard(
-                              label: S.of(context).kStatistics,
-                              backgroundImage: Assets.imagesFrame2,
-                              onTap: () {},
-                            ),
+                          SizedBox(height: 16.h),
+                          HomeActionCard(
+                            label: S.of(context).kNewSingleAuction,
+                            showAddIcon: true,
+                            backgroundImage: Assets.imagesFrame1,
+                            onTap: () {},
+                          ),
+                          SizedBox(height: 16.h),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: HomeActionCard(
+                                  label: S.of(context).kHistory,
+                                  backgroundImage: Assets.imagesFrame1,
+                                  onTap: () {},
+                                ),
+                              ),
+                              SizedBox(width: 8.w),
+                              Expanded(
+                                child: HomeActionCard(
+                                  label: S.of(context).kStatistics,
+                                  backgroundImage: Assets.imagesFrame2,
+                                  onTap: () {},
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

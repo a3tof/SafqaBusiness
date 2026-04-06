@@ -8,6 +8,7 @@ import 'package:safqaseller/features/notifications/view/widgets/notification_ite
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model.dart';
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model_state.dart';
 import 'package:safqaseller/generated/l10n.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class NotificationsViewBody extends StatefulWidget {
   const NotificationsViewBody({super.key});
@@ -31,8 +32,21 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
       body: BlocBuilder<NotificationsViewModel, NotificationsState>(
         builder: (context, state) {
           if (state is NotificationsLoading) {
-            return const Center(
-              child: CircularProgressIndicator(color: AppColors.primaryColor),
+            return Skeletonizer(
+              enabled: true,
+              child: _NotificationsList(
+                notifications: List.generate(
+                  6,
+                  (index) => NotificationModel(
+                    id: index,
+                    title: 'Loading Title for Skeleton',
+                    message: 'Loading Message for Skeletonizer',
+                    timeAgo: 'Now',
+                    type: NotificationType.newAuction,
+                    isRead: true,
+                  ),
+                ),
+              ),
             );
           }
 
