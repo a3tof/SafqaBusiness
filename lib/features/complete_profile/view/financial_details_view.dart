@@ -13,6 +13,7 @@ import 'package:safqaseller/features/profile/view_model/profile_view_model.dart'
 import 'package:safqaseller/features/seller/view/seller_home_view.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 /// Financial Details screen – final step of Business Account profile completion.
 /// Combines financial form fields with legal document files from previous step
@@ -62,7 +63,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
     if (_selectedBank == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Please select a bank'),
+          content: Text(S.of(context).kPleaseSelectABank),
           backgroundColor: Colors.red.shade600,
         ),
       );
@@ -73,7 +74,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
     if (docs == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Legal documents are missing. Please go back.'),
+          content: Text(S.of(context).kLegalDocumentsAre),
           backgroundColor: Colors.red.shade600,
         ),
       );
@@ -129,7 +130,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
             getIt<ProfileViewModel>().completeProfile();
 
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
+              SnackBar(
                 content: Text(
                     'Your business profile has been submitted for review!'),
                 backgroundColor: Color(0xFF023E8A),
@@ -157,7 +158,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar:
-                buildAppBar(context: context, title: 'Financial Details'),
+                buildAppBar(context: context, title: S.of(context).kFinancialDetails),
             body: SafeArea(
               child: Form(
                 key: _formKey,
@@ -167,7 +168,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Insta Pay Number
-                      _FieldLabel(label: 'Insta Pay Number (Optional)'),
+                      _FieldLabel(label: S.of(context).kInstaPayNumberOp),
                       SizedBox(height: 6.h),
                       _InputField(
                         controller: _iPayController,
@@ -177,7 +178,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                       SizedBox(height: 16.h),
 
                       // Bank Name
-                      _FieldLabel(label: 'Bank Name'),
+                      _FieldLabel(label: S.of(context).kBankName),
                       SizedBox(height: 6.h),
                       _BankDropdown(
                         value: _selectedBank,
@@ -189,7 +190,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
 
                       // Account Name / Beneficiary Name
                       _FieldLabel(
-                          label: 'Account Name / Beneficiary Name'),
+                          label: S.of(context).kAccountNameBenef),
                       SizedBox(height: 6.h),
                       _InputField(
                         controller: _accountNameController,
@@ -203,7 +204,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                       SizedBox(height: 16.h),
 
                       // Company IBAN
-                      _FieldLabel(label: 'Company IBAN'),
+                      _FieldLabel(label: S.of(context).kCompanyIban),
                       SizedBox(height: 6.h),
                       _InputField(
                         controller: _ibanController,
@@ -218,7 +219,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
 
                       // Local Account Number (Optional)
                       _FieldLabel(
-                          label: 'Local Account Number (Optional)'),
+                          label: S.of(context).kLocalAccountNumber),
                       SizedBox(height: 6.h),
                       _InputField(
                         controller: _localAccountController,

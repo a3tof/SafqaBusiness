@@ -12,32 +12,33 @@ import 'package:safqaseller/features/wallet/view/transaction_history_view.dart';
 import 'package:safqaseller/features/wallet/view/widgets/transaction_item.dart';
 import 'package:safqaseller/features/wallet/view/widgets/wallet_action_button.dart';
 import 'package:safqaseller/features/wallet/view/withdrawal_view.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 /// UI-only wallet screen with mock data. No BLoC/state management.
 class WalletViewBody extends StatelessWidget {
   const WalletViewBody({super.key});
 
   static final _mockBalance = const WalletBalance(balance: 1250.50);
-  static final _mockCards = [
+  List<CardModel> _mockCards(BuildContext context) => [
     CardModel(
       id: 1,
       cardholderName: 'John Doe',
       last4: '4242',
       expiryDate: '12/28',
-      label: 'Primary',
+      label: S.of(context).kPrimary,
     ),
   ];
-  static final _mockTransactions = [
+  List<TransactionModel> _mockTransactions(BuildContext context) => [
     TransactionModel(
       id: 1,
-      title: 'Deposit',
+      title: S.of(context).kDeposit,
       amount: 500,
       date: DateTime.now(),
       type: TransactionType.deposit,
     ),
     TransactionModel(
       id: 2,
-      title: 'Withdrawal',
+      title: S.of(context).kWithdrawal,
       amount: 120,
       date: DateTime.now().subtract(const Duration(days: 1)),
       type: TransactionType.withdrawal,
@@ -48,7 +49,7 @@ class WalletViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context: context, title: 'Wallet'),
+      appBar: buildAppBar(context: context, title: S.of(context).kWallet),
       body: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
         padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -74,7 +75,7 @@ class WalletViewBody extends StatelessWidget {
                                   children: [
                                     WalletActionButton(
                                       icon: Icons.add_rounded,
-                                      label: 'Deposit\nmoney',
+                                      label: S.of(context).kDepositNmoney,
                                       onTap: () => Navigator.pushNamed(
                                           context, DepositView.routeName),
                                       filled: true,
@@ -82,7 +83,7 @@ class WalletViewBody extends StatelessWidget {
                                     SizedBox(width: 20.w),
                                     WalletActionButton(
                                       icon: Icons.swap_horiz_rounded,
-                                      label: 'Withdrawal\nmoney',
+                                      label: S.of(context).kWithdrawalNmoney,
                                       onTap: () => Navigator.pushNamed(
                                           context, WithdrawalView.routeName),
                                       filled: false,
@@ -104,7 +105,7 @@ class WalletViewBody extends StatelessWidget {
                                   children: [
                                     WalletActionButton(
                                       icon: Icons.add_rounded,
-                                      label: 'Deposit\nmoney',
+                                      label: S.of(context).kDepositNmoney,
                                       onTap: () => Navigator.pushNamed(
                                           context, DepositView.routeName),
                                       filled: true,
@@ -112,7 +113,7 @@ class WalletViewBody extends StatelessWidget {
                                     SizedBox(width: 20.w),
                                     WalletActionButton(
                                       icon: Icons.swap_horiz_rounded,
-                                      label: 'Withdrawal\nmoney',
+                                      label: S.of(context).kWithdrawalNmoney,
                                       onTap: () => Navigator.pushNamed(
                                           context, WithdrawalView.routeName),
                                       filled: false,
@@ -147,7 +148,7 @@ class WalletViewBody extends StatelessWidget {
                     ],
                   ),
                   SizedBox(height: 8.h),
-                  if (_mockCards.isEmpty)
+                  if (_mockCards(context).isEmpty)
                     Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 24.h),
@@ -156,7 +157,7 @@ class WalletViewBody extends StatelessWidget {
                             Icon(Icons.credit_card_off_outlined,
                                 size: 48.sp, color: Colors.grey),
                             SizedBox(height: 8.h),
-                            Text('No saved cards',
+                            Text(S.of(context).kNoSavedCards,
                                 style: TextStyles.regular14(context)
                                     .copyWith(color: Colors.grey)),
                           ],
@@ -167,8 +168,8 @@ class WalletViewBody extends StatelessWidget {
                     SizedBox(
                       height: 215.h,
                       child: PageView.builder(
-                        itemCount: _mockCards.length,
-                        itemBuilder: (_, i) => _CreditCardWidget(card: _mockCards[i]),
+                        itemCount: _mockCards(context).length,
+                        itemBuilder: (_, i) => _CreditCardWidget(card: _mockCards(context)[i]),
                       ),
                     ),
 
@@ -191,7 +192,7 @@ class WalletViewBody extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Transaction History',
+                      Text(S.of(context).kTransactionHistory,
                           style: TextStyles.medium20(context)),
                       TextButton(
                         onPressed: () => Navigator.pushNamed(
@@ -206,11 +207,11 @@ class WalletViewBody extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (_mockTransactions.isEmpty)
+                  if (_mockTransactions(context).isEmpty)
                     Center(
                       child: Padding(
                         padding: EdgeInsets.symmetric(vertical: 24.h),
-                        child: Text('No transactions yet',
+                        child: Text(S.of(context).kNoTransactionsYet,
                             style: TextStyles.regular14(context)
                                 .copyWith(color: Colors.grey)),
                       ),
@@ -219,12 +220,12 @@ class WalletViewBody extends StatelessWidget {
                     // Date header for the first group
                     Text(
                       DateFormat('d MMMM yyyy')
-                          .format(_mockTransactions.first.date),
+                          .format(_mockTransactions(context).first.date),
                       style: TextStyles.medium14(context)
                           .copyWith(color: const Color(0xFFAAAAAA)),
                     ),
                     SizedBox(height: 12.h),
-                    ..._mockTransactions
+                    ..._mockTransactions(context)
                         .take(3)
                         .map((t) => Padding(
                               padding: EdgeInsets.only(bottom: 12.h),
@@ -373,7 +374,7 @@ class _CreditCardWidget extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('EXPIRES',
+                  Text(S.of(context).kExpires,
                       style: TextStyle(fontSize: 10.sp, color: Colors.white70)),
                   Text(
                     card.expiryDate,

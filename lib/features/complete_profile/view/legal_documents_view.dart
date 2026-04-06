@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:safqaseller/generated/l10n.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,7 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context: context, title: 'Legal Documents'),
+      appBar: buildAppBar(context: context, title: S.of(context).kLegalDocuments),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -59,21 +60,21 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
               SizedBox(height: 24.h),
               _DocumentTile(
                 icon: Icons.description_outlined,
-                label: 'Upload Commercial Registration (CR)',
+                label: S.of(context).kUploadCommercialRe,
                 uploaded: _crFile != null,
                 onTap: () => _pickFile((f) => _crFile = f),
               ),
               SizedBox(height: 12.h),
               _DocumentTile(
                 icon: Icons.description_outlined,
-                label: 'Upload Tax ID',
+                label: S.of(context).kUploadTaxId,
                 uploaded: _taxIdFile != null,
                 onTap: () => _pickFile((f) => _taxIdFile = f),
               ),
               SizedBox(height: 12.h),
               _DocumentTile(
                 icon: Icons.camera_alt_outlined,
-                label: 'Upload Owner\'s National ID (Front)',
+                label: S.of(context).kUploadOwners,
                 uploaded: _nationalIdFrontFile != null,
                 onTap: () =>
                     _pickFile((f) => _nationalIdFrontFile = f),
@@ -81,7 +82,7 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
               SizedBox(height: 12.h),
               _DocumentTile(
                 icon: Icons.camera_alt_outlined,
-                label: 'Upload Owner\'s National ID (Back)',
+                label: S.of(context).kUploadOwners,
                 uploaded: _nationalIdBackFile != null,
                 onTap: () =>
                     _pickFile((f) => _nationalIdBackFile = f),
@@ -96,7 +97,7 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content:
-                            const Text('Please upload all four documents'),
+                            Text(S.of(context).kPleaseUploadAllFo),
                         backgroundColor: Colors.red.shade600,
                       ),
                     );

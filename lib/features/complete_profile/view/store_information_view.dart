@@ -5,6 +5,7 @@ import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/features/complete_profile/view/legal_documents_view.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 /// Store Information screen – shown for Business Account after Identity Verification.
 class StoreInformationView extends StatefulWidget {
@@ -54,7 +55,7 @@ class _StoreInformationViewState extends State<StoreInformationView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context: context, title: 'Store Information'),
+      appBar: buildAppBar(context: context, title: S.of(context).kStoreInformation),
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -74,14 +75,14 @@ class _StoreInformationViewState extends State<StoreInformationView> {
                 SizedBox(height: 20.h),
 
                 // Legal Business Name
-                _FieldLabel(label: 'Legal Business Name'),
+                _FieldLabel(label: S.of(context).kLegalBusinessName),
                 SizedBox(height: 6.h),
                 _buildInputField(_nameController, 'Store Name',
                     keyboardType: TextInputType.name),
                 SizedBox(height: 16.h),
 
                 // Business Number
-                _FieldLabel(label: 'Business Number'),
+                _FieldLabel(label: S.of(context).kBusinessNumber),
                 SizedBox(height: 6.h),
                 _PhoneRow(
                   phoneController: _phoneController,
@@ -93,7 +94,7 @@ class _StoreInformationViewState extends State<StoreInformationView> {
                 SizedBox(height: 16.h),
 
                 // Business Address
-                _FieldLabel(label: 'Business Address'),
+                _FieldLabel(label: S.of(context).kBusinessAddress),
                 SizedBox(height: 6.h),
                 Row(
                   children: [
@@ -122,13 +123,13 @@ class _StoreInformationViewState extends State<StoreInformationView> {
                 SizedBox(height: 16.h),
 
                 // Store Logo (Optional)
-                _FieldLabel(label: 'Store Logo (Optional)'),
+                _FieldLabel(label: S.of(context).kStoreLogoOptional),
                 SizedBox(height: 6.h),
                 _ImagePickerBox(),
                 SizedBox(height: 16.h),
 
                 // Store Description
-                _FieldLabel(label: 'Store Description'),
+                _FieldLabel(label: S.of(context).kStoreDescription),
                 SizedBox(height: 6.h),
                 _DescriptionField(controller: _descController),
                 SizedBox(height: 32.h),

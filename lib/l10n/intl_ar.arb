@@ -394,5 +394,270 @@
   "termsContinuedUse": "يُعد الاستمرار في استخدام المنصة بعد أي تغييرات قبولًا للشروط المحدثة.",
   "@termsContinuedUse": {
     "description": "Terms: continued use paragraph"
-  }
+  },
+  "kNoPreviousPageTo": "لا توجد صفحة سابقة للرجوع إليها",
+  "@kNoPreviousPageTo": {
+    "description": "Auto-generated"
+  },
+  "kLoginSuccessful": "تسجيل الدخول ناجح!",
+  "@kLoginSuccessful": {
+    "description": "Auto-generated"
+  },
+  "kCountry": "الدولة",
+  "@kCountry": {
+    "description": "Auto-generated"
+  },
+  "kCity": "المدينة",
+  "@kCity": {
+    "description": "Auto-generated"
+  },
+  "kPleaseFillAllFiel": "يرجى ملء جميع الحقول بما في ذلك المدينة",
+  "@kPleaseFillAllFiel": {
+    "description": "Auto-generated"
+  },
+  "kAccountType": "نوع الحساب",
+  "@kAccountType": {
+    "description": "Auto-generated"
+  },
+  "kPleaseSelectABank": "يرجى اختيار بنك",
+  "@kPleaseSelectABank": {
+    "description": "Auto-generated"
+  },
+  "kLegalDocumentsAre": "الوثائق القانونية مفقودة. يرجى العودة.",
+  "@kLegalDocumentsAre": {
+    "description": "Auto-generated"
+  },
+  "kFinancialDetails": "التفاصيل المالية",
+  "@kFinancialDetails": {
+    "description": "Auto-generated"
+  },
+  "kInstaPayNumberOp": "رقم إنستا باي (اختياري)",
+  "@kInstaPayNumberOp": {
+    "description": "Auto-generated"
+  },
+  "kBankName": "اسم البنك",
+  "@kBankName": {
+    "description": "Auto-generated"
+  },
+  "kAccountNameBenef": "اسم الحساب / اسم المستفيد",
+  "@kAccountNameBenef": {
+    "description": "Auto-generated"
+  },
+  "kCompanyIban": "رقم الآيبان للشركة",
+  "@kCompanyIban": {
+    "description": "Auto-generated"
+  },
+  "kLocalAccountNumber": "رقم الحساب المحلي (اختياري)",
+  "@kLocalAccountNumber": {
+    "description": "Auto-generated"
+  },
+  "kPleaseUploadAllTh": "يرجى رفع جميع المستندات الثلاثة",
+  "@kPleaseUploadAllTh": {
+    "description": "Auto-generated"
+  },
+  "kIdentityVerificatio": "التحقق من الهوية",
+  "@kIdentityVerificatio": {
+    "description": "Auto-generated"
+  },
+  "kUploadNationalId": "رفع الهوية الوطنية (الوجه)",
+  "@kUploadNationalId": {
+    "description": "Auto-generated"
+  },
+  "kTakeASelfieWithI": "التقط صورة شخصية مع الهوية",
+  "@kTakeASelfieWithI": {
+    "description": "Auto-generated"
+  },
+  "kLegalDocuments": "المستندات القانونية",
+  "@kLegalDocuments": {
+    "description": "Auto-generated"
+  },
+  "kUploadCommercialRe": "رفع السجل التجاري (CR)",
+  "@kUploadCommercialRe": {
+    "description": "Auto-generated"
+  },
+  "kUploadTaxId": "رفع البطاقة الضريبية",
+  "@kUploadTaxId": {
+    "description": "Auto-generated"
+  },
+  "kUploadOwner": "رفع بطاقة الهوية للمالك (الوجه)",
+  "@kUploadOwner": {
+    "description": "Auto-generated"
+  },
+  "kPleaseUploadAllFo": "يرجى رفع كافة المستندات الأربعة",
+  "@kPleaseUploadAllFo": {
+    "description": "Auto-generated"
+  },
+  "kPleaseSelectACoun": "يرجى اختيار دولة ومدينة",
+  "@kPleaseSelectACoun": {
+    "description": "Auto-generated"
+  },
+  "kSellerInformation": "معلومات البائع",
+  "@kSellerInformation": {
+    "description": "Auto-generated"
+  },
+  "kStoreName": "اسم المتجر",
+  "@kStoreName": {
+    "description": "Auto-generated"
+  },
+  "kPhoneNumber": "رقم الهاتف",
+  "@kPhoneNumber": {
+    "description": "Auto-generated"
+  },
+  "kSelectCountry": "اختر الدولة",
+  "@kSelectCountry": {
+    "description": "Auto-generated"
+  },
+  "kSelectCity": "اختر المدينة",
+  "@kSelectCity": {
+    "description": "Auto-generated"
+  },
+  "kLogoOptional": "الشعار (اختياري)",
+  "@kLogoOptional": {
+    "description": "Auto-generated"
+  },
+  "kDescription": "الوصف",
+  "@kDescription": {
+    "description": "Auto-generated"
+  },
+  "kStoreInformation": "معلومات المتجر",
+  "@kStoreInformation": {
+    "description": "Auto-generated"
+  },
+  "kLegalBusinessName": "الاسم التجاري القانوني",
+  "@kLegalBusinessName": {
+    "description": "Auto-generated"
+  },
+  "kBusinessNumber": "الرقم التجاري",
+  "@kBusinessNumber": {
+    "description": "Auto-generated"
+  },
+  "kBusinessAddress": "عنوان العمل",
+  "@kBusinessAddress": {
+    "description": "Auto-generated"
+  },
+  "kStoreLogoOptional": "شعار المتجر (اختياري)",
+  "@kStoreLogoOptional": {
+    "description": "Auto-generated"
+  },
+  "kStoreDescription": "وصف المتجر",
+  "@kStoreDescription": {
+    "description": "Auto-generated"
+  },
+  "kNewLotAuction": "مزاد لمجموعة جديدة",
+  "@kNewLotAuction": {
+    "description": "Auto-generated"
+  },
+  "kNewSingleAuction": "مزاد فردي جديد",
+  "@kNewSingleAuction": {
+    "description": "Auto-generated"
+  },
+  "kHistory": "السجل",
+  "@kHistory": {
+    "description": "Auto-generated"
+  },
+  "kStatistics": "الإحصائيات",
+  "@kStatistics": {
+    "description": "Auto-generated"
+  },
+  "kOpeningChat": "جاري فتح المحادثة...",
+  "@kOpeningChat": {
+    "description": "Auto-generated"
+  },
+  "kBusinessAccount": "حساب أعمال",
+  "@kBusinessAccount": {
+    "description": "Auto-generated"
+  },
+  "kUpgrade": "ترقية",
+  "@kUpgrade": {
+    "description": "Auto-generated"
+  },
+  "kEdit": "تعديل",
+  "@kEdit": {
+    "description": "Auto-generated"
+  },
+  "kWallet": "المحفظة",
+  "@kWallet": {
+    "description": "Auto-generated"
+  },
+  "kCairoEgypt": "القاهرة، مصر",
+  "@kCairoEgypt": {
+    "description": "Auto-generated"
+  },
+  "kReviewsRatings": "التقييمات والمراجعات",
+  "@kReviewsRatings": {
+    "description": "Auto-generated"
+  },
+  "kChangeLanguage": "تغيير اللغة",
+  "@kChangeLanguage": {
+    "description": "Auto-generated"
+  },
+  "kLogout": "تسجيل الخروج",
+  "@kLogout": {
+    "description": "Auto-generated"
+  },
+  "kEnglish": "English",
+  "@kEnglish": {
+    "description": "Auto-generated"
+  },
+  "kDepositSuccessful": "تم الإيداع بنجاح!",
+  "@kDepositSuccessful": {
+    "description": "Auto-generated"
+  },
+  "kDeposit": "إيداع",
+  "@kDeposit": {
+    "description": "Auto-generated"
+  },
+  "kEnterDepositAmount": "أدخل مبلغ الإيداع",
+  "@kEnterDepositAmount": {
+    "description": "Auto-generated"
+  },
+  "kNoSavedCards": "لا توجد بطاقات محفوظة",
+  "@kNoSavedCards": {
+    "description": "Auto-generated"
+  },
+  "kAddCard": "إضافة بطاقة",
+  "@kAddCard": {
+    "description": "Auto-generated"
+  },
+  "kTransactions": "المعاملات",
+  "@kTransactions": {
+    "description": "Auto-generated"
+  },
+  "kNoTransactionsYet": "لا توجد معاملات حتى الآن",
+  "@kNoTransactionsYet": {
+    "description": "Auto-generated"
+  },
+  "kPrimary": "الأساسية",
+  "@kPrimary": {
+    "description": "Auto-generated"
+  },
+  "kWithdrawal": "سحب",
+  "@kWithdrawal": {
+    "description": "Auto-generated"
+  },
+  "kDepositNmoney": "إيداع\\nالمال",
+  "@kDepositNmoney": {
+    "description": "Auto-generated"
+  },
+  "kWithdrawalNmoney": "سحب\\nالمال",
+  "@kWithdrawalNmoney": {
+    "description": "Auto-generated"
+  },
+  "kTransactionHistory": "سجل المعاملات",
+  "@kTransactionHistory": {
+    "description": "Auto-generated"
+  },
+  "kExpires": "صالح حتى",
+  "@kExpires": {
+    "description": "Auto-generated"
+  },
+  "kWithdrawalSuccessfu": "تم السحب بنجاح!",
+  "@kWithdrawalSuccessfu": {
+    "description": "Auto-generated"
+  },
+  "kEnterWithdrawalAmo": "أدخل مبلغ السحب",
+  "@kEnterWithdrawalAmo": {
+    "description": "Auto-generated"
+  },
+  "kUploadOwners": "رفع بطاقة الهوية للمالك"
 }

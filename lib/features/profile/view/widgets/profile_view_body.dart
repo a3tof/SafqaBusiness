@@ -11,6 +11,7 @@ import 'package:safqaseller/features/profile/view/widgets/profile_menu_item.dart
 import 'package:safqaseller/features/profile/view/widgets/profile_metrics_row.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
 import 'package:safqaseller/main.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class ProfileViewBody extends StatelessWidget {
   const ProfileViewBody({super.key});
@@ -50,7 +51,7 @@ class ProfileViewBody extends StatelessWidget {
             // ── Navigation Menu Items ──
             ProfileMenuItem(
               icon: Icons.account_balance_wallet_outlined,
-              label: 'Wallet',
+              label: S.of(context).kWallet,
               onTap: () {
                 Navigator.pushNamed(context, WalletView.routeName);
               },
@@ -58,32 +59,32 @@ class ProfileViewBody extends StatelessWidget {
             SizedBox(height: 12.h),
             ProfileMenuItem(
               icon: Icons.location_on_outlined,
-              label: 'Cairo, Egypt',
+              label: S.of(context).kCairoEgypt,
               trailingIcon: Icons.keyboard_arrow_down,
               onTap: () {},
             ),
             SizedBox(height: 12.h),
             ProfileMenuItem(
               icon: Icons.access_time,
-              label: 'History',
+              label: S.of(context).kHistory,
               onTap: () {},
             ),
             SizedBox(height: 12.h),
             ProfileMenuItem(
               icon: Icons.bar_chart_outlined,
-              label: 'Statistics',
+              label: S.of(context).kStatistics,
               onTap: () {},
             ),
             SizedBox(height: 12.h),
             ProfileMenuItem(
               icon: Icons.star_outline,
-              label: 'Reviews & Ratings',
+              label: S.of(context).kReviewsRatings,
               onTap: () {},
             ),
             SizedBox(height: 12.h),
             ProfileMenuItem(
               icon: Icons.language_outlined,
-              label: 'Change Language',
+              label: S.of(context).kChangeLanguage,
               onTap: () {
                 _showLanguageSheet(context);
               },
@@ -91,7 +92,7 @@ class ProfileViewBody extends StatelessWidget {
             SizedBox(height: 12.h),
             ProfileMenuItem(
               icon: Icons.logout_rounded,
-              label: 'Logout',
+              label: S.of(context).kLogout,
               iconColor: Colors.red,
               textColor: Colors.red,
               onTap: () {
@@ -127,7 +128,7 @@ class ProfileViewBody extends StatelessWidget {
                 ),
                 SizedBox(height: 16.h),
                 ListTile(
-                  title: const Text('English'),
+                  title: Text(S.of(context).kEnglish),
                   onTap: () async {
                     Navigator.pop(ctx);
                     await getIt<CacheHelper>().saveData(

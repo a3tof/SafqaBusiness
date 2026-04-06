@@ -8,6 +8,7 @@ import 'package:safqaseller/features/wallet/model/models/wallet_models.dart';
 import 'package:safqaseller/features/wallet/view/widgets/transaction_item.dart';
 import 'package:safqaseller/features/wallet/view_model/wallet/wallet_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/wallet/wallet_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class TransactionHistoryViewBody extends StatelessWidget {
   const TransactionHistoryViewBody({super.key});
@@ -16,7 +17,7 @@ class TransactionHistoryViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context: context, title: 'Transactions'),
+      appBar: buildAppBar(context: context, title: S.of(context).kTransactions),
       body: BlocBuilder<WalletViewModel, WalletState>(
         builder: (context, state) {
           if (state is WalletLoading || state is WalletInitial) {
@@ -36,7 +37,7 @@ class TransactionHistoryViewBody extends StatelessWidget {
                   Icon(Icons.receipt_long_outlined,
                       size: 64.sp, color: Colors.grey),
                   SizedBox(height: 16.h),
-                  Text('No transactions yet',
+                  Text(S.of(context).kNoTransactionsYet,
                       style: TextStyles.regular16(context)
                           .copyWith(color: Colors.grey)),
                 ],

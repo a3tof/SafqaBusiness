@@ -7,6 +7,7 @@ import 'package:safqaseller/features/notifications/model/models/notification_mod
 import 'package:safqaseller/features/notifications/view/widgets/notification_item.dart';
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model.dart';
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class NotificationsViewBody extends StatefulWidget {
   const NotificationsViewBody({super.key});
@@ -210,7 +211,7 @@ class _NotificationsList extends StatelessWidget {
               onActionTap: () {
                 // TODO: navigate to chat when backend is wired
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Opening chat...')),
+                  SnackBar(content: Text(S.of(context).kOpeningChat)),
                 );
               },
             ),

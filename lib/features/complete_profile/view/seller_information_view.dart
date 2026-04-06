@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:safqaseller/generated/l10n.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -103,8 +104,8 @@ class _SellerInformationViewState extends State<SellerInformationView> {
 
     if (_selectedLocationCity == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a country and a city'),
+        SnackBar(
+          content: Text(S.of(context).kPleaseSelectACoun),
           backgroundColor: Colors.red,
         ),
       );
@@ -159,7 +160,7 @@ class _SellerInformationViewState extends State<SellerInformationView> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar:
-                buildAppBar(context: context, title: 'Seller Information'),
+                buildAppBar(context: context, title: S.of(context).kSellerInformation),
             body: SafeArea(
               child: Form(
                 key: _formKey,
@@ -171,7 +172,7 @@ class _SellerInformationViewState extends State<SellerInformationView> {
                     children: [
                       SizedBox(height: 8.h),
                       // Name field
-                      _FieldLabel(label: 'Store Name'),
+                      _FieldLabel(label: S.of(context).kStoreName),
                       SizedBox(height: 6.h),
                       _InputField(
                         controller: _nameController,
@@ -185,7 +186,7 @@ class _SellerInformationViewState extends State<SellerInformationView> {
                       SizedBox(height: 16.h),
 
                       // Phone number field
-                      _FieldLabel(label: 'Phone Number'),
+                      _FieldLabel(label: S.of(context).kPhoneNumber),
                       SizedBox(height: 6.h),
                       _PhoneField(
                         phoneController: _phoneController,
@@ -197,11 +198,11 @@ class _SellerInformationViewState extends State<SellerInformationView> {
                       SizedBox(height: 16.h),
 
                       // Country
-                      _FieldLabel(label: 'Country'),
+                      _FieldLabel(label: S.of(context).kCountry),
                       SizedBox(height: 6.h),
                       LocationPickerField(
                         enabled: !_isLoadingLocations && _apiCountries.isNotEmpty,
-                        hintText: 'Select Country',
+                        hintText: S.of(context).kSelectCountry,
                         locations: _apiCountries,
                         selectedLocation: _selectedLocationCountry,
                         onChanged: (location) {
@@ -212,11 +213,11 @@ class _SellerInformationViewState extends State<SellerInformationView> {
                       SizedBox(height: 16.h),
 
                       // City
-                      _FieldLabel(label: 'City'),
+                      _FieldLabel(label: S.of(context).kCity),
                       SizedBox(height: 6.h),
                       LocationPickerField(
                         enabled: !_isLoadingLocations && _apiCities.isNotEmpty,
-                        hintText: 'Select City',
+                        hintText: S.of(context).kSelectCity,
                         locations: _apiCities,
                         selectedLocation: _selectedLocationCity,
                         onChanged: (location) => setState(() => _selectedLocationCity = location),
@@ -224,7 +225,7 @@ class _SellerInformationViewState extends State<SellerInformationView> {
                       SizedBox(height: 16.h),
 
                       // Logo
-                      _FieldLabel(label: 'Logo (Optional)'),
+                      _FieldLabel(label: S.of(context).kLogoOptional),
                       SizedBox(height: 6.h),
                       _ImagePickerBox(
                         file: _logoFile,
@@ -233,7 +234,7 @@ class _SellerInformationViewState extends State<SellerInformationView> {
                       SizedBox(height: 16.h),
 
                       // Description
-                      _FieldLabel(label: 'Description'),
+                      _FieldLabel(label: S.of(context).kDescription),
                       SizedBox(height: 6.h),
                       _DescriptionField(
                         controller: _descController,

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:safqaseller/generated/l10n.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
     if (_idFrontFile == null || _idBackFile == null || _selfieFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Please upload all three documents'),
+          content: Text(S.of(context).kPleaseUploadAllTh),
           backgroundColor: Colors.red.shade600,
         ),
       );
@@ -95,7 +96,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
               if (!context.mounted) return;
 
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
+                SnackBar(
                   content: Text(
                     'Your profile has been submitted for review!',
                   ),
@@ -124,7 +125,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: buildAppBar(
-                context: context, title: 'Identity Verification'),
+                context: context, title: S.of(context).kIdentityVerificatio),
             body: SafeArea(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -140,7 +141,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                     SizedBox(height: 24.h),
                     _UploadTile(
                       icon: Icons.camera_alt_outlined,
-                      label: 'Upload National ID (Front)',
+                      label: S.of(context).kUploadNationalId,
                       uploaded: _idFrontFile != null,
                       onTap: () =>
                           _pickImage((f) => _idFrontFile = f),
@@ -148,7 +149,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                     SizedBox(height: 12.h),
                     _UploadTile(
                       icon: Icons.camera_alt_outlined,
-                      label: 'Upload National ID (Back)',
+                      label: S.of(context).kUploadNationalId,
                       uploaded: _idBackFile != null,
                       onTap: () =>
                           _pickImage((f) => _idBackFile = f),
@@ -156,7 +157,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                     SizedBox(height: 12.h),
                     _UploadTile(
                       icon: Icons.sentiment_satisfied_alt_outlined,
-                      label: 'Take a Selfie with ID',
+                      label: S.of(context).kTakeASelfieWithI,
                       uploaded: _selfieFile != null,
                       onTap: () => _pickImage(
                         (f) => _selfieFile = f,

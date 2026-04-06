@@ -394,5 +394,270 @@
   "termsContinuedUse": "Continued use of the platform after any changes constitutes acceptance of the updated terms.",
   "@termsContinuedUse": {
     "description": "Terms: continued use paragraph"
-  }
+  },
+  "kNoPreviousPageTo": "No previous page to navigate back to",
+  "@kNoPreviousPageTo": {
+    "description": "Auto-generated"
+  },
+  "kLoginSuccessful": "Login Successful!",
+  "@kLoginSuccessful": {
+    "description": "Auto-generated"
+  },
+  "kCountry": "Country",
+  "@kCountry": {
+    "description": "Auto-generated"
+  },
+  "kCity": "City",
+  "@kCity": {
+    "description": "Auto-generated"
+  },
+  "kPleaseFillAllFiel": "Please fill all fields including City",
+  "@kPleaseFillAllFiel": {
+    "description": "Auto-generated"
+  },
+  "kAccountType": "Account Type",
+  "@kAccountType": {
+    "description": "Auto-generated"
+  },
+  "kPleaseSelectABank": "Please select a bank",
+  "@kPleaseSelectABank": {
+    "description": "Auto-generated"
+  },
+  "kLegalDocumentsAre": "Legal documents are missing. Please go back.",
+  "@kLegalDocumentsAre": {
+    "description": "Auto-generated"
+  },
+  "kFinancialDetails": "Financial Details",
+  "@kFinancialDetails": {
+    "description": "Auto-generated"
+  },
+  "kInstaPayNumberOp": "Insta Pay Number (Optional)",
+  "@kInstaPayNumberOp": {
+    "description": "Auto-generated"
+  },
+  "kBankName": "Bank Name",
+  "@kBankName": {
+    "description": "Auto-generated"
+  },
+  "kAccountNameBenef": "Account Name / Beneficiary Name",
+  "@kAccountNameBenef": {
+    "description": "Auto-generated"
+  },
+  "kCompanyIban": "Company IBAN",
+  "@kCompanyIban": {
+    "description": "Auto-generated"
+  },
+  "kLocalAccountNumber": "Local Account Number (Optional)",
+  "@kLocalAccountNumber": {
+    "description": "Auto-generated"
+  },
+  "kPleaseUploadAllTh": "Please upload all three documents",
+  "@kPleaseUploadAllTh": {
+    "description": "Auto-generated"
+  },
+  "kIdentityVerificatio": "Identity Verification",
+  "@kIdentityVerificatio": {
+    "description": "Auto-generated"
+  },
+  "kUploadNationalId": "Upload National ID (Front)",
+  "@kUploadNationalId": {
+    "description": "Auto-generated"
+  },
+  "kTakeASelfieWithI": "Take a Selfie with ID",
+  "@kTakeASelfieWithI": {
+    "description": "Auto-generated"
+  },
+  "kLegalDocuments": "Legal Documents",
+  "@kLegalDocuments": {
+    "description": "Auto-generated"
+  },
+  "kUploadCommercialRe": "Upload Commercial Registration (CR)",
+  "@kUploadCommercialRe": {
+    "description": "Auto-generated"
+  },
+  "kUploadTaxId": "Upload Tax ID",
+  "@kUploadTaxId": {
+    "description": "Auto-generated"
+  },
+  "kUploadOwner": "Upload Owner\\",
+  "@kUploadOwner": {
+    "description": "Auto-generated"
+  },
+  "kPleaseUploadAllFo": "Please upload all four documents",
+  "@kPleaseUploadAllFo": {
+    "description": "Auto-generated"
+  },
+  "kPleaseSelectACoun": "Please select a country and a city",
+  "@kPleaseSelectACoun": {
+    "description": "Auto-generated"
+  },
+  "kSellerInformation": "Seller Information",
+  "@kSellerInformation": {
+    "description": "Auto-generated"
+  },
+  "kStoreName": "Store Name",
+  "@kStoreName": {
+    "description": "Auto-generated"
+  },
+  "kPhoneNumber": "Phone Number",
+  "@kPhoneNumber": {
+    "description": "Auto-generated"
+  },
+  "kSelectCountry": "Select Country",
+  "@kSelectCountry": {
+    "description": "Auto-generated"
+  },
+  "kSelectCity": "Select City",
+  "@kSelectCity": {
+    "description": "Auto-generated"
+  },
+  "kLogoOptional": "Logo (Optional)",
+  "@kLogoOptional": {
+    "description": "Auto-generated"
+  },
+  "kDescription": "Description",
+  "@kDescription": {
+    "description": "Auto-generated"
+  },
+  "kStoreInformation": "Store Information",
+  "@kStoreInformation": {
+    "description": "Auto-generated"
+  },
+  "kLegalBusinessName": "Legal Business Name",
+  "@kLegalBusinessName": {
+    "description": "Auto-generated"
+  },
+  "kBusinessNumber": "Business Number",
+  "@kBusinessNumber": {
+    "description": "Auto-generated"
+  },
+  "kBusinessAddress": "Business Address",
+  "@kBusinessAddress": {
+    "description": "Auto-generated"
+  },
+  "kStoreLogoOptional": "Store Logo (Optional)",
+  "@kStoreLogoOptional": {
+    "description": "Auto-generated"
+  },
+  "kStoreDescription": "Store Description",
+  "@kStoreDescription": {
+    "description": "Auto-generated"
+  },
+  "kNewLotAuction": "New Lot Auction",
+  "@kNewLotAuction": {
+    "description": "Auto-generated"
+  },
+  "kNewSingleAuction": "New Single Auction",
+  "@kNewSingleAuction": {
+    "description": "Auto-generated"
+  },
+  "kHistory": "History",
+  "@kHistory": {
+    "description": "Auto-generated"
+  },
+  "kStatistics": "Statistics",
+  "@kStatistics": {
+    "description": "Auto-generated"
+  },
+  "kOpeningChat": "Opening chat...",
+  "@kOpeningChat": {
+    "description": "Auto-generated"
+  },
+  "kBusinessAccount": "Business Account",
+  "@kBusinessAccount": {
+    "description": "Auto-generated"
+  },
+  "kUpgrade": "Upgrade",
+  "@kUpgrade": {
+    "description": "Auto-generated"
+  },
+  "kEdit": "Edit",
+  "@kEdit": {
+    "description": "Auto-generated"
+  },
+  "kWallet": "Wallet",
+  "@kWallet": {
+    "description": "Auto-generated"
+  },
+  "kCairoEgypt": "Cairo, Egypt",
+  "@kCairoEgypt": {
+    "description": "Auto-generated"
+  },
+  "kReviewsRatings": "Reviews & Ratings",
+  "@kReviewsRatings": {
+    "description": "Auto-generated"
+  },
+  "kChangeLanguage": "Change Language",
+  "@kChangeLanguage": {
+    "description": "Auto-generated"
+  },
+  "kLogout": "Logout",
+  "@kLogout": {
+    "description": "Auto-generated"
+  },
+  "kEnglish": "English",
+  "@kEnglish": {
+    "description": "Auto-generated"
+  },
+  "kDepositSuccessful": "Deposit successful!",
+  "@kDepositSuccessful": {
+    "description": "Auto-generated"
+  },
+  "kDeposit": "Deposit",
+  "@kDeposit": {
+    "description": "Auto-generated"
+  },
+  "kEnterDepositAmount": "Enter deposit amount",
+  "@kEnterDepositAmount": {
+    "description": "Auto-generated"
+  },
+  "kNoSavedCards": "No saved cards",
+  "@kNoSavedCards": {
+    "description": "Auto-generated"
+  },
+  "kAddCard": "Add Card",
+  "@kAddCard": {
+    "description": "Auto-generated"
+  },
+  "kTransactions": "Transactions",
+  "@kTransactions": {
+    "description": "Auto-generated"
+  },
+  "kNoTransactionsYet": "No transactions yet",
+  "@kNoTransactionsYet": {
+    "description": "Auto-generated"
+  },
+  "kPrimary": "Primary",
+  "@kPrimary": {
+    "description": "Auto-generated"
+  },
+  "kWithdrawal": "Withdrawal",
+  "@kWithdrawal": {
+    "description": "Auto-generated"
+  },
+  "kDepositNmoney": "Deposit\\nmoney",
+  "@kDepositNmoney": {
+    "description": "Auto-generated"
+  },
+  "kWithdrawalNmoney": "Withdrawal\\nmoney",
+  "@kWithdrawalNmoney": {
+    "description": "Auto-generated"
+  },
+  "kTransactionHistory": "Transaction History",
+  "@kTransactionHistory": {
+    "description": "Auto-generated"
+  },
+  "kExpires": "EXPIRES",
+  "@kExpires": {
+    "description": "Auto-generated"
+  },
+  "kWithdrawalSuccessfu": "Withdrawal successful!",
+  "@kWithdrawalSuccessfu": {
+    "description": "Auto-generated"
+  },
+  "kEnterWithdrawalAmo": "Enter withdrawal amount",
+  "@kEnterWithdrawalAmo": {
+    "description": "Auto-generated"
+  },
+  "kUploadOwners": "Upload Owner's National ID"
 }

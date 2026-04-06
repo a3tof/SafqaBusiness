@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/subscription/view/subscription_view.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class ProfileHeaderSection extends StatelessWidget {
   const ProfileHeaderSection({super.key});
@@ -23,7 +24,7 @@ class ProfileHeaderSection extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               _ActionButton(
-                label: 'Upgrade',
+                label: S.of(context).kUpgrade,
                 backgroundColor: AppColors.secondaryColor,
                 onTap: () {
                   Navigator.pushNamed(context, SubscriptionView.routeName);
@@ -31,7 +32,7 @@ class ProfileHeaderSection extends StatelessWidget {
               ),
               SizedBox(height: 8.h),
               _ActionButton(
-                label: 'Edit',
+                label: S.of(context).kEdit,
                 backgroundColor: const Color(0xFFF5F5F5),
                 onTap: () {},
               ),

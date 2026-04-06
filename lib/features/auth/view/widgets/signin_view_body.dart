@@ -47,8 +47,8 @@ class _SigninViewBodyState extends State<SigninViewBody> {
           if (!context.mounted) return;
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login Successful!'),
+            SnackBar(
+              content: Text(S.of(context).kLoginSuccessful),
               backgroundColor: Colors.green,
             ),
           );

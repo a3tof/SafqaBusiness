@@ -18,8 +18,10 @@ class S {
   static S? _current;
 
   static S get current {
-    assert(_current != null,
-        'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.');
+    assert(
+      _current != null,
+      'No instance of S was loaded. Try to initialize the S delegate before accessing S.current.',
+    );
     return _current!;
   }
 
@@ -41,8 +43,10 @@ class S {
 
   static S of(BuildContext context) {
     final instance = S.maybeOf(context);
-    assert(instance != null,
-        'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?');
+    assert(
+      instance != null,
+      'No instance of S present in the widget tree. Did you add S.delegate in localizationsDelegates?',
+    );
     return instance!;
   }
 
@@ -1036,6 +1040,676 @@ class S {
       'Continued use of the platform after any changes constitutes acceptance of the updated terms.',
       name: 'termsContinuedUse',
       desc: 'Terms: continued use paragraph',
+      args: [],
+    );
+  }
+
+  /// `No previous page to navigate back to`
+  String get kNoPreviousPageTo {
+    return Intl.message(
+      'No previous page to navigate back to',
+      name: 'kNoPreviousPageTo',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Login Successful!`
+  String get kLoginSuccessful {
+    return Intl.message(
+      'Login Successful!',
+      name: 'kLoginSuccessful',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Country`
+  String get kCountry {
+    return Intl.message(
+      'Country',
+      name: 'kCountry',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `City`
+  String get kCity {
+    return Intl.message(
+      'City',
+      name: 'kCity',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Please fill all fields including City`
+  String get kPleaseFillAllFiel {
+    return Intl.message(
+      'Please fill all fields including City',
+      name: 'kPleaseFillAllFiel',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Account Type`
+  String get kAccountType {
+    return Intl.message(
+      'Account Type',
+      name: 'kAccountType',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Please select a bank`
+  String get kPleaseSelectABank {
+    return Intl.message(
+      'Please select a bank',
+      name: 'kPleaseSelectABank',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Legal documents are missing. Please go back.`
+  String get kLegalDocumentsAre {
+    return Intl.message(
+      'Legal documents are missing. Please go back.',
+      name: 'kLegalDocumentsAre',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Financial Details`
+  String get kFinancialDetails {
+    return Intl.message(
+      'Financial Details',
+      name: 'kFinancialDetails',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Insta Pay Number (Optional)`
+  String get kInstaPayNumberOp {
+    return Intl.message(
+      'Insta Pay Number (Optional)',
+      name: 'kInstaPayNumberOp',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Bank Name`
+  String get kBankName {
+    return Intl.message(
+      'Bank Name',
+      name: 'kBankName',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Account Name / Beneficiary Name`
+  String get kAccountNameBenef {
+    return Intl.message(
+      'Account Name / Beneficiary Name',
+      name: 'kAccountNameBenef',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Company IBAN`
+  String get kCompanyIban {
+    return Intl.message(
+      'Company IBAN',
+      name: 'kCompanyIban',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Local Account Number (Optional)`
+  String get kLocalAccountNumber {
+    return Intl.message(
+      'Local Account Number (Optional)',
+      name: 'kLocalAccountNumber',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Please upload all three documents`
+  String get kPleaseUploadAllTh {
+    return Intl.message(
+      'Please upload all three documents',
+      name: 'kPleaseUploadAllTh',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Identity Verification`
+  String get kIdentityVerificatio {
+    return Intl.message(
+      'Identity Verification',
+      name: 'kIdentityVerificatio',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Upload National ID (Front)`
+  String get kUploadNationalId {
+    return Intl.message(
+      'Upload National ID (Front)',
+      name: 'kUploadNationalId',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Take a Selfie with ID`
+  String get kTakeASelfieWithI {
+    return Intl.message(
+      'Take a Selfie with ID',
+      name: 'kTakeASelfieWithI',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Legal Documents`
+  String get kLegalDocuments {
+    return Intl.message(
+      'Legal Documents',
+      name: 'kLegalDocuments',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Upload Commercial Registration (CR)`
+  String get kUploadCommercialRe {
+    return Intl.message(
+      'Upload Commercial Registration (CR)',
+      name: 'kUploadCommercialRe',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Upload Tax ID`
+  String get kUploadTaxId {
+    return Intl.message(
+      'Upload Tax ID',
+      name: 'kUploadTaxId',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Upload Owner\`
+  String get kUploadOwner {
+    return Intl.message(
+      'Upload Owner\\',
+      name: 'kUploadOwner',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Please upload all four documents`
+  String get kPleaseUploadAllFo {
+    return Intl.message(
+      'Please upload all four documents',
+      name: 'kPleaseUploadAllFo',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Please select a country and a city`
+  String get kPleaseSelectACoun {
+    return Intl.message(
+      'Please select a country and a city',
+      name: 'kPleaseSelectACoun',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Seller Information`
+  String get kSellerInformation {
+    return Intl.message(
+      'Seller Information',
+      name: 'kSellerInformation',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Store Name`
+  String get kStoreName {
+    return Intl.message(
+      'Store Name',
+      name: 'kStoreName',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get kPhoneNumber {
+    return Intl.message(
+      'Phone Number',
+      name: 'kPhoneNumber',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Select Country`
+  String get kSelectCountry {
+    return Intl.message(
+      'Select Country',
+      name: 'kSelectCountry',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Select City`
+  String get kSelectCity {
+    return Intl.message(
+      'Select City',
+      name: 'kSelectCity',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Logo (Optional)`
+  String get kLogoOptional {
+    return Intl.message(
+      'Logo (Optional)',
+      name: 'kLogoOptional',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get kDescription {
+    return Intl.message(
+      'Description',
+      name: 'kDescription',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Store Information`
+  String get kStoreInformation {
+    return Intl.message(
+      'Store Information',
+      name: 'kStoreInformation',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Legal Business Name`
+  String get kLegalBusinessName {
+    return Intl.message(
+      'Legal Business Name',
+      name: 'kLegalBusinessName',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Business Number`
+  String get kBusinessNumber {
+    return Intl.message(
+      'Business Number',
+      name: 'kBusinessNumber',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Business Address`
+  String get kBusinessAddress {
+    return Intl.message(
+      'Business Address',
+      name: 'kBusinessAddress',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Store Logo (Optional)`
+  String get kStoreLogoOptional {
+    return Intl.message(
+      'Store Logo (Optional)',
+      name: 'kStoreLogoOptional',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Store Description`
+  String get kStoreDescription {
+    return Intl.message(
+      'Store Description',
+      name: 'kStoreDescription',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `New Lot Auction`
+  String get kNewLotAuction {
+    return Intl.message(
+      'New Lot Auction',
+      name: 'kNewLotAuction',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `New Single Auction`
+  String get kNewSingleAuction {
+    return Intl.message(
+      'New Single Auction',
+      name: 'kNewSingleAuction',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `History`
+  String get kHistory {
+    return Intl.message(
+      'History',
+      name: 'kHistory',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Statistics`
+  String get kStatistics {
+    return Intl.message(
+      'Statistics',
+      name: 'kStatistics',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Opening chat...`
+  String get kOpeningChat {
+    return Intl.message(
+      'Opening chat...',
+      name: 'kOpeningChat',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Business Account`
+  String get kBusinessAccount {
+    return Intl.message(
+      'Business Account',
+      name: 'kBusinessAccount',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Upgrade`
+  String get kUpgrade {
+    return Intl.message(
+      'Upgrade',
+      name: 'kUpgrade',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Edit`
+  String get kEdit {
+    return Intl.message(
+      'Edit',
+      name: 'kEdit',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Wallet`
+  String get kWallet {
+    return Intl.message(
+      'Wallet',
+      name: 'kWallet',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Cairo, Egypt`
+  String get kCairoEgypt {
+    return Intl.message(
+      'Cairo, Egypt',
+      name: 'kCairoEgypt',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Reviews & Ratings`
+  String get kReviewsRatings {
+    return Intl.message(
+      'Reviews & Ratings',
+      name: 'kReviewsRatings',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Change Language`
+  String get kChangeLanguage {
+    return Intl.message(
+      'Change Language',
+      name: 'kChangeLanguage',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Logout`
+  String get kLogout {
+    return Intl.message(
+      'Logout',
+      name: 'kLogout',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `English`
+  String get kEnglish {
+    return Intl.message(
+      'English',
+      name: 'kEnglish',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Deposit successful!`
+  String get kDepositSuccessful {
+    return Intl.message(
+      'Deposit successful!',
+      name: 'kDepositSuccessful',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Deposit`
+  String get kDeposit {
+    return Intl.message(
+      'Deposit',
+      name: 'kDeposit',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Enter deposit amount`
+  String get kEnterDepositAmount {
+    return Intl.message(
+      'Enter deposit amount',
+      name: 'kEnterDepositAmount',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `No saved cards`
+  String get kNoSavedCards {
+    return Intl.message(
+      'No saved cards',
+      name: 'kNoSavedCards',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Add Card`
+  String get kAddCard {
+    return Intl.message(
+      'Add Card',
+      name: 'kAddCard',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Transactions`
+  String get kTransactions {
+    return Intl.message(
+      'Transactions',
+      name: 'kTransactions',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `No transactions yet`
+  String get kNoTransactionsYet {
+    return Intl.message(
+      'No transactions yet',
+      name: 'kNoTransactionsYet',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Primary`
+  String get kPrimary {
+    return Intl.message(
+      'Primary',
+      name: 'kPrimary',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Withdrawal`
+  String get kWithdrawal {
+    return Intl.message(
+      'Withdrawal',
+      name: 'kWithdrawal',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Deposit\nmoney`
+  String get kDepositNmoney {
+    return Intl.message(
+      'Deposit\\nmoney',
+      name: 'kDepositNmoney',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Withdrawal\nmoney`
+  String get kWithdrawalNmoney {
+    return Intl.message(
+      'Withdrawal\\nmoney',
+      name: 'kWithdrawalNmoney',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Transaction History`
+  String get kTransactionHistory {
+    return Intl.message(
+      'Transaction History',
+      name: 'kTransactionHistory',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `EXPIRES`
+  String get kExpires {
+    return Intl.message(
+      'EXPIRES',
+      name: 'kExpires',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Withdrawal successful!`
+  String get kWithdrawalSuccessfu {
+    return Intl.message(
+      'Withdrawal successful!',
+      name: 'kWithdrawalSuccessfu',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Enter withdrawal amount`
+  String get kEnterWithdrawalAmo {
+    return Intl.message(
+      'Enter withdrawal amount',
+      name: 'kEnterWithdrawalAmo',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Upload Owner's National ID`
+  String get kUploadOwners {
+    return Intl.message(
+      'Upload Owner\'s National ID',
+      name: 'kUploadOwners',
+      desc: '',
       args: [],
     );
   }

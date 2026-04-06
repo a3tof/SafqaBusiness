@@ -6,6 +6,7 @@ import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/features/complete_profile/view/identity_verification_view.dart';
 import 'package:safqaseller/features/complete_profile/view/seller_information_view.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class AccountTypeView extends StatefulWidget {
   const AccountTypeView({super.key});
@@ -22,7 +23,7 @@ class _AccountTypeViewState extends State<AccountTypeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context: context, title: 'Account Type'),
+      appBar: buildAppBar(context: context, title: S.of(context).kAccountType),
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w),

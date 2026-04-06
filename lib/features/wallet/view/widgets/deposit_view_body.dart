@@ -6,6 +6,7 @@ import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/features/wallet/view_model/deposit/deposit_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/deposit/deposit_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class DepositViewBody extends StatefulWidget {
   const DepositViewBody({super.key});
@@ -37,8 +38,8 @@ class _DepositViewBodyState extends State<DepositViewBody> {
       listener: (context, state) {
         if (state is DepositSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Deposit successful!'),
+            SnackBar(
+              content: Text(S.of(context).kDepositSuccessful),
               backgroundColor: Color(0xFF7DD97B),
             ),
           );
@@ -52,7 +53,7 @@ class _DepositViewBodyState extends State<DepositViewBody> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: buildAppBar(context: context, title: 'Deposit'),
+        appBar: buildAppBar(context: context, title: S.of(context).kDeposit),
         body: Form(
           key: _formKey,
           child: Column(
@@ -64,7 +65,7 @@ class _DepositViewBodyState extends State<DepositViewBody> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Enter deposit amount',
+                      Text(S.of(context).kEnterDepositAmount,
                           style: TextStyles.medium20(context)),
                       SizedBox(height: 24.h),
                       // Amount field

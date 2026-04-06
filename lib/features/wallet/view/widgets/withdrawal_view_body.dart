@@ -6,6 +6,7 @@ import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/features/wallet/view_model/withdrawal/withdrawal_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/withdrawal/withdrawal_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class WithdrawalViewBody extends StatefulWidget {
   const WithdrawalViewBody({super.key});
@@ -37,8 +38,8 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
       listener: (context, state) {
         if (state is WithdrawalSuccess) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Withdrawal successful!'),
+            SnackBar(
+              content: Text(S.of(context).kWithdrawalSuccessfu),
               backgroundColor: Color(0xFF7DD97B),
             ),
           );
@@ -52,7 +53,7 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
       },
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: buildAppBar(context: context, title: 'Withdrawal'),
+        appBar: buildAppBar(context: context, title: S.of(context).kWithdrawal),
         body: Form(
           key: _formKey,
           child: Column(
@@ -64,7 +65,7 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Enter withdrawal amount',
+                      Text(S.of(context).kEnterWithdrawalAmo,
                           style: TextStyles.medium20(context)),
                       SizedBox(height: 24.h),
                       Container(

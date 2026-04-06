@@ -125,7 +125,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   SizedBox(height: 16.sp),
                   LocationPickerField(
                     enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
-                    hintText: 'Country',
+                    hintText: S.of(context).kCountry,
                     locations: context.read<RegisterViewModel>().countries,
                     selectedLocation: context.read<RegisterViewModel>().selectedCountry,
                     onChanged: (location) {
@@ -138,7 +138,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   SizedBox(height: 16.sp),
                   LocationPickerField(
                     enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
-                    hintText: 'City',
+                    hintText: S.of(context).kCity,
                     locations: context.read<RegisterViewModel>().cities,
                     selectedLocation: context.read<RegisterViewModel>().selectedCity,
                     onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
@@ -188,7 +188,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
 
                               if (!isTermsAccepted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
+                                  SnackBar(
                                     content: Text(
                                       'Please accept terms and conditions',
                                     ),
@@ -200,8 +200,8 @@ class _SignupViewBodyState extends State<SignupViewBody> {
 
                               if (birthdate == null || gender == null || context.read<RegisterViewModel>().selectedCity == null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Please fill all fields including City'),
+                                  SnackBar(
+                                    content: Text(S.of(context).kPleaseFillAllFiel),
                                     backgroundColor: Colors.red,
                                   ),
                                 );

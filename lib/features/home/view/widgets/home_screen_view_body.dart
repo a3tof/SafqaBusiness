@@ -13,6 +13,7 @@ import 'package:safqaseller/features/profile/view_model/profile_view_model.dart'
 import 'package:safqaseller/features/profile/view_model/profile_view_model_state.dart';
 import 'package:safqaseller/features/notifications/view/notifications_view.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class HomeScreenViewBody extends StatefulWidget {
   const HomeScreenViewBody({super.key});
@@ -74,7 +75,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                   child: Column(
                     children: [
                       HomeActionCard(
-                        label: 'New Lot Auction',
+                        label: S.of(context).kNewLotAuction,
                         showAddIcon: true,
                         backgroundImage: Assets.imagesFrame1,
                         onTap: () {
@@ -83,7 +84,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                       ),
                       SizedBox(height: 16.h),
                       HomeActionCard(
-                        label: 'New Single Auction',
+                        label: S.of(context).kNewSingleAuction,
                         showAddIcon: true,
                         backgroundImage: Assets.imagesFrame1,
                         onTap: () {},
@@ -93,7 +94,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                         children: [
                           Expanded(
                             child: HomeActionCard(
-                              label: 'History',
+                              label: S.of(context).kHistory,
                               backgroundImage: Assets.imagesFrame1,
                               onTap: () {},
                             ),
@@ -101,7 +102,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                           SizedBox(width: 8.w),
                           Expanded(
                             child: HomeActionCard(
-                              label: 'Statistics',
+                              label: S.of(context).kStatistics,
                               backgroundImage: Assets.imagesFrame2,
                               onTap: () {},
                             ),

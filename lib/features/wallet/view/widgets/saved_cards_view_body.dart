@@ -7,6 +7,7 @@ import 'package:safqaseller/features/wallet/view/add_card_view.dart';
 import 'package:safqaseller/features/wallet/view/widgets/card_list_item.dart';
 import 'package:safqaseller/features/wallet/view_model/wallet/wallet_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/wallet/wallet_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class SavedCardsViewBody extends StatelessWidget {
   const SavedCardsViewBody({super.key});
@@ -61,7 +62,7 @@ class SavedCardsViewBody extends StatelessWidget {
                   Icon(Icons.credit_card_off_outlined,
                       size: 64.sp, color: Colors.grey),
                   SizedBox(height: 16.h),
-                  Text('No saved cards',
+                  Text(S.of(context).kNoSavedCards,
                       style: TextStyles.regular16(context)
                           .copyWith(color: Colors.grey)),
                   SizedBox(height: 16.h),
@@ -70,7 +71,7 @@ class SavedCardsViewBody extends StatelessWidget {
                         Navigator.pushNamed(context, AddCardView.routeName),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.primaryColor),
-                    child: Text('Add Card',
+                    child: Text(S.of(context).kAddCard,
                         style: TextStyles.semiBold16(context)
                             .copyWith(color: Colors.white)),
                   ),
