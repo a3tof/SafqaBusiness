@@ -25,6 +25,7 @@ void main() async {
 class SafqaSeller extends StatefulWidget {
   const SafqaSeller({super.key});
 
+  // ignore: library_private_types_in_public_api
   static _SafqaSellerState? of(BuildContext context) =>
       context.findAncestorStateOfType<_SafqaSellerState>();
 

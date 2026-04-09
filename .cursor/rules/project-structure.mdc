@@ -34,7 +34,7 @@ lib/
 
 ## Feature List
 
-`adaptive_layout`, `auth`, `complete_profile`, `forgot_password`, `home`, `notifications`, `on_boarding`, `profile`, `seller`, `splash`, `subscription`, `terms_and_conditions`, `wallet`
+`adaptive_layout`, `auction`, `auth`, `complete_profile`, `forgot_password`, `history`, `home`, `notifications`, `on_boarding`, `profile`, `reviews`, `seller`, `splash`, `subscription`, `terms_and_conditions`, `wallet`
 
 ## Adding a New Feature
 

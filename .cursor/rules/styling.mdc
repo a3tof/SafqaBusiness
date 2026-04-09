@@ -74,6 +74,10 @@ SizedBox(width: 24, height: 8)
 
 The font family is set globally in `MaterialApp` based on locale. Never override `fontFamily` in individual `TextStyle`.
 
+## Constants
+
+`AppConstants` in `lib/core/utils/app_constants.dart` is a compatibility shim for app config values such as `baseUrl`, `apiKey`, and OAuth IDs. Do not treat it as a styling token source; styling still comes from `AppColors`, `TextStyles`, `ScreenUtil`, and `AppImages`.
+
 ## Assets
 
 Images are in `assets/images/` and `assets/images/vuesax/bold|outline/`. Reference via the generated `AppImages` class in `lib/core/utils/app_images.dart`.
