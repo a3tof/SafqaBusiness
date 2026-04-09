@@ -20,10 +20,8 @@ class ProfileHeaderSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activePlanLabel = _planLabel(
-      context,
-      getIt<CacheHelper>().getData(key: CacheKeys.activePlan)?.toString(),
-    );
+    final cacheHelper = getIt<CacheHelper>();
+    final activePlanLabel = _planLabel(context, _readActivePlanId(cacheHelper));
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
@@ -87,6 +85,25 @@ class ProfileHeaderSection extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String? _readActivePlanId(CacheHelper cacheHelper) {
+    final currentUserId = cacheHelper
+        .getData(key: CacheKeys.userId)
+        ?.toString();
+    final planUserId = cacheHelper
+        .getData(key: CacheKeys.activePlanUserId)
+        ?.toString();
+
+    if (currentUserId == null ||
+        currentUserId.isEmpty ||
+        planUserId == null ||
+        planUserId.isEmpty ||
+        currentUserId != planUserId) {
+      return null;
+    }
+
+    return cacheHelper.getData(key: CacheKeys.activePlan)?.toString();
   }
 
   String? _planLabel(BuildContext context, String? activePlan) {

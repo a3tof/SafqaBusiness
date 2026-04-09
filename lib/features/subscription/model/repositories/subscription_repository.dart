@@ -9,6 +9,21 @@ class SubscriptionRepository {
   final CacheHelper cacheHelper;
 
   String? getActivePlanId() {
+    final currentUserId = cacheHelper
+        .getData(key: CacheKeys.userId)
+        ?.toString();
+    final planUserId = cacheHelper
+        .getData(key: CacheKeys.activePlanUserId)
+        ?.toString();
+
+    if (currentUserId == null ||
+        currentUserId.isEmpty ||
+        planUserId == null ||
+        planUserId.isEmpty ||
+        currentUserId != planUserId) {
+      return null;
+    }
+
     return cacheHelper.getData(key: CacheKeys.activePlan)?.toString();
   }
 
@@ -26,6 +41,15 @@ class SubscriptionRepository {
     if (isSuccessful && body['isSuccess'] == true) {
       final planId = upgradeType.toString();
       await cacheHelper.saveData(key: CacheKeys.activePlan, value: planId);
+      final currentUserId = cacheHelper
+          .getData(key: CacheKeys.userId)
+          ?.toString();
+      if (currentUserId != null && currentUserId.isNotEmpty) {
+        await cacheHelper.saveData(
+          key: CacheKeys.activePlanUserId,
+          value: currentUserId,
+        );
+      }
       return planId;
     }
 

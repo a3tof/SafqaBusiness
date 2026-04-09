@@ -13,4 +13,5 @@ abstract class CacheKeys {
   static const String isProfileCompleted = 'isProfileCompleted';
   static const String sellerId = 'sellerId';
   static const String activePlan = 'activePlan';
+  static const String activePlanUserId = 'activePlanUserId';
 }
