@@ -8,6 +8,10 @@ class SubscriptionInitial extends SubscriptionState {
   const SubscriptionInitial({required super.activePlanId});
 }
 
+class SubscriptionScreenLoading extends SubscriptionState {
+  const SubscriptionScreenLoading({required super.activePlanId});
+}
+
 class SubscriptionLoading extends SubscriptionState {
   const SubscriptionLoading(this.planId, {required super.activePlanId});
 

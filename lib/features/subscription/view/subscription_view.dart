@@ -11,7 +11,8 @@ class SubscriptionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => getIt<SubscriptionViewModel>(),
+      create: (_) =>
+          getIt<SubscriptionViewModel>()..loadActivePlan(showLoading: true),
       child: const Scaffold(
         backgroundColor: Colors.white,
         body: SubscriptionViewBody(),
