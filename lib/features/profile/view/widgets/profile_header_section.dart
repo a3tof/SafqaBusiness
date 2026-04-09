@@ -1,9 +1,12 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
+import 'package:safqaseller/features/profile/view/edit_account_view.dart';
+import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/subscription/view/subscription_view.dart';
 import 'package:safqaseller/generated/l10n.dart';
 
@@ -40,7 +43,20 @@ class ProfileHeaderSection extends StatelessWidget {
               _ActionButton(
                 label: S.of(context).kEdit,
                 backgroundColor: const Color(0xFFF5F5F5),
-                onTap: () {},
+                onTap: () async {
+                  final result = await Navigator.pushNamed(
+                    context,
+                    EditAccountView.routeName,
+                    arguments: context.read<ProfileViewModel>().state,
+                  );
+                  if (!context.mounted) return;
+                  if (result is String && result.isNotEmpty) {
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text(result)));
+                    context.read<ProfileViewModel>().fetchProfile();
+                  }
+                },
               ),
             ],
           ),

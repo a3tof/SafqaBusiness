@@ -575,6 +575,22 @@
   "@kEdit": {
     "description": "Auto-generated"
   },
+  "kEditAccount": "تعديل الحساب",
+  "@kEditAccount": {
+    "description": "Auto-generated"
+  },
+  "kSave": "حفظ",
+  "@kSave": {
+    "description": "Auto-generated"
+  },
+  "kProfileUpdatedSuccessfully": "تم تحديث الملف الشخصي بنجاح",
+  "@kProfileUpdatedSuccessfully": {
+    "description": "Auto-generated"
+  },
+  "kEditAccountPhotoHint": "تغيير صورة الملف الشخصي",
+  "@kEditAccountPhotoHint": {
+    "description": "Auto-generated"
+  },
   "kWallet": "المحفظة",
   "@kWallet": {
     "description": "Auto-generated"

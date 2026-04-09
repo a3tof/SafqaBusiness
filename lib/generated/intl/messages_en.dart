@@ -93,6 +93,10 @@ class MessageLookup extends MessageLookupByLibrary {
       "Detailed Analytics",
     ),
     "kEdit": MessageLookupByLibrary.simpleMessage("Edit"),
+    "kEditAccount": MessageLookupByLibrary.simpleMessage("Edit account"),
+    "kEditAccountPhotoHint": MessageLookupByLibrary.simpleMessage(
+      "Change profile photo",
+    ),
     "kElite": MessageLookupByLibrary.simpleMessage("Elite"),
     "kEnglish": MessageLookupByLibrary.simpleMessage("English"),
     "kEnterDepositAmount": MessageLookupByLibrary.simpleMessage(
@@ -171,6 +175,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "kPleaseUploadAllTh": MessageLookupByLibrary.simpleMessage(
       "Please upload all three documents",
     ),
+    "kProfileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Profile updated successfully",
+    ),
     "kPremium": MessageLookupByLibrary.simpleMessage("Premium"),
     "kPrimary": MessageLookupByLibrary.simpleMessage("Primary"),
     "kPushNotifications": MessageLookupByLibrary.simpleMessage(
@@ -195,6 +202,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Store Logo (Optional)",
     ),
     "kStoreName": MessageLookupByLibrary.simpleMessage("Store Name"),
+    "kSave": MessageLookupByLibrary.simpleMessage("Save"),
     "kTakeASelfieWithI": MessageLookupByLibrary.simpleMessage(
       "Take a Selfie with ID",
     ),
@@ -426,7 +434,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Buyers must maintain sufficient wallet balance to cover their bids and purchases.",
     ),
     "historyAuctions": MessageLookupByLibrary.simpleMessage("Auctions"),
-    "historyCurrentPrice": MessageLookupByLibrary.simpleMessage("Current Price"),
+    "historyCurrentPrice": MessageLookupByLibrary.simpleMessage(
+      "Current Price",
+    ),
     "historyExport": MessageLookupByLibrary.simpleMessage("Export"),
     "historyFinalPrice": MessageLookupByLibrary.simpleMessage("Final Price"),
     "historyLotLabel": MessageLookupByLibrary.simpleMessage("Lot"),

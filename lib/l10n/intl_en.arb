@@ -575,6 +575,22 @@
   "@kEdit": {
     "description": "Auto-generated"
   },
+  "kEditAccount": "Edit account",
+  "@kEditAccount": {
+    "description": "Auto-generated"
+  },
+  "kSave": "Save",
+  "@kSave": {
+    "description": "Auto-generated"
+  },
+  "kProfileUpdatedSuccessfully": "Profile updated successfully",
+  "@kProfileUpdatedSuccessfully": {
+    "description": "Auto-generated"
+  },
+  "kEditAccountPhotoHint": "Change profile photo",
+  "@kEditAccountPhotoHint": {
+    "description": "Auto-generated"
+  },
   "kWallet": "Wallet",
   "@kWallet": {
     "description": "Auto-generated"

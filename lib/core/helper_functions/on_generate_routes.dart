@@ -22,7 +22,9 @@ import 'package:safqaseller/features/complete_profile/view/legal_documents_view.
 import 'package:safqaseller/features/complete_profile/view/seller_information_view.dart';
 import 'package:safqaseller/features/complete_profile/view/store_information_view.dart';
 import 'package:safqaseller/features/history/view/history_view.dart';
+import 'package:safqaseller/features/profile/view/edit_account_view.dart';
 import 'package:safqaseller/features/profile/view/profile_view.dart';
+import 'package:safqaseller/features/profile/view_model/profile_view_model_state.dart';
 import 'package:safqaseller/features/reviews/view/reviews_view.dart';
 import 'package:safqaseller/features/seller/view/seller_home_view.dart';
 import 'package:safqaseller/features/splash/view/splash_screen_view.dart';
@@ -74,9 +76,8 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
       final showCompleteProfile =
           args is Map && args['showCompleteProfile'] == true;
       return MaterialPageRoute(
-        builder: (_) => HomeScreenView(
-          showCompleteProfile: showCompleteProfile,
-        ),
+        builder: (_) =>
+            HomeScreenView(showCompleteProfile: showCompleteProfile),
       );
     case TermsAndConditionsView.routeName:
       return MaterialPageRoute(builder: (_) => const TermsAndConditionsView());
@@ -84,6 +85,12 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
     // ── Profile ────────────────────────────────────────────────────────────
     case ProfileView.routeName:
       return MaterialPageRoute(builder: (_) => const ProfileView());
+    case EditAccountView.routeName:
+      final args = settings.arguments;
+      return MaterialPageRoute(
+        builder: (_) =>
+            EditAccountView(profile: args is ProfileLoaded ? args : null),
+      );
     case HistoryView.routeName:
       return MaterialPageRoute(builder: (_) => const HistoryView());
     case ReviewsView.routeName:

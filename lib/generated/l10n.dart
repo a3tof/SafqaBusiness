@@ -1494,6 +1494,46 @@ class S {
     );
   }
 
+  /// `Edit account`
+  String get kEditAccount {
+    return Intl.message(
+      'Edit account',
+      name: 'kEditAccount',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get kSave {
+    return Intl.message(
+      'Save',
+      name: 'kSave',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Profile updated successfully`
+  String get kProfileUpdatedSuccessfully {
+    return Intl.message(
+      'Profile updated successfully',
+      name: 'kProfileUpdatedSuccessfully',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
+  /// `Change profile photo`
+  String get kEditAccountPhotoHint {
+    return Intl.message(
+      'Change profile photo',
+      name: 'kEditAccountPhotoHint',
+      desc: 'Auto-generated',
+      args: [],
+    );
+  }
+
   /// `Wallet`
   String get kWallet {
     return Intl.message(

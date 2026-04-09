@@ -81,6 +81,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "kDescription": MessageLookupByLibrary.simpleMessage("الوصف"),
     "kDetailedAnalytics": MessageLookupByLibrary.simpleMessage("تحليلات مفصلة"),
     "kEdit": MessageLookupByLibrary.simpleMessage("تعديل"),
+    "kEditAccount": MessageLookupByLibrary.simpleMessage("تعديل الحساب"),
+    "kEditAccountPhotoHint": MessageLookupByLibrary.simpleMessage(
+      "تغيير صورة الملف الشخصي",
+    ),
     "kElite": MessageLookupByLibrary.simpleMessage("النخبة"),
     "kEnglish": MessageLookupByLibrary.simpleMessage("English"),
     "kEnterDepositAmount": MessageLookupByLibrary.simpleMessage(
@@ -163,6 +167,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "kPleaseUploadAllTh": MessageLookupByLibrary.simpleMessage(
       "يرجى رفع جميع المستندات الثلاثة",
     ),
+    "kProfileUpdatedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم تحديث الملف الشخصي بنجاح",
+    ),
     "kPremium": MessageLookupByLibrary.simpleMessage("المميزة"),
     "kPrimary": MessageLookupByLibrary.simpleMessage("الأساسية"),
     "kPushNotifications": MessageLookupByLibrary.simpleMessage(
@@ -183,6 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "شعار المتجر (اختياري)",
     ),
     "kStoreName": MessageLookupByLibrary.simpleMessage("اسم المتجر"),
+    "kSave": MessageLookupByLibrary.simpleMessage("حفظ"),
     "kTakeASelfieWithI": MessageLookupByLibrary.simpleMessage(
       "التقط صورة شخصية مع الهوية",
     ),

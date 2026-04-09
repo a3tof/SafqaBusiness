@@ -14,6 +14,7 @@ import 'package:safqaseller/features/forgot_password/view_model/forgot_password_
 import 'package:safqaseller/features/history/model/repositories/history_repository.dart';
 import 'package:safqaseller/features/history/view_model/history_view_model.dart';
 import 'package:safqaseller/features/profile/model/repositories/profile_repository.dart';
+import 'package:safqaseller/features/profile/view_model/edit_account/edit_account_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/seller/model/repositories/seller_repository.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model.dart';
@@ -52,29 +53,18 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton(
     () => ForgotPasswordRepository(dioHelper: getIt()),
   );
-  getIt.registerLazySingleton(
-    () => WalletRepository(dioHelper: getIt()),
-  );
-  getIt.registerLazySingleton(
-    () => SellerRepository(dioHelper: getIt()),
-  );
+  getIt.registerLazySingleton(() => WalletRepository(dioHelper: getIt()));
+  getIt.registerLazySingleton(() => SellerRepository(dioHelper: getIt()));
   getIt.registerLazySingleton(
     () => NotificationsRepository(dioHelper: getIt()),
   );
-  getIt.registerLazySingleton(
-    () => ProfileRepository(dioHelper: getIt()),
-  );
-  getIt.registerLazySingleton(
-    () => HistoryRepository(dioHelper: getIt()),
-  );
+  getIt.registerLazySingleton(() => ProfileRepository(dioHelper: getIt()));
+  getIt.registerLazySingleton(() => HistoryRepository(dioHelper: getIt()));
 
   // 4. Global ViewModels (singletons — live for the app lifetime)
   getIt.registerLazySingleton(() => AuthViewModel(getIt()));
   getIt.registerLazySingleton(
-    () => ProfileViewModel(
-      cacheHelper: getIt(),
-      profileRepository: getIt(),
-    ),
+    () => ProfileViewModel(cacheHelper: getIt(), profileRepository: getIt()),
   );
 
   // 5. ViewModels (factory = new instance per call)
@@ -93,6 +83,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(() => NotificationsViewModel(getIt()));
   getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => HistoryViewModel(getIt()));
+  getIt.registerFactory(() => EditAccountViewModel(getIt()));
 }
 
 String _generateDeviceId() {

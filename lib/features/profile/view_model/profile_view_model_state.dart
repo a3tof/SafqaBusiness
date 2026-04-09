@@ -17,6 +17,12 @@ class ProfileLoaded extends ProfileViewModelState {
   final String? fullName;
   final String? email;
   final String? phoneNumber;
+  final int? countryId;
+  final String? countryName;
+  final int? cityId;
+  final String? cityName;
+  final String? description;
+
   /// Decoded logo bytes ready for `Image.memory`. Null when not yet loaded.
   final Uint8List? logoBytes;
   final String? rating;
@@ -28,6 +34,11 @@ class ProfileLoaded extends ProfileViewModelState {
     this.fullName,
     this.email,
     this.phoneNumber,
+    this.countryId,
+    this.countryName,
+    this.cityId,
+    this.cityName,
+    this.description,
     this.logoBytes,
     this.rating,
     this.followersCount,
@@ -36,15 +47,20 @@ class ProfileLoaded extends ProfileViewModelState {
 
   @override
   List<Object?> get props => [
-        isProfileCompleted,
-        fullName,
-        email,
-        phoneNumber,
-        logoBytes,
-        rating,
-        followersCount,
-        auctionsCount,
-      ];
+    isProfileCompleted,
+    fullName,
+    email,
+    phoneNumber,
+    countryId,
+    countryName,
+    cityId,
+    cityName,
+    description,
+    logoBytes,
+    rating,
+    followersCount,
+    auctionsCount,
+  ];
 }
 
 class ProfileError extends ProfileViewModelState {
