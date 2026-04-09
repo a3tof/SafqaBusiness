@@ -10,6 +10,7 @@ import 'package:safqaseller/features/auction/view/item_auction_view.dart';
 import 'package:safqaseller/features/auction/view/lot_auction_view.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model_state.dart';
+import 'package:safqaseller/features/history/view/history_view.dart';
 import 'package:safqaseller/features/home/view/widgets/complete_profile_dialog.dart';
 import 'package:safqaseller/features/home/view/widgets/home_action_card.dart';
 import 'package:safqaseller/features/home/view_model/home_view_model.dart';
@@ -22,10 +23,7 @@ import 'package:safqaseller/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class HomeScreenViewBody extends StatefulWidget {
-  const HomeScreenViewBody({
-    super.key,
-    this.showCompleteProfile = false,
-  });
+  const HomeScreenViewBody({super.key, this.showCompleteProfile = false});
 
   final bool showCompleteProfile;
 
@@ -72,10 +70,12 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
         child: BlocBuilder<HomeViewModel, HomeViewModelState>(
           builder: (context, state) {
             final isLoading = state is HomeLoading || state is HomeInitial;
-            final storeName =
-                state is HomeSuccess ? state.data.storeName : 'Seller';
-            final logoBytes =
-                state is HomeSuccess ? state.data.logoBytes : null;
+            final storeName = state is HomeSuccess
+                ? state.data.storeName
+                : 'Seller';
+            final logoBytes = state is HomeSuccess
+                ? state.data.logoBytes
+                : null;
 
             return Skeletonizer(
               enabled: isLoading,
@@ -111,17 +111,20 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                   Expanded(
                                     child: Text(
                                       state.error,
-                                      style: TextStyles.regular13(context)
-                                          .copyWith(color: Colors.red),
+                                      style: TextStyles.regular13(
+                                        context,
+                                      ).copyWith(color: Colors.red),
                                     ),
                                   ),
                                   TextButton(
-                                    onPressed: () =>
-                                        context.read<HomeViewModel>().loadHomeData(),
+                                    onPressed: () => context
+                                        .read<HomeViewModel>()
+                                        .loadHomeData(),
                                     child: Text(
                                       'Retry',
-                                      style: TextStyles.semiBold13(context)
-                                          .copyWith(color: AppColors.primaryColor),
+                                      style: TextStyles.semiBold13(
+                                        context,
+                                      ).copyWith(color: AppColors.primaryColor),
                                     ),
                                   ),
                                 ],
@@ -163,7 +166,12 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                       child: HomeActionCard(
                                         label: S.of(context).kHistory,
                                         backgroundImage: Assets.imagesFrame1,
-                                        onTap: () {},
+                                        onTap: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            HistoryView.routeName,
+                                          );
+                                        },
                                       ),
                                     ),
                                     SizedBox(width: 8.w),
@@ -251,7 +259,8 @@ class _GreetingRow extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
-                onTap: () => Navigator.pushNamed(context, ProfileView.routeName),
+                onTap: () =>
+                    Navigator.pushNamed(context, ProfileView.routeName),
                 child: Container(
                   width: 70.w,
                   height: 70.w,
@@ -284,15 +293,17 @@ class _GreetingRow extends StatelessWidget {
                     children: [
                       Text(
                         'Welcome!',
-                        style: TextStyles.regular18(context)
-                            .copyWith(color: const Color(0xFF808080)),
+                        style: TextStyles.regular18(
+                          context,
+                        ).copyWith(color: const Color(0xFF808080)),
                         overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: 2.h),
                       Text(
                         storeName,
-                        style: TextStyles.medium18(context)
-                            .copyWith(color: AppColors.primaryColor),
+                        style: TextStyles.medium18(
+                          context,
+                        ).copyWith(color: AppColors.primaryColor),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
