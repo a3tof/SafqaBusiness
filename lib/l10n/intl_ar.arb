@@ -692,6 +692,22 @@
   "kPinnedAsTopBanner": "تثبيت كإعلان في الصفحة الرئيسية لمدة 7 أيام",
   "kInstantPushNotific": "إشعارات فورية لجميع المشترين المهتمين",
   "kDetailedAnalytics": "تحليلات مفصلة",
+  "kSubscriptionUpgradeSuccess": "تمت الترقية بنجاح!",
+  "@kSubscriptionUpgradeSuccess": {
+    "description": "Shown when a seller upgrades successfully"
+  },
+  "kSubscriptionUpgradeFailed": "فشلت الترقية. يرجى المحاولة مرة أخرى.",
+  "@kSubscriptionUpgradeFailed": {
+    "description": "Shown when a seller upgrade request fails"
+  },
+  "kActivePlan": "الباقة الحالية",
+  "@kActivePlan": {
+    "description": "Label for the seller current upgrade plan"
+  },
+  "kNoPlanActive": "لا توجد باقة مفعلة",
+  "@kNoPlanActive": {
+    "description": "Shown when the seller has no active upgrade plan"
+  },
   "historySearchHint": "ابحث في السجل",
   "@historySearchHint": {
     "description": "Search field hint in history screen"

@@ -692,6 +692,22 @@
   "kPinnedAsTopBanner": "Pinned as a Top Banner on the homepage for 7 days",
   "kInstantPushNotific": "Instant push notifications to all interested buyers",
   "kDetailedAnalytics": "Detailed Analytics",
+  "kSubscriptionUpgradeSuccess": "Upgrade successful!",
+  "@kSubscriptionUpgradeSuccess": {
+    "description": "Shown when a seller upgrades successfully"
+  },
+  "kSubscriptionUpgradeFailed": "Upgrade failed. Please try again.",
+  "@kSubscriptionUpgradeFailed": {
+    "description": "Shown when a seller upgrade request fails"
+  },
+  "kActivePlan": "Active Plan",
+  "@kActivePlan": {
+    "description": "Label for the seller current upgrade plan"
+  },
+  "kNoPlanActive": "No active plan",
+  "@kNoPlanActive": {
+    "description": "Shown when the seller has no active upgrade plan"
+  },
   "historySearchHint": "Search history",
   "@historySearchHint": {
     "description": "Search field hint in history screen"

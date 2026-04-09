@@ -92,6 +92,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "kDetailedAnalytics": MessageLookupByLibrary.simpleMessage(
       "Detailed Analytics",
     ),
+    "kActivePlan": MessageLookupByLibrary.simpleMessage("Active Plan"),
+    "kNoPlanActive": MessageLookupByLibrary.simpleMessage("No active plan"),
+    "kSubscriptionUpgradeFailed": MessageLookupByLibrary.simpleMessage(
+      "Upgrade failed. Please try again.",
+    ),
+    "kSubscriptionUpgradeSuccess": MessageLookupByLibrary.simpleMessage(
+      "Upgrade successful!",
+    ),
     "kEdit": MessageLookupByLibrary.simpleMessage("Edit"),
     "kEditAccount": MessageLookupByLibrary.simpleMessage("Edit account"),
     "kEditAccountPhotoHint": MessageLookupByLibrary.simpleMessage(

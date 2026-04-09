@@ -13,14 +13,16 @@ import 'package:safqaseller/features/forgot_password/model/repositories/forgot_p
 import 'package:safqaseller/features/forgot_password/view_model/forgot_password_view_model.dart';
 import 'package:safqaseller/features/history/model/repositories/history_repository.dart';
 import 'package:safqaseller/features/history/view_model/history_view_model.dart';
+import 'package:safqaseller/features/home/view_model/home_view_model.dart';
+import 'package:safqaseller/features/notifications/model/repositories/notifications_repository.dart';
+import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model.dart';
 import 'package:safqaseller/features/profile/model/repositories/profile_repository.dart';
 import 'package:safqaseller/features/profile/view_model/edit_account/edit_account_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/seller/model/repositories/seller_repository.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model.dart';
-import 'package:safqaseller/features/home/view_model/home_view_model.dart';
-import 'package:safqaseller/features/notifications/model/repositories/notifications_repository.dart';
-import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model.dart';
+import 'package:safqaseller/features/subscription/model/repositories/subscription_repository.dart';
+import 'package:safqaseller/features/subscription/view_model/subscription_view_model.dart';
 import 'package:safqaseller/features/wallet/model/repositories/wallet_repository.dart';
 import 'package:safqaseller/features/wallet/view_model/add_card/add_card_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/deposit/deposit_view_model.dart';
@@ -31,11 +33,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 final getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  // 1. External
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton(() => sharedPreferences);
 
-  // 2. Core
   getIt.registerLazySingleton(() => CacheHelper(sharedPreferences: getIt()));
 
   final cacheHelper = getIt<CacheHelper>();
@@ -46,7 +46,6 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton(() => DioHelper(cacheHelper: getIt()));
 
-  // 3. Repositories
   getIt.registerLazySingleton(
     () => AuthRepository(dioHelper: getIt(), cacheHelper: getIt()),
   );
@@ -60,14 +59,15 @@ Future<void> setupServiceLocator() async {
   );
   getIt.registerLazySingleton(() => ProfileRepository(dioHelper: getIt()));
   getIt.registerLazySingleton(() => HistoryRepository(dioHelper: getIt()));
+  getIt.registerLazySingleton(
+    () => SubscriptionRepository(dioHelper: getIt(), cacheHelper: getIt()),
+  );
 
-  // 4. Global ViewModels (singletons — live for the app lifetime)
   getIt.registerLazySingleton(() => AuthViewModel(getIt()));
   getIt.registerLazySingleton(
     () => ProfileViewModel(cacheHelper: getIt(), profileRepository: getIt()),
   );
 
-  // 5. ViewModels (factory = new instance per call)
   getIt.registerFactory(() => RegisterViewModel(getIt()));
   getIt.registerFactory(() => LoginViewModel(getIt()));
   getIt.registerFactory(() => ConfirmEmailViewModel(getIt()));
@@ -84,6 +84,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => HistoryViewModel(getIt()));
   getIt.registerFactory(() => EditAccountViewModel(getIt()));
+  getIt.registerFactory(() => SubscriptionViewModel(getIt()));
 }
 
 String _generateDeviceId() {

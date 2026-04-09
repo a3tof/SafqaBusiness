@@ -3,6 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/service_locator.dart';
+import 'package:safqaseller/core/storage/cache_helper.dart';
+import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/profile/view/edit_account_view.dart';
@@ -13,30 +16,51 @@ import 'package:safqaseller/generated/l10n.dart';
 class ProfileHeaderSection extends StatelessWidget {
   const ProfileHeaderSection({super.key, this.logoBytes});
 
-  /// Decoded logo bytes from GET seller/business-account.
-  /// Displays a store icon placeholder when null.
   final Uint8List? logoBytes;
 
   @override
   Widget build(BuildContext context) {
+    final activePlanLabel = _planLabel(
+      context,
+      getIt<CacheHelper>().getData(key: CacheKeys.activePlan)?.toString(),
+    );
+
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Spacer(),
-          // ── Avatar with verified badge ──
-          _buildAvatar(),
+          Expanded(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _buildAvatar(),
+                  if (activePlanLabel != null) ...[
+                    SizedBox(height: 12.h),
+                    _PlanBadge(
+                      label: '${S.of(context).kActivePlan}: $activePlanLabel',
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
           SizedBox(width: 16.w),
-          // ── Upgrade & Edit buttons ──
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               _ActionButton(
                 label: S.of(context).kUpgrade,
                 backgroundColor: AppColors.secondaryColor,
-                onTap: () {
-                  Navigator.pushNamed(context, SubscriptionView.routeName);
+                onTap: () async {
+                  await Navigator.pushNamed(
+                    context,
+                    SubscriptionView.routeName,
+                  );
+                  if (!context.mounted) return;
+                  context.read<ProfileViewModel>().loadFromCache();
                 },
               ),
               SizedBox(height: 8.h),
@@ -60,10 +84,22 @@ class ProfileHeaderSection extends StatelessWidget {
               ),
             ],
           ),
-          const Spacer(),
         ],
       ),
     );
+  }
+
+  String? _planLabel(BuildContext context, String? activePlan) {
+    switch (activePlan) {
+      case '1':
+        return S.of(context).kBasic;
+      case '2':
+        return S.of(context).kPremium;
+      case '3':
+        return S.of(context).kElite;
+      default:
+        return null;
+    }
   }
 
   Widget _buildAvatar() {
@@ -87,7 +123,6 @@ class ProfileHeaderSection extends StatelessWidget {
                   ),
           ),
         ),
-        // Verified badge
         Positioned(
           bottom: 2.h,
           right: 2.w,
@@ -123,7 +158,7 @@ class _ActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80.w,
+        width: 88.w,
         padding: EdgeInsets.symmetric(vertical: 8.h),
         decoration: BoxDecoration(
           color: backgroundColor,
@@ -135,8 +170,34 @@ class _ActionButton extends StatelessWidget {
             style: TextStyles.semiBold13(
               context,
             ).copyWith(color: AppColors.primaryColor),
+            textAlign: TextAlign.center,
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _PlanBadge extends StatelessWidget {
+  const _PlanBadge({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: BoxConstraints(maxWidth: 170.w),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(14.r),
+      ),
+      child: Text(
+        label,
+        style: TextStyles.semiBold13(
+          context,
+        ).copyWith(color: AppColors.primaryColor),
+        textAlign: TextAlign.center,
       ),
     );
   }

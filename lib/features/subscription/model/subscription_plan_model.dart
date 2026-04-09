@@ -7,12 +7,14 @@ class SubscriptionPlanModel {
     required this.price,
     required this.features,
     required this.ctaLabel,
+    required this.upgradeType,
   });
 
   final String name;
   final String price;
   final List<String> features;
   final String ctaLabel;
+  final int upgradeType;
 
   static List<SubscriptionPlanModel> plans(BuildContext context) => [
     SubscriptionPlanModel(
@@ -24,6 +26,7 @@ class SubscriptionPlanModel {
         S.of(context).kHighlightedCard,
       ],
       ctaLabel: S.of(context).kBoostNow,
+      upgradeType: 1,
     ),
     SubscriptionPlanModel(
       name: S.of(context).kPremium,
@@ -35,6 +38,7 @@ class SubscriptionPlanModel {
         S.of(context).kBasicAnalytics,
       ],
       ctaLabel: S.of(context).kUpgradeToPremium,
+      upgradeType: 2,
     ),
     SubscriptionPlanModel(
       name: S.of(context).kElite,
@@ -46,6 +50,7 @@ class SubscriptionPlanModel {
         S.of(context).kDetailedAnalytics,
       ],
       ctaLabel: S.of(context).kGoElite,
+      upgradeType: 3,
     ),
   ];
 }

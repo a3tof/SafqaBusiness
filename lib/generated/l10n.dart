@@ -1889,6 +1889,46 @@ class S {
     );
   }
 
+  /// `Upgrade successful!`
+  String get kSubscriptionUpgradeSuccess {
+    return Intl.message(
+      'Upgrade successful!',
+      name: 'kSubscriptionUpgradeSuccess',
+      desc: 'Shown when a seller upgrades successfully',
+      args: [],
+    );
+  }
+
+  /// `Upgrade failed. Please try again.`
+  String get kSubscriptionUpgradeFailed {
+    return Intl.message(
+      'Upgrade failed. Please try again.',
+      name: 'kSubscriptionUpgradeFailed',
+      desc: 'Shown when a seller upgrade request fails',
+      args: [],
+    );
+  }
+
+  /// `Active Plan`
+  String get kActivePlan {
+    return Intl.message(
+      'Active Plan',
+      name: 'kActivePlan',
+      desc: 'Label for the seller current upgrade plan',
+      args: [],
+    );
+  }
+
+  /// `No active plan`
+  String get kNoPlanActive {
+    return Intl.message(
+      'No active plan',
+      name: 'kNoPlanActive',
+      desc: 'Shown when the seller has no active upgrade plan',
+      args: [],
+    );
+  }
+
   /// `Search history`
   String get historySearchHint {
     return Intl.message(
