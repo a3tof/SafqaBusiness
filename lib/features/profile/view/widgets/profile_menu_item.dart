@@ -9,6 +9,7 @@ class ProfileMenuItem extends StatelessWidget {
     required this.icon,
     required this.label,
     this.trailingIcon = Icons.chevron_right,
+    this.trailing,
     this.iconColor,
     this.textColor,
     this.onTap,
@@ -17,6 +18,7 @@ class ProfileMenuItem extends StatelessWidget {
   final IconData icon;
   final String label;
   final IconData trailingIcon;
+  final Widget? trailing;
   final Color? iconColor;
   final Color? textColor;
   final VoidCallback? onTap;
@@ -49,11 +51,12 @@ class ProfileMenuItem extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(
-              trailingIcon,
-              color: iconColor ?? AppColors.primaryColor,
-              size: 22.sp,
-            ),
+            trailing ??
+                Icon(
+                  trailingIcon,
+                  color: iconColor ?? AppColors.primaryColor,
+                  size: 22.sp,
+                ),
           ],
         ),
       ),

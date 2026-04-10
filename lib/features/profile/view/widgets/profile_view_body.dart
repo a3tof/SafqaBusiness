@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/services/notification_service.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
@@ -18,11 +19,65 @@ import 'package:safqaseller/features/wallet/view/wallet_view.dart';
 import 'package:safqaseller/main.dart';
 import 'package:safqaseller/generated/l10n.dart';
 
-class ProfileViewBody extends StatelessWidget {
+class ProfileViewBody extends StatefulWidget {
   const ProfileViewBody({super.key});
+
+  @override
+  State<ProfileViewBody> createState() => _ProfileViewBodyState();
+}
+
+class _ProfileViewBodyState extends State<ProfileViewBody> {
+  late bool _notificationsEnabled;
+  bool _updatingNotifications = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _notificationsEnabled =
+        (getIt<CacheHelper>().getData(key: CacheKeys.notificationsEnabled)
+            as bool?) ??
+        false;
+  }
 
   Future<void> _refreshProfile(BuildContext context) async {
     await context.read<ProfileViewModel>().fetchProfile(showLoadingState: true);
+  }
+
+  Future<void> _toggleNotifications(bool enabled) async {
+    if (_updatingNotifications) {
+      return;
+    }
+
+    setState(() => _updatingNotifications = true);
+
+    final notificationService = getIt<NotificationService>();
+    var nextValue = enabled;
+
+    if (enabled) {
+      final granted = await notificationService.requestPermissions();
+      nextValue = granted;
+
+      if (!granted && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Notification permission is required to enable alerts.',
+            ),
+          ),
+        );
+      }
+    }
+
+    await notificationService.setNotificationsEnabled(nextValue);
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _notificationsEnabled = nextValue;
+      _updatingNotifications = false;
+    });
   }
 
   @override
@@ -150,6 +205,19 @@ class ProfileViewBody extends StatelessWidget {
                     onTap: () {
                       _showLanguageSheet(context);
                     },
+                  ),
+                  SizedBox(height: 12.h),
+                  ProfileMenuItem(
+                    icon: Icons.notifications_outlined,
+                    label: 'Notifications',
+                    trailing: IgnorePointer(
+                      child: Switch.adaptive(
+                        value: _notificationsEnabled,
+                        onChanged: (_) {},
+                        activeColor: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    onTap: () => _toggleNotifications(!_notificationsEnabled),
                   ),
                   SizedBox(height: 12.h),
                   ProfileMenuItem(

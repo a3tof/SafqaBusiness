@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/helper_functions/on_generate_routes.dart';
+import 'package:safqaseller/core/services/background_notification_worker.dart';
+import 'package:safqaseller/core/services/notification_service.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
@@ -10,10 +12,20 @@ import 'package:safqaseller/features/adaptive_layout/view/adaptive_layout_view.d
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/generated/l10n.dart';
+import 'package:workmanager/workmanager.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setupServiceLocator();
+  await getIt<NotificationService>().init();
+  await Workmanager().initialize(callbackDispatcher);
+  await Workmanager().registerPeriodicTask(
+    notificationSyncTaskId,
+    notificationSyncTaskId,
+    frequency: const Duration(minutes: 15),
+    constraints: Constraints(networkType: NetworkType.connected),
+    existingWorkPolicy: ExistingPeriodicWorkPolicy.keep,
+  );
 
   // Restore persisted auth + profile state before app starts.
   getIt<AuthViewModel>().loadFromCache();
@@ -40,6 +52,9 @@ class _SafqaSellerState extends State<SafqaSeller> {
   void initState() {
     super.initState();
     _loadLocale();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getIt<NotificationService>().handleInitialNotificationNavigation();
+    });
   }
 
   void _loadLocale() {
@@ -72,6 +87,7 @@ class _SafqaSellerState extends State<SafqaSeller> {
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
+            navigatorKey: getIt<GlobalKey<NavigatorState>>(),
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               fontFamily: _locale.languageCode == 'ar' ? 'Cairo' : 'Inter',

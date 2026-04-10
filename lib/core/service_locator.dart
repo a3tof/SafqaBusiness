@@ -1,6 +1,8 @@
 import 'dart:math';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safqaseller/core/network/dio_client.dart';
+import 'package:safqaseller/core/services/notification_service.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/features/auth/model/repositories/auth_repository.dart';
@@ -40,6 +42,9 @@ final getIt = GetIt.instance;
 Future<void> setupServiceLocator() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerLazySingleton(() => sharedPreferences);
+  getIt.registerLazySingleton<GlobalKey<NavigatorState>>(
+    () => GlobalKey<NavigatorState>(),
+  );
 
   getIt.registerLazySingleton(() => CacheHelper(sharedPreferences: getIt()));
 
@@ -50,6 +55,9 @@ Future<void> setupServiceLocator() async {
   }
 
   getIt.registerLazySingleton(() => DioHelper(cacheHelper: getIt()));
+  getIt.registerLazySingleton(
+    () => NotificationService(cacheHelper: getIt(), navigatorKey: getIt()),
+  );
 
   getIt.registerLazySingleton(
     () => AuthRepository(dioHelper: getIt(), cacheHelper: getIt()),
@@ -90,7 +98,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(
     () => SellerViewModel(sellerRepository: getIt(), cacheHelper: getIt()),
   );
-  getIt.registerFactory(() => NotificationsViewModel(getIt()));
+  getIt.registerFactory(() => NotificationsViewModel(getIt(), getIt()));
   getIt.registerFactory(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => HistoryViewModel(getIt()));
   getIt.registerFactory(() => ChatListViewModel(getIt()));

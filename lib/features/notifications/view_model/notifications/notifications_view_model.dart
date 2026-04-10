@@ -1,11 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safqaseller/core/services/notification_service.dart';
 import 'package:safqaseller/features/notifications/model/repositories/notifications_repository.dart';
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model_state.dart';
 
 class NotificationsViewModel extends Cubit<NotificationsState> {
   final NotificationsRepository notificationsRepository;
+  final NotificationService notificationService;
 
-  NotificationsViewModel(this.notificationsRepository)
+  NotificationsViewModel(this.notificationsRepository, this.notificationService)
       : super(NotificationsInitial());
 
   // ── Load ──────────────────────────────────────────────────────────────────
@@ -15,6 +17,9 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
     try {
       final notifications = await notificationsRepository.getNotifications();
       emit(NotificationsSuccess(notifications: notifications));
+      try {
+        await notificationService.showNewNotifications(notifications);
+      } catch (_) {}
     } catch (e) {
       emit(NotificationsError(_clean(e)));
     }
