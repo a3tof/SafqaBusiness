@@ -38,8 +38,6 @@ import 'package:safqaseller/features/wallet/view/saved_cards_view.dart';
 import 'package:safqaseller/features/wallet/view/transaction_history_view.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
 import 'package:safqaseller/features/wallet/view/withdrawal_view.dart';
-import 'package:safqaseller/features/wallet/view/withdrawal_otp_view.dart';
-import 'package:safqaseller/features/wallet/view/withdrawal_otp_view_args.dart';
 
 Route<dynamic> onGenerateRoutes(RouteSettings settings) {
   switch (settings.name) {
@@ -152,11 +150,6 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
       return MaterialPageRoute(builder: (_) => const SubscriptionView());
     case WithdrawalView.routeName:
       return MaterialPageRoute(builder: (_) => const WithdrawalView());
-    case WithdrawalOtpView.routeName:
-      final args = settings.arguments as WithdrawalOtpArgs;
-      return MaterialPageRoute(
-        builder: (_) => WithdrawalOtpView(args: args),
-      );
     case TransactionHistoryView.routeName:
       return MaterialPageRoute(builder: (_) => const TransactionHistoryView());
 

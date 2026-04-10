@@ -47,7 +47,14 @@ class CardModel {
                 json['MaskedCardNumber'])
             ?.toString();
     return CardModel(
-      id: _toInt(json['id'] ?? json['Id']),
+      id: _toInt(
+        json['id'] ??
+            json['Id'] ??
+            json['cardId'] ??
+            json['CardId'] ??
+            json['savedCardId'] ??
+            json['SavedCardId'],
+      ),
       cardholderName:
           (json['cardholderName'] ??
                   json['CardholderName'] ??
@@ -58,11 +65,20 @@ class CardModel {
       last4: (json['last4'] ??
                   json['Last4'] ??
                   json['lastDigits'] ??
-                  json['LastDigits'])
+                  json['LastDigits'] ??
+                  json['cardLast4'] ??
+                  json['CardLast4'])
               ?.toString() ??
           _extractLast4(rawCardNumber),
       expiryDate:
-          (json['expiryDate'] ?? json['ExpiryDate'] ?? '').toString(),
+          (json['expiryDate'] ??
+                  json['ExpiryDate'] ??
+                  json['expireDate'] ??
+                  json['ExpireDate'] ??
+                  json['expirationDate'] ??
+                  json['ExpirationDate'] ??
+                  '')
+              .toString(),
       label: (json['label'] ??
               json['Label'] ??
               json['cardLabel'] ??

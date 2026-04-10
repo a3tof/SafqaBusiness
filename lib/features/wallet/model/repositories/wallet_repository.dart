@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:safqaseller/core/network/dio_client.dart';
-import 'package:safqaseller/features/forgot_password/model/models/forgot_password_models.dart';
 import 'package:safqaseller/features/wallet/model/models/wallet_models.dart';
 
 class WalletRepository {
@@ -113,68 +112,6 @@ class WalletRepository {
     return list
         .map((e) => TransactionModel.fromJson(e as Map<String, dynamic>))
         .toList();
-  }
-
-  Future<MessageResponseModel> requestWithdrawalOtp(String email) async {
-    final r = await dioHelper.postData(
-      endPoint: 'Auth/request-ForgetPassword',
-      data: {'email': email},
-    );
-    _require(r);
-    final body = _asMap(r.data);
-    if (body == null) {
-      throw Exception('Unexpected OTP request response format');
-    }
-    final result = MessageResponseModel.fromJson(body);
-    if (!result.isSuccess) {
-      throw Exception(result.message ?? 'OTP request failed');
-    }
-    return result;
-  }
-
-  Future<VerifyOtpResponseModel> verifyWithdrawalOtp(
-    String email,
-    String code,
-  ) async {
-    final r = await dioHelper.postData(
-      endPoint: 'Auth/verify-ForgetPassword',
-      data: {'email': email, 'code': code},
-    );
-    _require(r);
-    final body = _asMap(r.data);
-    if (body == null) {
-      throw Exception('Unexpected OTP verification response format');
-    }
-    final result = VerifyOtpResponseModel.fromJson(body);
-    if (!result.isSuccess) {
-      throw Exception(result.message ?? 'OTP verification failed');
-    }
-    return result;
-  }
-
-  Future<MessageResponseModel> confirmWithdrawalReset(
-    String email,
-    String token,
-    String password,
-  ) async {
-    final r = await dioHelper.postData(
-      endPoint: 'Auth/reset-ForgetPassword',
-      data: {
-        'email': email,
-        'token': token,
-        'newPassword': password,
-      },
-    );
-    _require(r);
-    final body = _asMap(r.data);
-    if (body == null) {
-      throw Exception('Unexpected password confirmation response format');
-    }
-    final result = MessageResponseModel.fromJson(body);
-    if (!result.isSuccess) {
-      throw Exception(result.message ?? 'Password confirmation failed');
-    }
-    return result;
   }
 
   // ── Helper ────────────────────────────────────────────────────────────────

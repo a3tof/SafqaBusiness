@@ -28,7 +28,6 @@ import 'package:safqaseller/features/subscription/view_model/subscription_view_m
 import 'package:safqaseller/features/wallet/model/repositories/wallet_repository.dart';
 import 'package:safqaseller/features/wallet/view_model/add_card/add_card_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/deposit/deposit_view_model.dart';
-import 'package:safqaseller/features/wallet/view_model/withdrawal_otp/withdrawal_otp_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/wallet/wallet_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/withdrawal/withdrawal_view_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -84,7 +83,6 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(() => AddCardViewModel(getIt()));
   getIt.registerFactory(() => DepositViewModel(getIt()));
   getIt.registerFactory(() => WithdrawalViewModel(getIt()));
-  getIt.registerFactory(() => WithdrawalOtpViewModel(getIt()));
   getIt.registerFactory(
     () => SellerViewModel(sellerRepository: getIt(), cacheHelper: getIt()),
   );
