@@ -14,6 +14,10 @@ import 'package:skeletonizer/skeletonizer.dart';
 class SavedCardsViewBody extends StatelessWidget {
   const SavedCardsViewBody({super.key});
 
+  Future<void> _refresh(BuildContext context) async {
+    await context.read<WalletViewModel>().loadWallet();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,7 +53,17 @@ class SavedCardsViewBody extends StatelessWidget {
         builder: (context, state) {
           final isLoading = state is WalletLoading || state is WalletInitial;
           if (state is WalletError) {
-            return Center(child: Text(state.message));
+            return RefreshIndicator(
+              onRefresh: () => _refresh(context),
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+                children: [
+                  SizedBox(height: 160.h),
+                  Center(child: Text(state.message)),
+                ],
+              ),
+            );
           }
 
           final cards = state is WalletSuccess
@@ -57,45 +71,56 @@ class SavedCardsViewBody extends StatelessWidget {
               : WalletSkeletonData.cards;
 
           if (cards.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            return RefreshIndicator(
+              onRefresh: () => _refresh(context),
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
                 children: [
-                  Icon(Icons.credit_card_off_outlined,
-                      size: 64.sp, color: Colors.grey),
-                  SizedBox(height: 16.h),
-                  Text(S.of(context).kNoSavedCards,
-                      style: TextStyles.regular16(context)
-                          .copyWith(color: Colors.grey)),
-                  SizedBox(height: 16.h),
-                  ElevatedButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, AddCardView.routeName),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor),
-                    child: Text(S.of(context).kAddCard,
-                        style: TextStyles.semiBold16(context)
-                            .copyWith(color: Colors.white)),
+                  SizedBox(height: 160.h),
+                  Column(
+                    children: [
+                      Icon(Icons.credit_card_off_outlined,
+                          size: 64.sp, color: Colors.grey),
+                      SizedBox(height: 16.h),
+                      Text(S.of(context).kNoSavedCards,
+                          style: TextStyles.regular16(context)
+                              .copyWith(color: Colors.grey)),
+                      SizedBox(height: 16.h),
+                      ElevatedButton(
+                        onPressed: () =>
+                            Navigator.pushNamed(context, AddCardView.routeName),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor),
+                        child: Text(S.of(context).kAddCard,
+                            style: TextStyles.semiBold16(context)
+                                .copyWith(color: Colors.white)),
+                      ),
+                    ],
                   ),
                 ],
               ),
             );
           }
 
-          return Skeletonizer(
-            enabled: isLoading,
-            child: ListView.separated(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              itemCount: cards.length,
-              separatorBuilder: (context, index) =>
-                  const Divider(height: 1, thickness: 0.5),
-              itemBuilder: (context, i) => Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
-                child: CardListItem(
-                  card: cards[i],
-                  onDelete: () =>
-                      context.read<WalletViewModel>().deleteCard(cards[i].id),
+          return RefreshIndicator(
+            onRefresh: () => _refresh(context),
+            child: Skeletonizer(
+              enabled: isLoading,
+              child: ListView.separated(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding:
+                    EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+                itemCount: cards.length,
+                separatorBuilder: (context, index) =>
+                    const Divider(height: 1, thickness: 0.5),
+                itemBuilder: (context, i) => Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: CardListItem(
+                    card: cards[i],
+                    onDelete: () =>
+                        context.read<WalletViewModel>().deleteCard(cards[i].id),
+                  ),
                 ),
               ),
             ),

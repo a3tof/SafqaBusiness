@@ -65,6 +65,14 @@ class _DepositViewBodyState extends State<DepositViewBody> {
     }
   }
 
+  Future<void> _refreshCards() async {
+    final future = _loadCards();
+    setState(() {
+      _cardsFuture = future;
+    });
+    await future;
+  }
+
   void _submit(List<CardModel> cards) {
     if (!_formKey.currentState!.validate()) return;
     final amount = double.tryParse(_amountCtrl.text.trim());
@@ -115,36 +123,36 @@ class _DepositViewBodyState extends State<DepositViewBody> {
                 snapshot.connectionState == ConnectionState.waiting;
 
             if (snapshot.hasError) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24.w),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        snapshot.error.toString(),
-                        textAlign: TextAlign.center,
-                        style: TextStyles.regular16(context),
-                      ),
-                      SizedBox(height: 16.h),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _cardsFuture = _loadCards();
-                          });
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
+              return RefreshIndicator(
+                onRefresh: _refreshCards,
+                child: ListView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+                  children: [
+                    SizedBox(height: 160.h),
+                    Column(
+                      children: [
+                        Text(
+                          snapshot.error.toString(),
+                          textAlign: TextAlign.center,
+                          style: TextStyles.regular16(context),
                         ),
-                        child: Text(
-                          S.of(context).retry,
-                          style: TextStyles.semiBold16(
-                            context,
-                          ).copyWith(color: Colors.white),
+                        SizedBox(height: 16.h),
+                        ElevatedButton(
+                          onPressed: _refreshCards,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryColor,
+                          ),
+                          child: Text(
+                            S.of(context).retry,
+                            style: TextStyles.semiBold16(
+                              context,
+                            ).copyWith(color: Colors.white),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
               );
             }
@@ -155,14 +163,17 @@ class _DepositViewBodyState extends State<DepositViewBody> {
 
             return Skeletonizer(
               enabled: isInitialLoading,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              child: RefreshIndicator(
+                onRefresh: _refreshCards,
+                child: LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                      child: Form(
+                        key: _formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -289,7 +300,7 @@ class _DepositViewBodyState extends State<DepositViewBody> {
                                     fontSize: 20.sp,
                                     color: Colors.grey[400],
                                   ),
-                                  prefixText: '\$ ',
+                                  prefixText: 'EGP ',
                                   prefixStyle: TextStyle(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w500,
@@ -298,47 +309,46 @@ class _DepositViewBodyState extends State<DepositViewBody> {
                                 ),
                               ),
                             ),
+                            SizedBox(height: 24.h),
+                            BlocBuilder<DepositViewModel, DepositState>(
+                              builder: (context, state) {
+                                final isLoading = state is DepositLoading;
+                                return SizedBox(
+                                  width: double.infinity,
+                                  height: 54.h,
+                                  child: ElevatedButton(
+                                    onPressed: isLoading ? null : () => _submit(cards),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primaryColor,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16.r),
+                                      ),
+                                    ),
+                                    child: isLoading
+                                        ? SizedBox(
+                                            width: 22.w,
+                                            height: 22.w,
+                                            child: const CircularProgressIndicator(
+                                              color: Colors.white,
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : Text(
+                                            S.of(context).kDeposit,
+                                            style: TextStyles.semiBold19(context)
+                                                .copyWith(color: Colors.white),
+                                          ),
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(height: 16.h),
                           ],
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 40.h),
-                      child: BlocBuilder<DepositViewModel, DepositState>(
-                        builder: (context, state) {
-                          final isLoading = state is DepositLoading;
-                          return SizedBox(
-                            width: double.infinity,
-                            height: 54.h,
-                            child: ElevatedButton(
-                              onPressed: isLoading ? null : () => _submit(cards),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: AppColors.primaryColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.r),
-                                ),
-                              ),
-                              child: isLoading
-                                  ? SizedBox(
-                                      width: 22.w,
-                                      height: 22.w,
-                                      child: const CircularProgressIndicator(
-                                        color: Colors.white,
-                                        strokeWidth: 2,
-                                      ),
-                                    )
-                                  : Text(
-                                      S.of(context).kDeposit,
-                                      style: TextStyles.semiBold19(context)
-                                          .copyWith(color: Colors.white),
-                                    ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             );
