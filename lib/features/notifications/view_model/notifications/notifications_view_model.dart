@@ -47,14 +47,17 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
 
   // ── Mark read helpers (local state only) ──────────────────────────────────
 
-  Future<void> markCurrentNotificationsSeen() async {
+  Future<void> markNotificationSeenAndRead(int notificationId) async {
     final current = state;
-    if (current is NotificationsSuccess) {
-      await notificationService.markNotificationsSeen(
-        current.notifications.map((notification) => notification.id),
-      );
-      emit(NotificationsSuccess(notifications: current.notifications));
-    }
+    if (current is! NotificationsSuccess) return;
+
+    await notificationService.markNotificationsSeen([notificationId]);
+    final updated = current.notifications.map((notification) {
+      return notification.id == notificationId
+          ? notification.copyWith(isRead: true)
+          : notification;
+    }).toList();
+    emit(NotificationsSuccess(notifications: updated));
   }
 
   void markAsRead(int notificationId) {

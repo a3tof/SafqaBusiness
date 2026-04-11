@@ -131,6 +131,11 @@ class DioHelper {
     return _refreshAccessToken(token);
   }
 
+  /// Stores auth/session tokens from a successful backend response.
+  Future<String?> storeSessionFromResponse(dynamic data) async {
+    return _storeRefreshedSession(data);
+  }
+
   Future<String?> _storeRefreshedSession(dynamic data) async {
     final body = _decodeIfString(data);
     if (body is! Map) return null;

@@ -28,10 +28,6 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
 
   Future<void> _loadNotifications() async {
     await context.read<NotificationsViewModel>().loadNotifications();
-    if (!mounted) {
-      return;
-    }
-    await context.read<NotificationsViewModel>().markCurrentNotificationsSeen();
   }
 
   @override
@@ -234,8 +230,16 @@ class _NotificationsList extends StatelessWidget {
           children: [
             NotificationItem(
               notification: notification,
+              onTap: () {
+                context.read<NotificationsViewModel>().markNotificationSeenAndRead(
+                  notification.id,
+                );
+              },
               onLongPress: () => _showDeleteMenu(context, notification),
               onActionTap: () {
+                context.read<NotificationsViewModel>().markNotificationSeenAndRead(
+                  notification.id,
+                );
                 Navigator.pushNamed(
                   context,
                   ChatThreadView.routeName,

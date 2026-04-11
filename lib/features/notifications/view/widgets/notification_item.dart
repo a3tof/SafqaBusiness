@@ -8,17 +8,20 @@ class NotificationItem extends StatelessWidget {
   const NotificationItem({
     super.key,
     required this.notification,
+    this.onTap,
     this.onActionTap,
     this.onLongPress,
   });
 
   final NotificationModel notification;
+  final VoidCallback? onTap;
   final VoidCallback? onActionTap;
   final VoidCallback? onLongPress;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: onTap,
       onLongPress: onLongPress,
       child: Container(
         width: double.infinity,
