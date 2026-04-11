@@ -1,6 +1,7 @@
 import 'package:safqaseller/core/network/dio_client.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
+import 'package:safqaseller/features/profile/model/models/profile_model.dart';
 
 class SubscriptionRepository {
   SubscriptionRepository({required this.dioHelper, required this.cacheHelper});
@@ -27,6 +28,24 @@ class SubscriptionRepository {
     return cacheHelper.getData(key: CacheKeys.activePlan)?.toString();
   }
 
+  Future<String?> refreshActivePlanId() async {
+    final response = await dioHelper.getData(
+      endPoint: 'seller/business-account',
+      requiresAuth: true,
+    );
+
+    final code = response.statusCode;
+    final body = _asMap(response.data);
+    final isSuccessful = code != null && code >= 200 && code < 300;
+    if (!isSuccessful) {
+      throw Exception(extractResponseError(response.data, code));
+    }
+
+    final activePlanId = ProfileModel.fromJson(body).activePlanId;
+    await _syncActivePlan(activePlanId);
+    return activePlanId;
+  }
+
   Future<String> upgrade({required int upgradeType}) async {
     final response = await dioHelper.postData(
       endPoint: 'seller/upgrade',
@@ -40,16 +59,7 @@ class SubscriptionRepository {
 
     if (isSuccessful && body['isSuccess'] == true) {
       final planId = upgradeType.toString();
-      await cacheHelper.saveData(key: CacheKeys.activePlan, value: planId);
-      final currentUserId = cacheHelper
-          .getData(key: CacheKeys.userId)
-          ?.toString();
-      if (currentUserId != null && currentUserId.isNotEmpty) {
-        await cacheHelper.saveData(
-          key: CacheKeys.activePlanUserId,
-          value: currentUserId,
-        );
-      }
+      await _syncActivePlan(planId);
       return planId;
     }
 
@@ -64,5 +74,25 @@ class SubscriptionRepository {
       return Map<String, dynamic>.from(data);
     }
     return <String, dynamic>{};
+  }
+
+  Future<void> _syncActivePlan(String? activePlanId) async {
+    final currentUserId = cacheHelper
+        .getData(key: CacheKeys.userId)
+        ?.toString();
+
+    if (activePlanId == null || activePlanId.isEmpty) {
+      await cacheHelper.removeData(key: CacheKeys.activePlan);
+      await cacheHelper.removeData(key: CacheKeys.activePlanUserId);
+      return;
+    }
+
+    await cacheHelper.saveData(key: CacheKeys.activePlan, value: activePlanId);
+    if (currentUserId != null && currentUserId.isNotEmpty) {
+      await cacheHelper.saveData(
+        key: CacheKeys.activePlanUserId,
+        value: currentUserId,
+      );
+    }
   }
 }

@@ -13,19 +13,24 @@ class SubscriptionViewModel extends Cubit<SubscriptionState> {
   final SubscriptionRepository subscriptionRepository;
 
   Future<void> loadActivePlan({bool showLoading = false}) async {
-    final activePlanId = subscriptionRepository.getActivePlanId();
+    final cachedPlanId = subscriptionRepository.getActivePlanId();
     if (showLoading) {
-      emit(SubscriptionScreenLoading(activePlanId: activePlanId));
+      emit(SubscriptionScreenLoading(activePlanId: cachedPlanId));
       await Future<void>.delayed(const Duration(milliseconds: 900));
     } else {
       await Future<void>.delayed(const Duration(milliseconds: 300));
     }
 
-    emit(
-      SubscriptionInitial(
-        activePlanId: subscriptionRepository.getActivePlanId(),
-      ),
-    );
+    try {
+      final activePlanId = await subscriptionRepository.refreshActivePlanId();
+      emit(SubscriptionInitial(activePlanId: activePlanId));
+    } catch (_) {
+      emit(
+        SubscriptionInitial(
+          activePlanId: subscriptionRepository.getActivePlanId(),
+        ),
+      );
+    }
   }
 
   Future<void> upgrade({required int upgradeType}) async {
@@ -40,13 +45,13 @@ class SubscriptionViewModel extends Cubit<SubscriptionState> {
       final savedPlanId = await _upgradeWithMinimumDelay(upgradeType);
       emit(SubscriptionSuccess(savedPlanId));
     } catch (e) {
-      emit(
-        SubscriptionError(
-          _clean(e),
-          planId,
-          activePlanId: subscriptionRepository.getActivePlanId(),
-        ),
-      );
+      String? refreshedPlanId;
+      try {
+        refreshedPlanId = await subscriptionRepository.refreshActivePlanId();
+      } catch (_) {
+        refreshedPlanId = subscriptionRepository.getActivePlanId();
+      }
+      emit(SubscriptionError(_clean(e), planId, activePlanId: refreshedPlanId));
     }
   }
 
