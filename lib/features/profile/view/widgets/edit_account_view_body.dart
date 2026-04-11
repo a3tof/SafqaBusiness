@@ -18,6 +18,7 @@ import 'package:safqaseller/features/profile/view_model/edit_account/edit_accoun
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model_state.dart';
 import 'package:safqaseller/generated/l10n.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class EditAccountViewBody extends StatefulWidget {
   const EditAccountViewBody({super.key, this.profile});
@@ -42,34 +43,73 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
   Uint8List? _selectedLogoBytes;
   String? _encodedLogo;
   bool _isLoadingLocations = false;
+  String? _lastAppliedProfileKey;
 
   @override
   void initState() {
     super.initState();
-    _seedInitialValues();
+    final currentProfileState = getIt<ProfileViewModel>().state;
+    if (currentProfileState is ProfileLoaded) {
+      _applyProfileData(currentProfileState, rebuild: false);
+    } else {
+      _applyProfileData(widget.profile, rebuild: false);
+    }
     _loadCountries();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      context.read<ProfileViewModel>().fetchProfile(showLoadingState: true);
+    });
   }
 
-  void _seedInitialValues() {
-    final profile = widget.profile;
-    _storeNameController.text = profile?.fullName ?? '';
-    _phoneNumberController.text = profile?.phoneNumber ?? '';
-    _descriptionController.text = profile?.description ?? '';
-    _selectedLogoBytes = profile?.logoBytes;
+  void _applyProfileData(ProfileLoaded? profile, {bool rebuild = true}) {
+    if (profile == null) return;
 
-    if (profile?.countryId != null &&
-        (profile?.countryName?.isNotEmpty ?? false)) {
-      _selectedCountry = LocationModel(
-        id: profile!.countryId!,
-        name: profile.countryName!,
-      );
+    final profileKey = [
+      profile.fullName,
+      profile.phoneNumber,
+      profile.description,
+      profile.countryId,
+      profile.countryName,
+      profile.cityId,
+      profile.cityName,
+      profile.logoBytes?.lengthInBytes,
+    ].join('|');
+
+    if (profileKey == _lastAppliedProfileKey) {
+      return;
     }
-    if (profile?.cityId != null && (profile?.cityName?.isNotEmpty ?? false)) {
-      _selectedCity = LocationModel(
-        id: profile!.cityId!,
-        name: profile.cityName!,
-      );
+
+    void assignValues() {
+      _storeNameController.text = profile.fullName ?? '';
+      _phoneNumberController.text = profile.phoneNumber ?? '';
+      _descriptionController.text = profile.description ?? '';
+      _selectedLogoBytes = profile.logoBytes;
+      _encodedLogo = null;
+      _selectedCountry =
+          profile.countryId != null &&
+              (profile.countryName?.isNotEmpty ?? false)
+          ? LocationModel(id: profile.countryId!, name: profile.countryName!)
+          : null;
+      _selectedCity =
+          profile.cityId != null && (profile.cityName?.isNotEmpty ?? false)
+          ? LocationModel(id: profile.cityId!, name: profile.cityName!)
+          : null;
+      _lastAppliedProfileKey = profileKey;
     }
+
+    if (rebuild && mounted) {
+      setState(assignValues);
+    } else {
+      assignValues();
+    }
+
+    if (profile.countryId != null && _countries.isNotEmpty) {
+      _loadCities(profile.countryId!, keepSelection: true);
+    }
+  }
+
+  Future<void> _refreshProfile() async {
+    await context.read<ProfileViewModel>().fetchProfile();
   }
 
   Future<void> _loadCountries() async {
@@ -319,155 +359,200 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final profileState = context.watch<ProfileViewModel>().state;
+    final isProfileLoading = profileState is ProfileInitial;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: buildAppBar(context: context, title: S.of(context).kEditAccount),
-      body: BlocConsumer<EditAccountViewModel, EditAccountState>(
+      body: BlocListener<ProfileViewModel, ProfileViewModelState>(
         listener: (context, state) {
-          if (state is EditAccountFailure) {
+          if (state is ProfileLoaded) {
+            _applyProfileData(state);
+          } else if (state is ProfileError) {
             ScaffoldMessenger.of(
               context,
             ).showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is EditAccountSuccess) {
-            getIt<ProfileViewModel>().fetchProfile();
-            Navigator.pop(context, S.of(context).kProfileUpdatedSuccessfully);
           }
         },
-        builder: (context, state) {
-          final isLoading = state is EditAccountLoading;
+        child: BlocConsumer<EditAccountViewModel, EditAccountState>(
+          listener: (context, state) {
+            if (state is EditAccountFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
+            } else if (state is EditAccountSuccess) {
+              getIt<ProfileViewModel>().fetchProfile();
+              Navigator.pop(context, S.of(context).kProfileUpdatedSuccessfully);
+            }
+          },
+          builder: (context, state) {
+            final isSubmitting = state is EditAccountLoading;
 
-          return SafeArea(
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Center(
+            return SafeArea(
+              child: Skeletonizer(
+                enabled: isProfileLoading,
+                child: RefreshIndicator(
+                  color: AppColors.primaryColor,
+                  onRefresh: _refreshProfile,
+                  child: Form(
+                    key: _formKey,
+                    child: SingleChildScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _EditableAvatar(
-                            imageBytes: _selectedLogoBytes,
-                            onTap: _pickImage,
-                            tooltip: S.of(context).kEditAccountPhotoHint,
+                          if (profileState is ProfileError) ...[
+                            Text(
+                              profileState.message,
+                              style: TextStyles.regular13(
+                                context,
+                              ).copyWith(color: Colors.red),
+                            ),
+                            SizedBox(height: 16.h),
+                          ],
+                          Center(
+                            child: Column(
+                              children: [
+                                _EditableAvatar(
+                                  imageBytes: _selectedLogoBytes,
+                                  onTap: isProfileLoading ? null : _pickImage,
+                                  tooltip: S.of(context).kEditAccountPhotoHint,
+                                ),
+                                SizedBox(height: 10.h),
+                                Text(
+                                  S.of(context).kEditAccountPhotoHint,
+                                  style: TextStyles.regular13(
+                                    context,
+                                  ).copyWith(color: const Color(0xFF7C7C7C)),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 30.h),
+                          _EditFieldRow(
+                            icon: Icons.person_outline,
+                            controller: _storeNameController,
+                            hintText: S.of(context).kStoreName,
+                            enabled: !isProfileLoading && !isSubmitting,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return S.of(context).fieldRequired;
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 18.h),
+                          _EditFieldRow(
+                            icon: Icons.phone_outlined,
+                            controller: _phoneNumberController,
+                            hintText: S.of(context).kPhoneNumber,
+                            enabled: !isProfileLoading && !isSubmitting,
+                            keyboardType: TextInputType.phone,
+                            validator: (value) {
+                              if (value == null || value.trim().isEmpty) {
+                                return S.of(context).fieldRequired;
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(height: 18.h),
+                          _PickerFieldRow(
+                            icon: Icons.location_on_outlined,
+                            value:
+                                _selectedCity?.name ??
+                                _selectedCountry?.name ??
+                                S.of(context).kSelectCity,
+                            isPlaceholder:
+                                _selectedCity == null &&
+                                _selectedCountry == null,
+                            onTap: isProfileLoading || _isLoadingLocations
+                                ? null
+                                : _openLocationSheet,
+                          ),
+                          SizedBox(height: 26.h),
+                          Text(
+                            S.of(context).kDescription,
+                            style: TextStyles.semiBold16(
+                              context,
+                            ).copyWith(color: AppColors.primaryColor),
                           ),
                           SizedBox(height: 10.h),
-                          Text(
-                            S.of(context).kEditAccountPhotoHint,
-                            style: TextStyles.regular13(
-                              context,
-                            ).copyWith(color: const Color(0xFF7C7C7C)),
+                          Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.w,
+                              vertical: 12.h,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18.r),
+                              border: Border.all(
+                                color: const Color(0xFFB3B3B3),
+                              ),
+                            ),
+                            child: TextFormField(
+                              controller: _descriptionController,
+                              enabled: !isProfileLoading && !isSubmitting,
+                              maxLength: 50,
+                              minLines: 4,
+                              maxLines: 4,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return S.of(context).fieldRequired;
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                isCollapsed: true,
+                                counterStyle: TextStyles.regular12(
+                                  context,
+                                ).copyWith(color: const Color(0xFF7C7C7C)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 26.h),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 40.h,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primaryColor,
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.r),
+                                ),
+                              ),
+                              onPressed: isSubmitting || isProfileLoading
+                                  ? null
+                                  : _submit,
+                              child: isSubmitting
+                                  ? SizedBox(
+                                      width: 20.w,
+                                      height: 20.w,
+                                      child: const CircularProgressIndicator(
+                                        strokeWidth: 2.2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Text(
+                                      S.of(context).kSave,
+                                      style: TextStyles.semiBold16(
+                                        context,
+                                      ).copyWith(color: Colors.white),
+                                    ),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 30.h),
-                    _EditFieldRow(
-                      icon: Icons.person_outline,
-                      controller: _storeNameController,
-                      hintText: S.of(context).kStoreName,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return S.of(context).fieldRequired;
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 18.h),
-                    _EditFieldRow(
-                      icon: Icons.phone_outlined,
-                      controller: _phoneNumberController,
-                      hintText: S.of(context).kPhoneNumber,
-                      keyboardType: TextInputType.phone,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return S.of(context).fieldRequired;
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 18.h),
-                    _PickerFieldRow(
-                      icon: Icons.location_on_outlined,
-                      value: _selectedCity?.name ?? S.of(context).kSelectCity,
-                      isPlaceholder: _selectedCity == null,
-                      onTap: _isLoadingLocations ? null : _openLocationSheet,
-                    ),
-                    SizedBox(height: 26.h),
-                    Text(
-                      S.of(context).kDescription,
-                      style: TextStyles.semiBold16(
-                        context,
-                      ).copyWith(color: AppColors.primaryColor),
-                    ),
-                    SizedBox(height: 10.h),
-                    Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 12.h,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(18.r),
-                        border: Border.all(color: const Color(0xFFB3B3B3)),
-                      ),
-                      child: TextFormField(
-                        controller: _descriptionController,
-                        maxLength: 50,
-                        minLines: 4,
-                        maxLines: 4,
-                        validator: (value) {
-                          if (value == null || value.trim().isEmpty) {
-                            return S.of(context).fieldRequired;
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          isCollapsed: true,
-                          counterStyle: TextStyles.regular12(
-                            context,
-                          ).copyWith(color: const Color(0xFF7C7C7C)),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 26.h),
-                    SizedBox(
-                      width: double.infinity,
-                      height: 40.h,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryColor,
-                          foregroundColor: Colors.white,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
-                          ),
-                        ),
-                        onPressed: isLoading ? null : _submit,
-                        child: isLoading
-                            ? SizedBox(
-                                width: 20.w,
-                                height: 20.w,
-                                child: const CircularProgressIndicator(
-                                  strokeWidth: 2.2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : Text(
-                                S.of(context).kSave,
-                                style: TextStyles.semiBold16(
-                                  context,
-                                ).copyWith(color: Colors.white),
-                              ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -481,7 +566,7 @@ class _EditableAvatar extends StatelessWidget {
   });
 
   final Uint8List? imageBytes;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   final String tooltip;
 
   @override
@@ -544,6 +629,7 @@ class _EditFieldRow extends StatelessWidget {
     required this.icon,
     required this.controller,
     required this.hintText,
+    required this.enabled,
     this.keyboardType,
     this.validator,
   });
@@ -551,6 +637,7 @@ class _EditFieldRow extends StatelessWidget {
   final IconData icon;
   final TextEditingController controller;
   final String hintText;
+  final bool enabled;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
 
@@ -565,6 +652,7 @@ class _EditFieldRow extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 controller: controller,
+                enabled: enabled,
                 keyboardType: keyboardType,
                 validator: validator,
                 style: TextStyles.semiBold16(context),
