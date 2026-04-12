@@ -14,7 +14,6 @@ import 'package:safqaseller/features/profile/view/widgets/profile_metrics_row.da
 import 'package:safqaseller/features/history/view/history_view.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model_state.dart';
-import 'package:safqaseller/features/reviews/view/reviews_view.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
 import 'package:safqaseller/main.dart';
 import 'package:safqaseller/generated/l10n.dart';
@@ -178,14 +177,6 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                     icon: Icons.bar_chart_outlined,
                     label: S.of(context).kStatistics,
                     onTap: () {},
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.star_outline,
-                    label: S.of(context).kReviewsRatings,
-                    onTap: () {
-                      Navigator.pushNamed(context, ReviewsView.routeName);
-                    },
                   ),
                   SizedBox(height: 12.h),
                   ProfileMenuItem(

@@ -29,7 +29,6 @@ import 'package:safqaseller/features/history/view/history_view.dart';
 import 'package:safqaseller/features/profile/view/edit_account_view.dart';
 import 'package:safqaseller/features/profile/view/profile_view.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model_state.dart';
-import 'package:safqaseller/features/reviews/view/reviews_view.dart';
 import 'package:safqaseller/features/seller/view/seller_home_view.dart';
 import 'package:safqaseller/features/splash/view/splash_screen_view.dart';
 import 'package:safqaseller/features/subscription/view/subscription_view.dart';
@@ -97,8 +96,6 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
       );
     case HistoryView.routeName:
       return MaterialPageRoute(builder: (_) => const HistoryView());
-    case ReviewsView.routeName:
-      return MaterialPageRoute(builder: (_) => const ReviewsView());
     case ChangePasswordView.routeName:
       return MaterialPageRoute(builder: (_) => const ChangePasswordView());
     case ChatListView.routeName:
