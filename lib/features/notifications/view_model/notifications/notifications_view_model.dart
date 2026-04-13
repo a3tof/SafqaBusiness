@@ -70,12 +70,25 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
     }
   }
 
-  void markAllAsRead() {
+  Future<void> markAllAsRead() async {
     final current = state;
     if (current is NotificationsSuccess) {
+      await notificationService.markNotificationsSeen(
+        current.notifications.map((notification) => notification.id),
+      );
       final updated =
           current.notifications.map((n) => n.copyWith(isRead: true)).toList();
       emit(NotificationsSuccess(notifications: updated));
+    }
+  }
+
+  Future<void> markAllAsSeen() async {
+    final current = state;
+    if (current is NotificationsSuccess) {
+      await notificationService.markNotificationsSeen(
+        current.notifications.map((notification) => notification.id),
+      );
+      emit(NotificationsSuccess(notifications: List.of(current.notifications)));
     }
   }
 
@@ -90,9 +103,7 @@ class NotificationsViewModel extends Cubit<NotificationsState> {
   bool get hasUnreadOrUnseen {
     final current = state;
     if (current is NotificationsSuccess) {
-      return notificationService.hasUnreadOrUnseenNotifications(
-        current.notifications,
-      );
+      return notificationService.hasUnseenNotifications(current.notifications);
     }
     return false;
   }

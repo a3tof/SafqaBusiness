@@ -77,6 +77,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "historyExport": MessageLookupByLibrary.simpleMessage("تصدير"),
     "historyFinalPrice": MessageLookupByLibrary.simpleMessage("السعر النهائي"),
     "historyLotLabel": MessageLookupByLibrary.simpleMessage("قطعة"),
+    "auctionAddItem": MessageLookupByLibrary.simpleMessage("إضافة عنصر"),
+    "auctionCategory": MessageLookupByLibrary.simpleMessage("الفئة"),
+    "auctionChangesSaved": MessageLookupByLibrary.simpleMessage(
+      "تم حفظ التعديلات بنجاح",
+    ),
+    "auctionCondition": MessageLookupByLibrary.simpleMessage("الحالة"),
+    "auctionCount": MessageLookupByLibrary.simpleMessage("العدد"),
+    "auctionDetailsDocs": MessageLookupByLibrary.simpleMessage(
+      "التفاصيل والمستندات",
+    ),
+    "auctionEditTitle": MessageLookupByLibrary.simpleMessage("تعديل المزاد"),
+    "auctionEndsIn": MessageLookupByLibrary.simpleMessage("ينتهي في"),
+    "auctionItem": MessageLookupByLibrary.simpleMessage("العنصر"),
+    "auctionLotDescription": MessageLookupByLibrary.simpleMessage("وصف اللوت"),
+    "auctionLotDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللوت"),
+    "auctionNew": MessageLookupByLibrary.simpleMessage("جديد"),
+    "auctionSaveEdits": MessageLookupByLibrary.simpleMessage(
+      "حفظ التعديلات",
+    ),
+    "auctionStartsIn": MessageLookupByLibrary.simpleMessage("يبدأ في"),
+    "auctionTimeLeft": MessageLookupByLibrary.simpleMessage("الوقت المتبقي"),
+    "auctionTitle": MessageLookupByLibrary.simpleMessage("العنوان"),
+    "auctionUsed": MessageLookupByLibrary.simpleMessage("مستعمل"),
+    "auctionUsedLikeNew": MessageLookupByLibrary.simpleMessage(
+      "مستعمل كالجديد",
+    ),
+    "auctionWarrantyInfo": MessageLookupByLibrary.simpleMessage(
+      "معلومات الضمان",
+    ),
     "historyNoItems": MessageLookupByLibrary.simpleMessage("لا يوجد سجل."),
     "historyNoMatchingItems": MessageLookupByLibrary.simpleMessage(
       "لا توجد نتائج مطابقة في السجل.",

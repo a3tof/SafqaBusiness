@@ -2189,6 +2189,196 @@ class S {
     );
   }
 
+  /// `Edit Auction`
+  String get auctionEditTitle {
+    return Intl.message(
+      'Edit Auction',
+      name: 'auctionEditTitle',
+      desc: 'Edit auction screen title',
+      args: [],
+    );
+  }
+
+  /// `Starts in`
+  String get auctionStartsIn {
+    return Intl.message(
+      'Starts in',
+      name: 'auctionStartsIn',
+      desc: 'Auction start info label',
+      args: [],
+    );
+  }
+
+  /// `Ends in`
+  String get auctionEndsIn {
+    return Intl.message(
+      'Ends in',
+      name: 'auctionEndsIn',
+      desc: 'Auction end info label',
+      args: [],
+    );
+  }
+
+  /// `Time Left`
+  String get auctionTimeLeft {
+    return Intl.message(
+      'Time Left',
+      name: 'auctionTimeLeft',
+      desc: 'Auction remaining time label',
+      args: [],
+    );
+  }
+
+  /// `Details & Docs`
+  String get auctionDetailsDocs {
+    return Intl.message(
+      'Details & Docs',
+      name: 'auctionDetailsDocs',
+      desc: 'Auction item details and documents label',
+      args: [],
+    );
+  }
+
+  /// `Used`
+  String get auctionUsed {
+    return Intl.message(
+      'Used',
+      name: 'auctionUsed',
+      desc: 'Used condition label',
+      args: [],
+    );
+  }
+
+  /// `Lot Details`
+  String get auctionLotDetails {
+    return Intl.message(
+      'Lot Details',
+      name: 'auctionLotDetails',
+      desc: 'Lot details section title',
+      args: [],
+    );
+  }
+
+  /// `Title`
+  String get auctionTitle {
+    return Intl.message(
+      'Title',
+      name: 'auctionTitle',
+      desc: 'Auction title field hint',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get auctionCategory {
+    return Intl.message(
+      'Category',
+      name: 'auctionCategory',
+      desc: 'Auction category field hint',
+      args: [],
+    );
+  }
+
+  /// `Item`
+  String get auctionItem {
+    return Intl.message(
+      'Item',
+      name: 'auctionItem',
+      desc: 'Auction item label',
+      args: [],
+    );
+  }
+
+  /// `Count`
+  String get auctionCount {
+    return Intl.message(
+      'Count',
+      name: 'auctionCount',
+      desc: 'Auction item count field hint',
+      args: [],
+    );
+  }
+
+  /// `Warranty INFO`
+  String get auctionWarrantyInfo {
+    return Intl.message(
+      'Warranty INFO',
+      name: 'auctionWarrantyInfo',
+      desc: 'Auction warranty info field hint',
+      args: [],
+    );
+  }
+
+  /// `Condition`
+  String get auctionCondition {
+    return Intl.message(
+      'Condition',
+      name: 'auctionCondition',
+      desc: 'Auction condition section title',
+      args: [],
+    );
+  }
+
+  /// `Add Item`
+  String get auctionAddItem {
+    return Intl.message(
+      'Add Item',
+      name: 'auctionAddItem',
+      desc: 'Add item action label',
+      args: [],
+    );
+  }
+
+  /// `Lot Description`
+  String get auctionLotDescription {
+    return Intl.message(
+      'Lot Description',
+      name: 'auctionLotDescription',
+      desc: 'Lot description section title',
+      args: [],
+    );
+  }
+
+  /// `Save edits`
+  String get auctionSaveEdits {
+    return Intl.message(
+      'Save edits',
+      name: 'auctionSaveEdits',
+      desc: 'Save edits button label',
+      args: [],
+    );
+  }
+
+  /// `Changes saved successfully`
+  String get auctionChangesSaved {
+    return Intl.message(
+      'Changes saved successfully',
+      name: 'auctionChangesSaved',
+      desc: 'Edit auction success message',
+      args: [],
+    );
+  }
+
+  /// `New`
+  String get auctionNew {
+    return Intl.message(
+      'New',
+      name: 'auctionNew',
+      desc: 'New condition label',
+      args: [],
+    );
+  }
+
+  /// `Used-Like New`
+  String get auctionUsedLikeNew {
+    return Intl.message(
+      'Used-Like New',
+      name: 'auctionUsedLikeNew',
+      desc: 'Used like new condition label',
+      args: [],
+    );
+  }
+
   /// `Retry`
   String get retry {
     return Intl.message(

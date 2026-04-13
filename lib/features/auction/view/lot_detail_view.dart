@@ -1,13 +1,23 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
+import 'package:safqaseller/features/auction/view/edit_auction_view.dart';
+import 'package:safqaseller/features/auction/view/lot_detail_route_args.dart';
+import 'package:safqaseller/features/history/model/models/history_models.dart';
+import 'package:safqaseller/generated/l10n.dart';
+import 'package:intl/intl.dart';
 
 class LotDetailView extends StatelessWidget {
-  const LotDetailView({super.key});
+  const LotDetailView({super.key, required this.args});
 
   static const String routeName = 'lotDetailView';
+
+  final LotDetailRouteArgs args;
 
   static const _items = <_LotDetailItem>[
     _LotDetailItem(name: 'Mercedes C180 2024'),
@@ -17,10 +27,15 @@ class LotDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final s = S.of(context);
+    final item = args.item;
+    final canEdit = item.status == AuctionStatus.upcoming;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        surfaceTintColor: Colors.white,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(
@@ -34,7 +49,7 @@ class LotDetailView extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                'Lot#84184181',
+                _formatLotNumber(context, item.lotNumber),
                 style: TextStyles.semiBold14(context).copyWith(
                   color: AppColors.primaryColor,
                 ),
@@ -46,13 +61,22 @@ class LotDetailView extends StatelessWidget {
               size: 18.sp,
               color: AppColors.primaryColor,
             ),
-            SizedBox(width: 8.w),
-            Text(
-              'Edit',
-              style: TextStyles.regular12(context).copyWith(
-                color: AppColors.primaryColor,
+            if (canEdit) ...[
+              SizedBox(width: 8.w),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  EditAuctionView.routeName,
+                  arguments: args,
+                ),
+                child: Text(
+                  s.kEdit,
+                  style: TextStyles.regular12(context).copyWith(
+                    color: AppColors.primaryColor,
+                  ),
+                ),
               ),
-            ),
+            ],
           ],
         ),
       ),
@@ -66,25 +90,27 @@ class LotDetailView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '3 private cars (Mercedes • Toyota • Kia)',
+                      item.title,
                       style: TextStyles.semiBold15(context).copyWith(
                         color: Colors.black,
                       ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 8.h),
                     Row(
                       children: [
                         Expanded(
                           child: _DateInfo(
-                            title: 'Starts in',
-                            value: 'Dec 6:00 PM',
+                            title: s.auctionStartsIn,
+                            value: item.timeLeft ?? '--',
                           ),
                         ),
                         SizedBox(width: 10.w),
                         Expanded(
                           child: _DateInfo(
-                            title: 'Ends in',
-                            value: 'Dec 6:00 PM',
+                            title: s.auctionEndsIn,
+                            value: _formatDate(context, item.endDate),
                           ),
                         ),
                       ],
@@ -95,6 +121,7 @@ class LotDetailView extends StatelessWidget {
                       (index) => Padding(
                         padding: EdgeInsets.only(bottom: 12.h),
                         child: _AuctionItemTile(
+                          imageUrl: item.imageUrl,
                           index: index + 1,
                           item: _items[index],
                         ),
@@ -125,14 +152,14 @@ class LotDetailView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Time Left',
+                              s.auctionTimeLeft,
                               style: TextStyles.regular11(context).copyWith(
                                 color: const Color(0xFF9A9A9A),
                               ),
                             ),
                             SizedBox(height: 2.h),
                             Text(
-                              'Bid : 20h : 50m : 25s',
+                              item.timeLeft ?? '--',
                               style: TextStyles.semiBold13(context).copyWith(
                                 color: Colors.black,
                               ),
@@ -144,14 +171,14 @@ class LotDetailView extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(
-                            'Starting price',
+                            _priceLabel(context, item.status),
                             style: TextStyles.regular11(context).copyWith(
                               color: const Color(0xFF9A9A9A),
                             ),
                           ),
                           SizedBox(height: 2.h),
                           Text(
-                            '\$10,000,000',
+                            _formatPrice(item.price),
                             style: TextStyles.bold16(context).copyWith(
                               color: Colors.black,
                             ),
@@ -160,26 +187,6 @@ class LotDetailView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.h),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 40.h,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                      child: Text(
-                        'Boost & Publish',
-                        style: TextStyles.semiBold14(context).copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -187,6 +194,38 @@ class LotDetailView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatLotNumber(BuildContext context, String raw) {
+    final lotLabel = S.of(context).historyLotLabel;
+    if (raw.toLowerCase().startsWith('lot#')) return raw;
+    if (raw.startsWith('#')) return '$lotLabel$raw';
+    return '$lotLabel#$raw';
+  }
+
+  String _formatDate(BuildContext context, DateTime? date) {
+    if (date == null) return '--';
+    final locale = Localizations.localeOf(context).toString();
+    return DateFormat('d MMM h:mm a', locale).format(date);
+  }
+
+  String _priceLabel(BuildContext context, AuctionStatus status) {
+    final s = S.of(context);
+    switch (status) {
+      case AuctionStatus.upcoming:
+      case AuctionStatus.canceled:
+        return s.historyStartingPrice;
+      case AuctionStatus.active:
+      case AuctionStatus.endingSoon:
+        return s.historyCurrentPrice;
+      case AuctionStatus.finished:
+      case AuctionStatus.sold:
+        return s.historyFinalPrice;
+    }
+  }
+
+  String _formatPrice(double value) {
+    return '\$${NumberFormat('#,##0.##').format(value)}';
   }
 }
 
@@ -232,10 +271,12 @@ class _DateInfo extends StatelessWidget {
 
 class _AuctionItemTile extends StatelessWidget {
   const _AuctionItemTile({
+    required this.imageUrl,
     required this.index,
     required this.item,
   });
 
+  final String? imageUrl;
   final int index;
   final _LotDetailItem item;
 
@@ -260,11 +301,10 @@ class _AuctionItemTile extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8.r),
-                child: Image.asset(
-                  Assets.imagesFrame1,
+                child: _AuctionPreviewImage(
+                  imageUrl: imageUrl,
                   width: 70.w,
                   height: 48.h,
-                  fit: BoxFit.cover,
                 ),
               ),
               SizedBox(width: 10.w),
@@ -280,7 +320,7 @@ class _AuctionItemTile extends StatelessWidget {
                     ),
                     SizedBox(height: 2.h),
                     Text(
-                      'Used',
+                      S.of(context).auctionUsed,
                       style: TextStyles.regular11(context).copyWith(
                         color: const Color(0xFF919191),
                       ),
@@ -306,7 +346,7 @@ class _AuctionItemTile extends StatelessWidget {
                 ),
               ),
               Text(
-                'Details & Docs',
+                S.of(context).auctionDetailsDocs,
                 style: TextStyles.regular11(context).copyWith(
                   color: AppColors.primaryColor,
                 ),
@@ -323,4 +363,74 @@ class _LotDetailItem {
   const _LotDetailItem({required this.name});
 
   final String name;
+}
+
+class _AuctionPreviewImage extends StatelessWidget {
+  const _AuctionPreviewImage({
+    required this.imageUrl,
+    required this.width,
+    required this.height,
+  });
+
+  final String? imageUrl;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    final value = imageUrl?.trim();
+    if (value == null || value.isEmpty) {
+      return _placeholder();
+    }
+
+    if (_looksLikeNetworkUrl(value)) {
+      return Image.network(
+        value,
+        width: width,
+        height: height,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => _placeholder(),
+      );
+    }
+
+    final imageBytes = _decodeBase64Image(value);
+    if (imageBytes == null) {
+      return _placeholder();
+    }
+
+    return Image.memory(
+      imageBytes,
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+      errorBuilder: (context, error, stackTrace) => _placeholder(),
+    );
+  }
+
+  bool _looksLikeNetworkUrl(String value) {
+    final uri = Uri.tryParse(value);
+    return uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https') &&
+        uri.hasAuthority;
+  }
+
+  Uint8List? _decodeBase64Image(String value) {
+    try {
+      final normalizedValue = value.contains(',')
+          ? value.split(',').last.trim()
+          : value;
+      return base64Decode(normalizedValue);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Widget _placeholder() {
+    return Image.asset(
+      Assets.imagesFrame1,
+      width: width,
+      height: height,
+      fit: BoxFit.cover,
+    );
+  }
 }

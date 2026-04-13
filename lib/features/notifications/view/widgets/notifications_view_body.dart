@@ -27,7 +27,9 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
   }
 
   Future<void> _loadNotifications() async {
-    await context.read<NotificationsViewModel>().loadNotifications();
+    final viewModel = context.read<NotificationsViewModel>();
+    await viewModel.loadNotifications();
+    await viewModel.markAllAsSeen();
   }
 
   @override

@@ -6,6 +6,8 @@ import 'package:safqaseller/core/services/foreground_notification_poller.dart';
 import 'package:safqaseller/core/services/notification_service.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
+import 'package:safqaseller/features/auction/model/repositories/auction_repository.dart';
+import 'package:safqaseller/features/auction/view_model/create_auction/create_auction_view_model.dart';
 import 'package:safqaseller/features/auth/model/repositories/auth_repository.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/auth/view_model/confirm_email/confirm_email_view_model.dart';
@@ -87,6 +89,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton(
     () => SubscriptionRepository(dioHelper: getIt(), cacheHelper: getIt()),
   );
+  getIt.registerLazySingleton(() => AuctionRepository(dioHelper: getIt()));
 
   getIt.registerLazySingleton(() => AuthViewModel(getIt()));
   getIt.registerLazySingleton(
@@ -113,6 +116,7 @@ Future<void> setupServiceLocator() async {
   getIt.registerFactory(() => ChatThreadViewModel(getIt()));
   getIt.registerFactory(() => EditAccountViewModel(getIt()));
   getIt.registerFactory(() => SubscriptionViewModel(getIt()));
+  getIt.registerFactory(() => CreateAuctionViewModel(getIt()));
 }
 
 String _generateDeviceId() {

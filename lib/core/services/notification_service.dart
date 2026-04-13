@@ -122,11 +122,9 @@ class NotificationService {
     }
   }
 
-  bool hasUnreadOrUnseenNotifications(List<NotificationModel> notifications) {
+  bool hasUnseenNotifications(List<NotificationModel> notifications) {
     final seenIds = readSeenNotificationIds(_cacheHelper.sharedPreferences);
-    return notifications.any(
-      (notification) => !notification.isRead || !seenIds.contains(notification.id),
-    );
+    return notifications.any((notification) => !seenIds.contains(notification.id));
   }
 
   Future<void> markNotificationsSeen(Iterable<int> ids) async {

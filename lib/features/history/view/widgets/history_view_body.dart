@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_color.dart';
+import 'package:safqaseller/features/auction/view/lot_detail_route_args.dart';
+import 'package:safqaseller/features/auction/view/lot_detail_view.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/history/model/models/history_models.dart';
 import 'package:safqaseller/features/history/view/widgets/history_card.dart';
@@ -264,7 +266,14 @@ class _HistoryList extends StatelessWidget {
             ...items.map(
               (item) => Padding(
                 padding: EdgeInsets.only(bottom: 10.h),
-                child: HistoryCard(item: item),
+                child: GestureDetector(
+                  onTap: () => Navigator.pushNamed(
+                    context,
+                    LotDetailView.routeName,
+                    arguments: LotDetailRouteArgs(item: item),
+                  ),
+                  child: HistoryCard(item: item),
+                ),
               ),
             ),
           if (hasItems && totalPages > 1 && !isSearchActive)

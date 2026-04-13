@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -246,42 +249,73 @@ class _HistoryImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (imageUrl == null || imageUrl!.isEmpty) {
-      return Image.asset(
-        Assets.imagesFrame1,
+    final value = imageUrl?.trim();
+    if (value == null || value.isEmpty) {
+      return _buildPlaceholder();
+    }
+
+    if (_looksLikeNetworkUrl(value)) {
+      return Image.network(
+        value,
         width: 135.w,
         height: 126.h,
         fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+        loadingBuilder: (context, child, progress) {
+          if (progress == null) return child;
+          return Container(
+            width: 135.w,
+            height: 126.h,
+            color: const Color(0xFFF4F4F4),
+            alignment: Alignment.center,
+            child: SizedBox(
+              width: 18.w,
+              height: 18.w,
+              child: const CircularProgressIndicator(strokeWidth: 2),
+            ),
+          );
+        },
       );
     }
 
-    return Image.network(
-      imageUrl!,
+    final imageBytes = _decodeBase64Image(value);
+    if (imageBytes == null) {
+      return _buildPlaceholder();
+    }
+
+    return Image.memory(
+      imageBytes,
       width: 135.w,
       height: 126.h,
       fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) {
-        return Image.asset(
-          Assets.imagesFrame1,
-          width: 135.w,
-          height: 126.h,
-          fit: BoxFit.cover,
-        );
-      },
-      loadingBuilder: (context, child, progress) {
-        if (progress == null) return child;
-        return Container(
-          width: 135.w,
-          height: 126.h,
-          color: const Color(0xFFF4F4F4),
-          alignment: Alignment.center,
-          child: SizedBox(
-            width: 18.w,
-            height: 18.w,
-            child: const CircularProgressIndicator(strokeWidth: 2),
-          ),
-        );
-      },
+      errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+    );
+  }
+
+  bool _looksLikeNetworkUrl(String value) {
+    final uri = Uri.tryParse(value);
+    return uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https') &&
+        uri.hasAuthority;
+  }
+
+  Uint8List? _decodeBase64Image(String value) {
+    try {
+      final normalizedValue = value.contains(',')
+          ? value.split(',').last.trim()
+          : value;
+      return base64Decode(normalizedValue);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Widget _buildPlaceholder() {
+    return Image.asset(
+      Assets.imagesFrame1,
+      width: 135.w,
+      height: 126.h,
+      fit: BoxFit.cover,
     );
   }
 }

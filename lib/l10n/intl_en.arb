@@ -812,6 +812,82 @@
   "@historyLotLabel": {
     "description": "Lot label prefix in history card"
   },
+  "auctionEditTitle": "Edit Auction",
+  "@auctionEditTitle": {
+    "description": "Edit auction screen title"
+  },
+  "auctionStartsIn": "Starts in",
+  "@auctionStartsIn": {
+    "description": "Auction start info label"
+  },
+  "auctionEndsIn": "Ends in",
+  "@auctionEndsIn": {
+    "description": "Auction end info label"
+  },
+  "auctionTimeLeft": "Time Left",
+  "@auctionTimeLeft": {
+    "description": "Auction remaining time label"
+  },
+  "auctionDetailsDocs": "Details & Docs",
+  "@auctionDetailsDocs": {
+    "description": "Auction item details and documents label"
+  },
+  "auctionUsed": "Used",
+  "@auctionUsed": {
+    "description": "Used condition label"
+  },
+  "auctionLotDetails": "Lot Details",
+  "@auctionLotDetails": {
+    "description": "Lot details section title"
+  },
+  "auctionTitle": "Title",
+  "@auctionTitle": {
+    "description": "Auction title field hint"
+  },
+  "auctionCategory": "Category",
+  "@auctionCategory": {
+    "description": "Auction category field hint"
+  },
+  "auctionItem": "Item",
+  "@auctionItem": {
+    "description": "Auction item label"
+  },
+  "auctionCount": "Count",
+  "@auctionCount": {
+    "description": "Auction item count field hint"
+  },
+  "auctionWarrantyInfo": "Warranty INFO",
+  "@auctionWarrantyInfo": {
+    "description": "Auction warranty info field hint"
+  },
+  "auctionCondition": "Condition",
+  "@auctionCondition": {
+    "description": "Auction condition section title"
+  },
+  "auctionAddItem": "Add Item",
+  "@auctionAddItem": {
+    "description": "Add item action label"
+  },
+  "auctionLotDescription": "Lot Description",
+  "@auctionLotDescription": {
+    "description": "Lot description section title"
+  },
+  "auctionSaveEdits": "Save edits",
+  "@auctionSaveEdits": {
+    "description": "Save edits button label"
+  },
+  "auctionChangesSaved": "Changes saved successfully",
+  "@auctionChangesSaved": {
+    "description": "Edit auction success message"
+  },
+  "auctionNew": "New",
+  "@auctionNew": {
+    "description": "New condition label"
+  },
+  "auctionUsedLikeNew": "Used-Like New",
+  "@auctionUsedLikeNew": {
+    "description": "Used like new condition label"
+  },
   "retry": "Retry",
   "@retry": {
     "description": "Generic retry action label"

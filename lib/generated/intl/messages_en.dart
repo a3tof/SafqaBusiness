@@ -91,6 +91,35 @@ class MessageLookup extends MessageLookupByLibrary {
     "historyExport": MessageLookupByLibrary.simpleMessage("Export"),
     "historyFinalPrice": MessageLookupByLibrary.simpleMessage("Final Price"),
     "historyLotLabel": MessageLookupByLibrary.simpleMessage("Lot"),
+    "auctionAddItem": MessageLookupByLibrary.simpleMessage("Add Item"),
+    "auctionCategory": MessageLookupByLibrary.simpleMessage("Category"),
+    "auctionChangesSaved": MessageLookupByLibrary.simpleMessage(
+      "Changes saved successfully",
+    ),
+    "auctionCondition": MessageLookupByLibrary.simpleMessage("Condition"),
+    "auctionCount": MessageLookupByLibrary.simpleMessage("Count"),
+    "auctionDetailsDocs": MessageLookupByLibrary.simpleMessage(
+      "Details & Docs",
+    ),
+    "auctionEditTitle": MessageLookupByLibrary.simpleMessage("Edit Auction"),
+    "auctionEndsIn": MessageLookupByLibrary.simpleMessage("Ends in"),
+    "auctionItem": MessageLookupByLibrary.simpleMessage("Item"),
+    "auctionLotDescription": MessageLookupByLibrary.simpleMessage(
+      "Lot Description",
+    ),
+    "auctionLotDetails": MessageLookupByLibrary.simpleMessage("Lot Details"),
+    "auctionNew": MessageLookupByLibrary.simpleMessage("New"),
+    "auctionSaveEdits": MessageLookupByLibrary.simpleMessage("Save edits"),
+    "auctionStartsIn": MessageLookupByLibrary.simpleMessage("Starts in"),
+    "auctionTimeLeft": MessageLookupByLibrary.simpleMessage("Time Left"),
+    "auctionTitle": MessageLookupByLibrary.simpleMessage("Title"),
+    "auctionUsed": MessageLookupByLibrary.simpleMessage("Used"),
+    "auctionUsedLikeNew": MessageLookupByLibrary.simpleMessage(
+      "Used-Like New",
+    ),
+    "auctionWarrantyInfo": MessageLookupByLibrary.simpleMessage(
+      "Warranty INFO",
+    ),
     "historyNoItems": MessageLookupByLibrary.simpleMessage("No history found."),
     "historyNoMatchingItems": MessageLookupByLibrary.simpleMessage(
       "No matching history found.",

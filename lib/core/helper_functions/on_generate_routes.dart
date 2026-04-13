@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/features/adaptive_layout/view/adaptive_layout_view.dart';
 import 'package:safqaseller/features/adaptive_layout/view/widgets/desktop_layout.dart';
 import 'package:safqaseller/features/adaptive_layout/view/widgets/mobile_layout.dart';
 import 'package:safqaseller/features/adaptive_layout/view/widgets/tablet_layout.dart';
 import 'package:safqaseller/features/auction/view/item_auction_view.dart';
 import 'package:safqaseller/features/auction/view/lot_auction_view.dart';
+import 'package:safqaseller/features/auction/view/edit_auction_view.dart';
+import 'package:safqaseller/features/auction/view/lot_detail_route_args.dart';
 import 'package:safqaseller/features/auction/view/lot_detail_view.dart';
 import 'package:safqaseller/features/auction/view/price_duration_view.dart';
+import 'package:safqaseller/features/auction/view_model/create_auction/create_auction_view_model.dart';
 import 'package:safqaseller/features/auth/view/auth_route_args.dart';
 import 'package:safqaseller/features/auth/view/create_password_view.dart';
 import 'package:safqaseller/features/auth/view/forget_password_view.dart';
@@ -110,9 +115,33 @@ Route<dynamic> onGenerateRoutes(RouteSettings settings) {
     case ItemAuctionView.routeName:
       return MaterialPageRoute(builder: (_) => const ItemAuctionView());
     case PriceDurationView.routeName:
-      return MaterialPageRoute(builder: (_) => const PriceDurationView());
+      final cubit = settings.arguments;
+      if (cubit is CreateAuctionViewModel) {
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: cubit,
+            child: const PriceDurationView(),
+          ),
+        );
+      }
+      return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => getIt<CreateAuctionViewModel>(),
+          child: const PriceDurationView(),
+        ),
+      );
     case LotDetailView.routeName:
-      return MaterialPageRoute(builder: (_) => const LotDetailView());
+      final args = settings.arguments as LotDetailRouteArgs?;
+      if (args == null) {
+        return MaterialPageRoute(builder: (_) => const HistoryView());
+      }
+      return MaterialPageRoute(builder: (_) => LotDetailView(args: args));
+    case EditAuctionView.routeName:
+      final args = settings.arguments as LotDetailRouteArgs?;
+      if (args == null) {
+        return MaterialPageRoute(builder: (_) => const HistoryView());
+      }
+      return MaterialPageRoute(builder: (_) => EditAuctionView(args: args));
 
     // ── Complete Profile ───────────────────────────────────────────────────
     case AccountTypeView.routeName:

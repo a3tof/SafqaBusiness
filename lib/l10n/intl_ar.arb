@@ -812,6 +812,82 @@
   "@historyLotLabel": {
     "description": "Lot label prefix in history card"
   },
+  "auctionEditTitle": "تعديل المزاد",
+  "@auctionEditTitle": {
+    "description": "Edit auction screen title"
+  },
+  "auctionStartsIn": "يبدأ في",
+  "@auctionStartsIn": {
+    "description": "Auction start info label"
+  },
+  "auctionEndsIn": "ينتهي في",
+  "@auctionEndsIn": {
+    "description": "Auction end info label"
+  },
+  "auctionTimeLeft": "الوقت المتبقي",
+  "@auctionTimeLeft": {
+    "description": "Auction remaining time label"
+  },
+  "auctionDetailsDocs": "التفاصيل والمستندات",
+  "@auctionDetailsDocs": {
+    "description": "Auction item details and documents label"
+  },
+  "auctionUsed": "مستعمل",
+  "@auctionUsed": {
+    "description": "Used condition label"
+  },
+  "auctionLotDetails": "تفاصيل اللوت",
+  "@auctionLotDetails": {
+    "description": "Lot details section title"
+  },
+  "auctionTitle": "العنوان",
+  "@auctionTitle": {
+    "description": "Auction title field hint"
+  },
+  "auctionCategory": "الفئة",
+  "@auctionCategory": {
+    "description": "Auction category field hint"
+  },
+  "auctionItem": "العنصر",
+  "@auctionItem": {
+    "description": "Auction item label"
+  },
+  "auctionCount": "العدد",
+  "@auctionCount": {
+    "description": "Auction item count field hint"
+  },
+  "auctionWarrantyInfo": "معلومات الضمان",
+  "@auctionWarrantyInfo": {
+    "description": "Auction warranty info field hint"
+  },
+  "auctionCondition": "الحالة",
+  "@auctionCondition": {
+    "description": "Auction condition section title"
+  },
+  "auctionAddItem": "إضافة عنصر",
+  "@auctionAddItem": {
+    "description": "Add item action label"
+  },
+  "auctionLotDescription": "وصف اللوت",
+  "@auctionLotDescription": {
+    "description": "Lot description section title"
+  },
+  "auctionSaveEdits": "حفظ التعديلات",
+  "@auctionSaveEdits": {
+    "description": "Save edits button label"
+  },
+  "auctionChangesSaved": "تم حفظ التعديلات بنجاح",
+  "@auctionChangesSaved": {
+    "description": "Edit auction success message"
+  },
+  "auctionNew": "جديد",
+  "@auctionNew": {
+    "description": "New condition label"
+  },
+  "auctionUsedLikeNew": "مستعمل كالجديد",
+  "@auctionUsedLikeNew": {
+    "description": "Used like new condition label"
+  },
   "retry": "إعادة المحاولة",
   "@retry": {
     "description": "Generic retry action label"
