@@ -195,12 +195,6 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
         );
         return false;
       }
-      if (loadedAttributes.isEmpty) {
-        _showMessage(
-          'The selected category for item ${index + 1} has no loaded attributes, and the API requires them.',
-        );
-        return false;
-      }
 
       final attributes = <ItemAttributeValueModel>[];
       for (final attribute in loadedAttributes) {
@@ -231,20 +225,15 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
           return false;
         }
 
-        if (value != null && value.isNotEmpty) {
+        final trimmedValue = value?.trim();
+        if (trimmedValue != null && trimmedValue.isNotEmpty) {
           attributes.add(
             ItemAttributeValueModel(
               categoryAttributeId: attribute.id,
-              value: value,
+              value: trimmedValue,
             ),
           );
-          continue;
         }
-
-        // Keep the collection bound on the backend even for optional blanks.
-        attributes.add(
-          ItemAttributeValueModel(categoryAttributeId: attribute.id, value: ''),
-        );
       }
 
       items.add(

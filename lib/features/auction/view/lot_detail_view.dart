@@ -32,7 +32,9 @@ class _LotDetailViewState extends State<LotDetailView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<AuctionDetailViewModel>().loadAuction(widget.args.item.id);
+      context.read<AuctionDetailViewModel>().loadAuction(
+        widget.args.item.auctionId,
+      );
     });
   }
 
@@ -60,7 +62,7 @@ class _LotDetailViewState extends State<LotDetailView> {
 
     if (confirmed == true && mounted) {
       await context.read<AuctionDetailViewModel>().deleteAuction(
-        widget.args.item.id,
+        widget.args.item.auctionId,
       );
     }
   }
@@ -131,7 +133,8 @@ class _LotDetailViewState extends State<LotDetailView> {
                     ),
                     SizedBox(height: 12.h),
                     ElevatedButton(
-                      onPressed: () => cubit.loadAuction(widget.args.item.id),
+                      onPressed: () =>
+                          cubit.loadAuction(widget.args.item.auctionId),
                       child: Text(s.retry),
                     ),
                   ],

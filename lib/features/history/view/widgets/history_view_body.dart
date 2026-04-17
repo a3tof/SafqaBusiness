@@ -129,7 +129,8 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
                 s.kHistory,
                 style: TextStyles.bold28(context).copyWith(
                   color: AppColors.primaryColor,
-                  fontFamily: Localizations.localeOf(context).languageCode == 'ar'
+                  fontFamily:
+                      Localizations.localeOf(context).languageCode == 'ar'
                       ? 'Cairo'
                       : 'AlegreyaSC',
                 ),
@@ -253,9 +254,7 @@ class _HistoryList extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.5,
               child: Center(
                 child: Text(
-                  isSearchActive
-                      ? s.historyNoMatchingItems
-                      : s.historyNoItems,
+                  isSearchActive ? s.historyNoMatchingItems : s.historyNoItems,
                   style: TextStyles.regular14(
                     context,
                   ).copyWith(color: const Color(0xFF666666)),
@@ -477,6 +476,7 @@ final List<HistoryItem> _skeletonHistoryItems = List.generate(
   10,
   (index) => HistoryItem(
     id: index,
+    auctionId: index,
     lotNumber: '84184$index',
     title: 'Mercedes C180 2024',
     status: index.isEven ? AuctionStatus.active : AuctionStatus.finished,

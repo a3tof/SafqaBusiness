@@ -4,6 +4,7 @@ enum AuctionStatus { upcoming, active, endingSoon, finished, canceled, sold }
 
 class HistoryItem {
   final int id;
+  final int auctionId;
   final String lotNumber;
   final String title;
   final AuctionStatus status;
@@ -16,6 +17,7 @@ class HistoryItem {
 
   const HistoryItem({
     required this.id,
+    required this.auctionId,
     required this.lotNumber,
     required this.title,
     required this.status,
@@ -28,6 +30,9 @@ class HistoryItem {
   });
 
   factory HistoryItem.fromJson(Map<String, dynamic> json) {
+    final rawId = _asInt(json['id'] ?? json['Id']);
+    final rawAuctionId = _asInt(json['auctionId'] ?? json['AuctionId']);
+    final rawLotId = _asInt(json['lotId'] ?? json['LotId']);
     final status = _parseStatus(
       json['status'] ??
           json['Status'] ??
@@ -52,16 +57,8 @@ class HistoryItem {
     );
 
     return HistoryItem(
-      id:
-          _asInt(
-            json['id'] ??
-                json['Id'] ??
-                json['auctionId'] ??
-                json['AuctionId'] ??
-                json['lotId'] ??
-                json['LotId'],
-          ) ??
-          0,
+      id: rawId ?? rawLotId ?? rawAuctionId ?? 0,
+      auctionId: rawAuctionId ?? rawId ?? rawLotId ?? 0,
       lotNumber:
           _firstNonEmptyString([
             json['lotNumber'],

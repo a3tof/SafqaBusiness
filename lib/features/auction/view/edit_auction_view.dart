@@ -37,7 +37,9 @@ class _EditAuctionViewState extends State<EditAuctionView> {
     _lotTitleController = TextEditingController();
     _descriptionController = TextEditingController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<EditAuctionViewModel>().loadAuction(widget.args.item.id);
+      context.read<EditAuctionViewModel>().loadAuction(
+        widget.args.item.auctionId,
+      );
     });
   }
 
@@ -120,7 +122,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
     }
 
     await context.read<EditAuctionViewModel>().saveAuction(
-      id: widget.args.item.id,
+      id: widget.args.item.auctionId,
       request: EditAuctionRequestModel(
         title: _lotTitleController.text.trim(),
         description: _descriptionController.text.trim(),
@@ -178,7 +180,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
             ),
             body: Center(
               child: ElevatedButton(
-                onPressed: () => cubit.loadAuction(widget.args.item.id),
+                onPressed: () => cubit.loadAuction(widget.args.item.auctionId),
                 child: Text(s.retry),
               ),
             ),

@@ -12,6 +12,7 @@ import 'package:safqaseller/features/auction/model/models/create_auction_request
 import 'package:safqaseller/features/auction/view/price_duration_view.dart';
 import 'package:safqaseller/features/auction/view_model/create_auction/create_auction_view_model.dart';
 import 'package:safqaseller/features/auction/view_model/create_auction/create_auction_view_model_state.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class ItemAuctionView extends StatelessWidget {
   const ItemAuctionView({super.key});
@@ -37,6 +38,7 @@ class _ItemAuctionViewBody extends StatefulWidget {
 class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
   final ImagePicker _imagePicker = ImagePicker();
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _countController = TextEditingController();
   final TextEditingController _warrantyController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final Map<int, TextEditingController> _attributeControllers = {};
@@ -50,6 +52,7 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
   @override
   void dispose() {
     _titleController.dispose();
+    _countController.dispose();
     _warrantyController.dispose();
     _descriptionController.dispose();
     for (final controller in _attributeControllers.values) {
@@ -139,14 +142,12 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
   }
 
   bool _validateAndStoreDraft() {
+    final s = S.of(context);
     final cubit = context.read<CreateAuctionViewModel>();
     final attributesMeta = cubit.attributesForItem(0);
     final attributeError = cubit.attributeErrorForItem(0);
+    final count = int.tryParse(_countController.text.trim());
 
-    if (_headImage == null) {
-      _showMessage('اختار صورة المنتج الأول.');
-      return false;
-    }
     if (_titleController.text.trim().isEmpty) {
       _showMessage('Please enter the item title.');
       return false;
@@ -163,14 +164,12 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
       _showMessage('Please enter the description.');
       return false;
     }
-    if (attributeError != null) {
-      _showMessage('Could not load category attributes. Try another category.');
+    if (count == null || count <= 0) {
+      _showMessage('Please enter a valid ${s.auctionCount.toLowerCase()}.');
       return false;
     }
-    if (attributesMeta.isEmpty) {
-      _showMessage(
-        'This category has no loaded attributes, and the API requires them.',
-      );
+    if (attributeError != null) {
+      _showMessage('Could not load category attributes. Try another category.');
       return false;
     }
 
@@ -198,12 +197,15 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
         return false;
       }
 
-      attributes.add(
-        ItemAttributeValueModel(
-          categoryAttributeId: attribute.id,
-          value: (value ?? '').trim(),
-        ),
-      );
+      final trimmedValue = value?.trim();
+      if (trimmedValue != null && trimmedValue.isNotEmpty) {
+        attributes.add(
+          ItemAttributeValueModel(
+            categoryAttributeId: attribute.id,
+            value: trimmedValue,
+          ),
+        );
+      }
     }
 
     cubit.setDraftRequest(
@@ -218,12 +220,12 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
         items: [
           AuctionItemModel(
             title: _titleController.text.trim(),
-            count: 1,
+            count: count,
             description: _descriptionController.text.trim(),
             warrantyInfo: _warrantyController.text.trim(),
             condition: _selectedCondition.apiValue,
             categoryId: _categoryId!,
-            images: [_headImage!],
+            images: _headImage != null ? [_headImage!] : const [],
             attributes: attributes,
           ),
         ],
@@ -246,6 +248,7 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
         }
       },
       builder: (context, state) {
+        final s = S.of(context);
         final cubit = context.read<CreateAuctionViewModel>();
         final categories = cubit.categories;
         final attributes = cubit.attributesForItem(0);
@@ -289,6 +292,13 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
                         cubit.clearItemAttributes(0);
                       }
                     },
+                  ),
+                  SizedBox(height: 10.h),
+                  _FieldLabel(label: s.auctionCount),
+                  SizedBox(height: 4.h),
+                  _AuctionTextField(
+                    controller: _countController,
+                    keyboardType: TextInputType.number,
                   ),
                   SizedBox(height: 10.h),
                   const _FieldLabel(label: 'Warranty INFO'),

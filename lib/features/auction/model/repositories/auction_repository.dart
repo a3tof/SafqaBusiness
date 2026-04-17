@@ -53,6 +53,16 @@ class AuctionRepository {
     XFile? headImage,
   }) async {
     final formData = FormData();
+    final rootCategoryId = items.isNotEmpty ? items.first.categoryId : null;
+    final queryParams = <String, dynamic>{
+      'Title': title,
+      'Description': description,
+      'StartingPrice': startingPrice,
+      'BidIncrement': bidIncrement,
+      'StartDate': startDate.toIso8601String(),
+      'EndDate': endDate.toIso8601String(),
+      ...?rootCategoryId == null ? null : {'categoryId': rootCategoryId},
+    };
 
     formData.fields.addAll([
       MapEntry('Title', title),
@@ -61,6 +71,8 @@ class AuctionRepository {
       MapEntry('BidIncrement', bidIncrement.toString()),
       MapEntry('StartDate', startDate.toIso8601String()),
       MapEntry('EndDate', endDate.toIso8601String()),
+      if (rootCategoryId != null)
+        MapEntry('categoryId', rootCategoryId.toString()),
     ]);
 
     if (headImage != null) {
@@ -118,6 +130,7 @@ class AuctionRepository {
     final response = await dioHelper.postFormData(
       endPoint: 'Auction/Create-Auction',
       data: formData,
+      queryParams: queryParams,
       requiresAuth: true,
     );
     _requireSuccess(response);
