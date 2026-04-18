@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class GenderPickerField extends StatefulWidget {
@@ -28,9 +27,11 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
   final TextEditingController controller = TextEditingController();
 
   void _showGenderPicker(BuildContext context) {
+    final theme = Theme.of(context);
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.bottomSheetTheme.backgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
@@ -44,7 +45,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                 width: 40.sp,
                 height: 4.sp,
                 decoration: BoxDecoration(
-                  color: Colors.grey[300],
+                  color: theme.dividerColor,
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
@@ -52,7 +53,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
               ListTile(
                 leading: Icon(
                   Icons.male,
-                  color: AppColors.primaryColor,
+                  color: theme.colorScheme.primary,
                   size: 28.sp,
                 ),
                 title: Text(
@@ -62,7 +63,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                 trailing: selectedGender == widget.maleText
                     ? Icon(
                         Icons.check_circle,
-                        color: AppColors.primaryColor,
+                        color: theme.colorScheme.primary,
                         size: 24.sp,
                       )
                     : null,
@@ -81,7 +82,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
               ListTile(
                 leading: Icon(
                   Icons.female,
-                  color: AppColors.primaryColor,
+                  color: theme.colorScheme.primary,
                   size: 28.sp,
                 ),
                 title: Text(
@@ -91,7 +92,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                 trailing: selectedGender == widget.femaleText
                     ? Icon(
                         Icons.check_circle,
-                        color: AppColors.primaryColor,
+                        color: theme.colorScheme.primary,
                         size: 24.sp,
                       )
                     : null,
@@ -122,6 +123,8 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       enabled: widget.enabled,
       controller: controller,
@@ -137,26 +140,26 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
       decoration: InputDecoration(
         suffixIcon: Icon(
           Icons.arrow_drop_down,
-          color: Color(0xFF949D9E),
+          color: theme.hintColor,
           size: 24.sp,
         ),
         hintText: widget.hintText,
         hintStyle: TextStyles.bold13(
           context,
-        ).copyWith(color: Color(0xFF949D9E)),
+        ).copyWith(color: theme.hintColor),
         filled: true,
-        fillColor: AppColors.lightsecondaryColor,
-        border: buildBorder(),
-        enabledBorder: buildBorder(),
-        focusedBorder: buildBorder(),
+        fillColor: theme.inputDecorationTheme.fillColor,
+        border: buildBorder(theme),
+        enabledBorder: buildBorder(theme),
+        focusedBorder: buildBorder(theme),
       ),
     );
   }
 
-  OutlineInputBorder buildBorder() {
+  OutlineInputBorder buildBorder(ThemeData theme) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(width: 1, color: Color(0xFFE6E9E9)),
+      borderSide: BorderSide(width: 1, color: theme.colorScheme.outline),
     );
   }
 }

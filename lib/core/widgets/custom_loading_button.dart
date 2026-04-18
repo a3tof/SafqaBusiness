@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 
 class CustomLoadingButton extends StatelessWidget {
   const CustomLoadingButton({super.key});
@@ -12,14 +11,14 @@ class CustomLoadingButton extends StatelessWidget {
       height: 54.sp,
       child: TextButton(
         style: TextButton.styleFrom(
-          backgroundColor: AppColors.lightPrimaryColor,
+          backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.r),
           ),
         ),
         onPressed: () {},
-        child: const Center(
-          child: CircularProgressIndicator(color: AppColors.secondaryColor),
+        child: Center(
+          child: CircularProgressIndicator(color: Theme.of(context).colorScheme.secondary),
         ),
       ),
     );

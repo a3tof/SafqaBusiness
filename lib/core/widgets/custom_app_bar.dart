@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
+
 
 AppBar buildAppBar({required BuildContext context, required String title}) {
   final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+  final theme = Theme.of(context);
 
   return AppBar(
-    backgroundColor: Colors.white,
+    backgroundColor: theme.appBarTheme.backgroundColor,
     centerTitle: true,
     leading: IconButton(
       onPressed: () {
@@ -14,14 +15,11 @@ AppBar buildAppBar({required BuildContext context, required String title}) {
           Navigator.pop(context);
         } else {
           // Handle the case where there is no back navigation
-          // ScaffoldMessenger.of(context).showSnackBar(
-          //   SnackBar(content: Text(S.of(context).kNoPreviousPageTo)),
-          // );
         }
       },
       icon: Icon(
         Icons.arrow_back_ios_new,
-        color: AppColors.primaryColor,
+        color: theme.colorScheme.primary,
         size: 22.sp,
       ),
     ),
@@ -31,9 +29,10 @@ AppBar buildAppBar({required BuildContext context, required String title}) {
       style: TextStyle(
         fontSize: 28.sp,
         fontWeight: FontWeight.w700,
-        color: AppColors.primaryColor,
+        color: theme.colorScheme.primary,
         fontFamily: isArabic ? 'Cairo' : 'AlegreyaSC',
       ),
     ),
   );
 }
+

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/auth/model/models/location_model.dart';
 
@@ -49,9 +48,11 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
   }
 
   void _showLocationPicker(BuildContext context) {
+    final theme = Theme.of(context);
+
     showModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white,
+      backgroundColor: theme.bottomSheetTheme.backgroundColor,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
@@ -71,7 +72,7 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
                     width: 40.sp,
                     height: 4.sp,
                     decoration: BoxDecoration(
-                      color: Colors.grey[300],
+                      color: theme.dividerColor,
                       borderRadius: BorderRadius.circular(2.r),
                     ),
                   ),
@@ -96,7 +97,7 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
                           trailing: selectedLocation?.id == location.id
                               ? Icon(
                                   Icons.check_circle,
-                                  color: AppColors.primaryColor,
+                                  color: theme.colorScheme.primary,
                                   size: 24.sp,
                                 )
                               : null,
@@ -131,6 +132,8 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       enabled: widget.enabled,
       controller: controller,
@@ -150,26 +153,26 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
       decoration: InputDecoration(
         suffixIcon: Icon(
           Icons.arrow_drop_down,
-          color: Color(0xFF949D9E),
+          color: theme.hintColor,
           size: 24.sp,
         ),
         hintText: widget.hintText,
         hintStyle: TextStyles.bold13(
           context,
-        ).copyWith(color: Color(0xFF949D9E)),
+        ).copyWith(color: theme.hintColor),
         filled: true,
-        fillColor: AppColors.lightsecondaryColor,
-        border: buildBorder(),
-        enabledBorder: buildBorder(),
-        focusedBorder: buildBorder(),
+        fillColor: theme.inputDecorationTheme.fillColor,
+        border: buildBorder(theme),
+        enabledBorder: buildBorder(theme),
+        focusedBorder: buildBorder(theme),
       ),
     );
   }
 
-  OutlineInputBorder buildBorder() {
+  OutlineInputBorder buildBorder(ThemeData theme) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(width: 1, color: Color(0xFFE6E9E9)),
+      borderSide: BorderSide(width: 1, color: theme.colorScheme.outline),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class DatePickerField extends StatefulWidget {
@@ -25,6 +24,8 @@ class _DatePickerFieldState extends State<DatePickerField> {
   final TextEditingController controller = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
+    final theme = Theme.of(context);
+
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime(2000),
@@ -32,11 +33,11 @@ class _DatePickerFieldState extends State<DatePickerField> {
       lastDate: DateTime.now(),
       builder: (context, child) {
         return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
-              primary: AppColors.primaryColor,
-              onPrimary: Colors.white,
-              onSurface: Colors.black,
+          data: theme.copyWith(
+            colorScheme: theme.colorScheme.copyWith(
+              primary: theme.colorScheme.primary,
+              onPrimary: theme.colorScheme.onPrimary,
+              onSurface: theme.colorScheme.onSurface,
             ),
           ),
           child: child!,
@@ -63,6 +64,8 @@ class _DatePickerFieldState extends State<DatePickerField> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return TextFormField(
       enabled: widget.enabled,
       controller: controller,
@@ -78,26 +81,26 @@ class _DatePickerFieldState extends State<DatePickerField> {
       decoration: InputDecoration(
         suffixIcon: Icon(
           Icons.calendar_today,
-          color: Color(0xFF949D9E),
+          color: theme.hintColor,
           size: 20.sp,
         ),
         hintText: widget.hintText,
         hintStyle: TextStyles.bold13(
           context,
-        ).copyWith(color: Color(0xFF949D9E)),
+        ).copyWith(color: theme.hintColor),
         filled: true,
-        fillColor: AppColors.lightsecondaryColor,
-        border: buildBorder(),
-        enabledBorder: buildBorder(),
-        focusedBorder: buildBorder(),
+        fillColor: theme.inputDecorationTheme.fillColor,
+        border: buildBorder(theme),
+        enabledBorder: buildBorder(theme),
+        focusedBorder: buildBorder(theme),
       ),
     );
   }
 
-  OutlineInputBorder buildBorder() {
+  OutlineInputBorder buildBorder(ThemeData theme) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.r),
-      borderSide: BorderSide(width: 1, color: Color(0xFFE6E9E9)),
+      borderSide: BorderSide(width: 1, color: theme.colorScheme.outline),
     );
   }
 }

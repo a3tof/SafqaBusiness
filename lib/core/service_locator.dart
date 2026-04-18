@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/utils/theme_view_model.dart';
 import 'package:get_it/get_it.dart';
 import 'package:safqaseller/core/network/dio_client.dart';
 import 'package:safqaseller/core/services/foreground_notification_poller.dart';
@@ -93,6 +94,7 @@ Future<void> setupServiceLocator() async {
   );
   getIt.registerLazySingleton(() => AuctionRepository(dioHelper: getIt()));
 
+  getIt.registerLazySingleton(() => ThemeViewModel(getIt()));
   getIt.registerLazySingleton(() => AuthViewModel(getIt()));
   getIt.registerLazySingleton(
     () => ProfileViewModel(cacheHelper: getIt(), profileRepository: getIt()),

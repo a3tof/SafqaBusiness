@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
+
 
 SliverAppBar buildHomeAppBar({
   required BuildContext context,
   required String title,
   bool pinned = false,
 }) {
+  final theme = Theme.of(context);
+
   return SliverAppBar(
-    backgroundColor: Colors.white,
+    backgroundColor: theme.appBarTheme.backgroundColor,
     centerTitle: true,
     automaticallyImplyLeading: false,
     pinned: pinned,
@@ -22,9 +24,10 @@ SliverAppBar buildHomeAppBar({
         letterSpacing: 1.5,
         fontSize: 32.sp,
         fontWeight: FontWeight.w500,
-        color: AppColors.primaryColor,
+        color: theme.colorScheme.primary,
         fontFamily: 'AlegreyaSC',
       ),
     ),
   );
 }
+

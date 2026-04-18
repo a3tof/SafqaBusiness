@@ -16,6 +16,8 @@ import 'package:safqaseller/features/adaptive_layout/view/adaptive_layout_view.d
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model_state.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
+import 'package:safqaseller/core/utils/app_theme.dart';
+import 'package:safqaseller/core/utils/theme_view_model.dart';
 import 'package:safqaseller/generated/l10n.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -121,8 +123,11 @@ class _SafqaSellerState extends State<SafqaSeller> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
+    final fontFamily = _locale.languageCode == 'ar' ? 'Cairo' : 'Inter';
+
     return MultiBlocProvider(
       providers: [
+        BlocProvider<ThemeViewModel>.value(value: getIt<ThemeViewModel>()),
         BlocProvider<AuthViewModel>.value(value: getIt<AuthViewModel>()),
         BlocProvider<ProfileViewModel>.value(value: getIt<ProfileViewModel>()),
       ],
@@ -131,23 +136,27 @@ class _SafqaSellerState extends State<SafqaSeller> with WidgetsBindingObserver {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return MaterialApp(
-            navigatorKey: getIt<GlobalKey<NavigatorState>>(),
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              fontFamily: _locale.languageCode == 'ar' ? 'Cairo' : 'Inter',
-            ),
-            locale: _locale,
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            initialRoute: AdaptiveLayoutView.routeName,
-            onGenerateRoute: onGenerateRoutes,
-            home: const AdaptiveLayoutView(),
+          return BlocBuilder<ThemeViewModel, ThemeMode>(
+            builder: (context, themeMode) {
+              return MaterialApp(
+                navigatorKey: getIt<GlobalKey<NavigatorState>>(),
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme(fontFamily),
+                darkTheme: AppTheme.darkTheme(fontFamily),
+                themeMode: themeMode,
+                locale: _locale,
+                localizationsDelegates: const [
+                  S.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: S.delegate.supportedLocales,
+                initialRoute: AdaptiveLayoutView.routeName,
+                onGenerateRoute: onGenerateRoutes,
+                home: const AdaptiveLayoutView(),
+              );
+            },
           );
         },
       ),
