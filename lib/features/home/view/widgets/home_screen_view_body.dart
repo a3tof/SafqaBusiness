@@ -183,11 +183,12 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                     label: S.of(context).kNewLotAuction,
                                     showAddIcon: true,
                                     backgroundImage: Assets.imagesFrame1,
-                                    onTap: () {
-                                      Navigator.pushNamed(
+                                    onTap: () async {
+                                      await Navigator.pushNamed(
                                         context,
                                         LotAuctionView.routeName,
                                       );
+                                      await _refreshHome();
                                     },
                                   ),
                                   SizedBox(height: 16.h),
@@ -195,11 +196,12 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                     label: S.of(context).kNewSingleAuction,
                                     showAddIcon: true,
                                     backgroundImage: Assets.imagesFrame1,
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        ItemAuctionView.routeName,
-                                      );
+                                      onTap: () async {
+                                        await Navigator.pushNamed(
+                                          context,
+                                          ItemAuctionView.routeName,
+                                        );
+                                        await _refreshHome();
                                     },
                                   ),
                                   SizedBox(height: 16.h),

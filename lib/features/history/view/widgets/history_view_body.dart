@@ -266,11 +266,14 @@ class _HistoryList extends StatelessWidget {
               (item) => Padding(
                 padding: EdgeInsets.only(bottom: 10.h),
                 child: GestureDetector(
-                  onTap: () => Navigator.pushNamed(
-                    context,
-                    LotDetailView.routeName,
-                    arguments: LotDetailRouteArgs(item: item),
-                  ),
+                  onTap: () async {
+                    await Navigator.pushNamed(
+                      context,
+                      LotDetailView.routeName,
+                      arguments: LotDetailRouteArgs(item: item),
+                    );
+                    await onRefresh();
+                  },
                   child: HistoryCard(item: item),
                 ),
               ),
