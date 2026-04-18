@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/constants.dart';
 import 'package:safqaseller/core/service_locator.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
@@ -116,7 +115,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                         child: Text(
                           S.of(context).forgotPassword,
                           style: TextStyles.semiBold16(context)
-                              .copyWith(color: AppColors.lightPrimaryColor),
+                              .copyWith(color: Theme.of(context).colorScheme.primary),
                         ),
                       ),
                     ],
@@ -125,8 +124,8 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                   isLoading
                       ? const CustomLoadingButton()
                       : CustomButton(
-                          backgroundColor: AppColors.lightPrimaryColor,
-                          textColor: AppColors.secondaryColor,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          textColor: Colors.white,
                           text: S.of(context).signIn,
                           onPressed: () {
                             if (formKey.currentState!.validate()) {

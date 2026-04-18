@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
@@ -91,7 +90,7 @@ class _ChangePasswordViewBodyState extends State<ChangePasswordViewBody> {
                           onPressed: _submit,
                           text: S.of(context).kChangePassword,
                           textColor: Colors.white,
-                          backgroundColor: AppColors.primaryColor,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
                         ),
                 ],
               ),
@@ -165,7 +164,7 @@ class _FieldLabel extends StatelessWidget {
       text,
       style: TextStyles.semiBold16(
         context,
-      ).copyWith(color: AppColors.primaryColor),
+      ).copyWith(color: Theme.of(context).colorScheme.primary),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/auth/view/widgets/custom_check_box.dart';
 import 'package:safqaseller/features/terms_and_conditions/view/terms_and_conditions_view.dart';
@@ -50,15 +49,15 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
                   text: '${S.of(context).termsAndConditionsPrefix} ',
                   style: TextStyles.semiBold16(
                     context,
-                  ).copyWith(color: const Color(0xFF949D9E)),
+                  ).copyWith(color: Theme.of(context).hintColor),
                 ),
                 TextSpan(
                   text: S.of(context).termsAndConditions,
                   recognizer: _tapRecognizer,
                   style: TextStyles.semiBold16(context).copyWith(
-                    color: AppColors.lightPrimaryColor,
+                    color: Theme.of(context).colorScheme.primary,
                     decoration: TextDecoration.underline,
-                    decorationColor: AppColors.lightPrimaryColor,
+                    decorationColor: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ],

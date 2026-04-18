@@ -1,6 +1,5 @@
-﻿import 'package:flutter/gestures.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/auth/view/signup_view.dart';
 import 'package:safqaseller/generated/l10n.dart';
@@ -17,13 +16,13 @@ class DontHaveAnAccountWidet extends StatelessWidget {
             text: S.of(context).dontHaveAccount,
             style: TextStyles.semiBold16(
               context,
-            ).copyWith(color: Color(0xFF949D9E)),
+            ).copyWith(color: Theme.of(context).hintColor),
           ),
           TextSpan(
             text: ' ',
             style: TextStyles.semiBold16(
               context,
-            ).copyWith(color: Color(0xFF616A6B)),
+            ).copyWith(color: Theme.of(context).hintColor),
           ),
           TextSpan(
             recognizer: TapGestureRecognizer()
@@ -34,7 +33,7 @@ class DontHaveAnAccountWidet extends StatelessWidget {
             text: S.of(context).createAccount,
             style: TextStyles.semiBold16(
               context,
-            ).copyWith(color: AppColors.lightPrimaryColor),
+            ).copyWith(color: Theme.of(context).colorScheme.primary),
           ),
         ],
       ),

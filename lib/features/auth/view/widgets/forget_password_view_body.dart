@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/constants.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
@@ -67,7 +66,7 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                     Text(
                       S.of(context).forgetPasswordDescription,
                       style: TextStyles.regular16(context).copyWith(
-                        color: const Color(0xFF4C4C4C),
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                         height: 1.5,
                       ),
                     ),
@@ -86,8 +85,8 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                     isLoading
                         ? const CustomLoadingButton()
                         : CustomButton(
-                            backgroundColor: AppColors.lightPrimaryColor,
-                            textColor: AppColors.secondaryColor,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
+                            textColor: Colors.white,
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _formKey.currentState!.save();

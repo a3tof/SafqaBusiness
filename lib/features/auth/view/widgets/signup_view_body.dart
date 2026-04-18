@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/constants.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
 import 'package:safqaseller/core/widgets/custom_text_field.dart';
@@ -180,8 +179,8 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   isLoading
                       ? const CustomLoadingButton()
                       : CustomButton(
-                          backgroundColor: AppColors.lightPrimaryColor,
-                          textColor: AppColors.secondaryColor,
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          textColor: Colors.white,
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               formKey.currentState!.save();

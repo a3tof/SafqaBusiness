@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 
 class CustomCheckBox extends StatelessWidget {
@@ -24,11 +23,11 @@ class CustomCheckBox extends StatelessWidget {
         height: 24.sp,
         width: 24.sp,
         decoration: ShapeDecoration(
-          color: isChecked ? AppColors.primaryColor : Colors.white,
+          color: isChecked ? Theme.of(context).colorScheme.primary : Theme.of(context).cardColor,
           shape: RoundedRectangleBorder(
             side: BorderSide(
               width: 1.50,
-              color: isChecked ? Colors.transparent : Color(0xFFDCDEDE),
+              color: isChecked ? Colors.transparent : Theme.of(context).dividerColor,
             ),
             borderRadius: BorderRadius.circular(8.r),
           ),

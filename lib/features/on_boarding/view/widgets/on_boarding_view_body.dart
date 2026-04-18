@@ -5,7 +5,6 @@ import 'package:safqaseller/constants.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/features/auth/view/signin_view.dart';
 import 'package:safqaseller/features/auth/view/signup_view.dart';
@@ -60,8 +59,8 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                   dotsCount: 3,
                   position: currentPage.toDouble(),
                   decorator: DotsDecorator(
-                    activeColor: AppColors.primaryColor,
-                    color: AppColors.primaryColor.withAlpha(
+                    activeColor: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.primary.withAlpha(
                       (0.3 * 255).toInt(),
                     ),
                     size: Size.square(8.r),
@@ -75,8 +74,8 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                     Navigator.pushNamed(context, SigninView.routeName);
                   },
                   text: S.of(context).logIn,
-                  textColor: AppColors.secondaryColor,
-                  backgroundColor: AppColors.primaryColor,
+                  textColor: Theme.of(context).colorScheme.secondary,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 SizedBox(height: 12.h),
                 CustomButton(
@@ -85,8 +84,8 @@ class _OnBoardingViewBodyState extends State<OnBoardingViewBody> {
                     Navigator.pushNamed(context, SignupView.routeName);
                   },
                   text: S.of(context).signUp,
-                  textColor: AppColors.primaryColor,
-                  backgroundColor: AppColors.secondaryColor,
+                  textColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
                 ),
                 SizedBox(height: 24.h),
               ],

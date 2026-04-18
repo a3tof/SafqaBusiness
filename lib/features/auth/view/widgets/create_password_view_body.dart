@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/constants.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
@@ -73,7 +72,7 @@ class _CreatePasswordViewBodyState extends State<CreatePasswordViewBody> {
                     Text(
                       S.of(context).createPasswordDescription,
                       style: TextStyles.regular14(context).copyWith(
-                        color: const Color(0xFF4C4C4C),
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                         height: 1.5,
                       ),
                     ),
@@ -116,7 +115,7 @@ class _CreatePasswordViewBodyState extends State<CreatePasswordViewBody> {
                             },
                             text: S.of(context).createPassword,
                             textColor: Colors.white,
-                            backgroundColor: AppColors.primaryColor,
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                           ),
                   ],
                 ),

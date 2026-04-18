@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/constants.dart';
 import 'package:safqaseller/core/service_locator.dart';
-import 'package:safqaseller/core/utils/app_color.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
@@ -238,7 +237,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                     S.of(context).verificationCodeDescription,
                     textAlign: TextAlign.center,
                     style: TextStyles.regular14(context).copyWith(
-                      color: const Color(0xFF4C4C4C),
+                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                       height: 1.5,
                     ),
                   ),
@@ -287,8 +286,8 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                 isLoading
                     ? const CustomLoadingButton()
                     : CustomButton(
-                        backgroundColor: AppColors.lightPrimaryColor,
-                        textColor: AppColors.secondaryColor,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        textColor: Colors.white,
                         onPressed: _submit,
                         text: S.of(context).verify,
                       ),
@@ -299,7 +298,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                     Text(
                       S.of(context).dontReceiveCode,
                       style: TextStyles.regular14(context)
-                          .copyWith(color: const Color(0xFF4C4C4C)),
+                          .copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                     ),
                     SizedBox(width: 4.sp),
                     GestureDetector(
@@ -307,7 +306,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                       child: Text(
                         S.of(context).resend,
                         style: TextStyles.semiBold14(context)
-                            .copyWith(color: AppColors.primaryColor),
+                            .copyWith(color: Theme.of(context).colorScheme.primary),
                       ),
                     ),
                   ],
