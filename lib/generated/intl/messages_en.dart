@@ -508,7 +508,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Upload National ID (Front)",
     ),
     "kUploadOwner": MessageLookupByLibrary.simpleMessage(
-      "Upload owner's national ID (front)",
+      "Upload owner\'s national ID (front)",
     ),
     "kUploadOwners": MessageLookupByLibrary.simpleMessage(
       "Upload Owner\'s National ID",

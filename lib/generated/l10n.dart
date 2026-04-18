@@ -27,8 +27,6 @@ class S {
 
   static const AppLocalizationDelegate delegate = AppLocalizationDelegate();
 
-  static List<Locale> get supportedLocales => delegate.supportedLocales;
-
   static Future<S> load(Locale locale) {
     final name = (locale.countryCode?.isEmpty ?? false)
         ? locale.languageCode
@@ -1256,7 +1254,7 @@ class S {
     );
   }
 
-  /// Upload owner's national ID (front)
+  /// `Upload owner's national ID (front)`
   String get kUploadOwner {
     return Intl.message(
       'Upload owner\'s national ID (front)',
