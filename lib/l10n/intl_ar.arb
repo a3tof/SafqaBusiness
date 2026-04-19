@@ -623,9 +623,17 @@
   "@profileLogoutDialogMessage": {
     "description": "Confirmation message shown before logging out from the profile screen"
   },
+  "profileLanguageConfirmButton": "تأكيد",
+  "@profileLanguageConfirmButton": {
+    "description": "Primary action in the profile language selection dialog"
+  },
   "profileLanguageDialogMessage": "اختر اللغة التي تريد استخدامها.",
   "@profileLanguageDialogMessage": {
     "description": "Prompt shown in the language selection dialog on the profile screen"
+  },
+  "profileSelectLanguageTitle": "اختر اللغة",
+  "@profileSelectLanguageTitle": {
+    "description": "Title for the language selection dialog on the profile screen"
   },
   "kDepositSuccessful": "تم الإيداع بنجاح!",
   "@kDepositSuccessful": {

@@ -1615,6 +1615,16 @@ class S {
     );
   }
 
+  /// `Confirm`
+  String get profileLanguageConfirmButton {
+    return Intl.message(
+      'Confirm',
+      name: 'profileLanguageConfirmButton',
+      desc: 'Primary action in the profile language selection dialog',
+      args: [],
+    );
+  }
+
   /// `Choose the language you want to use.`
   String get profileLanguageDialogMessage {
     return Intl.message(
@@ -1622,6 +1632,16 @@ class S {
       name: 'profileLanguageDialogMessage',
       desc:
           'Prompt shown in the language selection dialog on the profile screen',
+      args: [],
+    );
+  }
+
+  /// `Select Language`
+  String get profileSelectLanguageTitle {
+    return Intl.message(
+      'Select Language',
+      name: 'profileSelectLanguageTitle',
+      desc: 'Title for the language selection dialog on the profile screen',
       args: [],
     );
   }

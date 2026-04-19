@@ -571,11 +571,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "Passwords do not match",
     ),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+    "profileLanguageConfirmButton": MessageLookupByLibrary.simpleMessage(
+      "Confirm",
+    ),
     "profileLanguageDialogMessage": MessageLookupByLibrary.simpleMessage(
       "Choose the language you want to use.",
     ),
     "profileLogoutDialogMessage": MessageLookupByLibrary.simpleMessage(
       "Are you sure you want to log out?",
+    ),
+    "profileSelectLanguageTitle": MessageLookupByLibrary.simpleMessage(
+      "Select Language",
     ),
     "resend": MessageLookupByLibrary.simpleMessage("Resend"),
     "retry": MessageLookupByLibrary.simpleMessage("Retry"),

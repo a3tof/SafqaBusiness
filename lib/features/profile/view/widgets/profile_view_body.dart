@@ -209,60 +209,121 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     return showDialog<void>(
       context: context,
       builder: (dialogContext) {
-        return BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-          child: Dialog(
-            backgroundColor: Theme.of(context).dialogTheme.backgroundColor,
-            insetPadding: EdgeInsets.symmetric(horizontal: 28.w),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    S.of(context).kChangeLanguage,
-                    textAlign: TextAlign.center,
-                    style: TextStyles.bold28(
-                      context,
-                    ).copyWith(color: Theme.of(context).colorScheme.primary),
+        var draftLanguage = selectedLanguage;
+        final theme = Theme.of(context);
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Dialog(
+                backgroundColor: theme.cardColor,
+                elevation: 12,
+                shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.22),
+                insetPadding: EdgeInsets.symmetric(horizontal: 28.w),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.r),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(22.w, 28.h, 22.w, 22.h),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        S.of(context).profileSelectLanguageTitle,
+                        textAlign: TextAlign.center,
+                        style: TextStyles.bold22(context).copyWith(
+                          color: theme.colorScheme.primary,
+                        ),
+                      ),
+                      SizedBox(height: 28.h),
+                      _LanguageOptionTile(
+                        label: S.of(context).kEnglish,
+                        value: 'english',
+                        groupValue: draftLanguage,
+                        onTap: () =>
+                            setModalState(() => draftLanguage = 'english'),
+                      ),
+                      SizedBox(height: 18.h),
+                      _LanguageOptionTile(
+                        label: S.of(context).kArabic,
+                        value: 'arabic',
+                        groupValue: draftLanguage,
+                        onTap: () =>
+                            setModalState(() => draftLanguage = 'arabic'),
+                      ),
+                      SizedBox(height: 28.h),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SizedBox(
+                              height: 48.h,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (draftLanguage == 'english') {
+                                    _changeLanguage(
+                                      context: dialogContext,
+                                      locale: const Locale('en'),
+                                      cacheValue: 'english',
+                                    );
+                                  } else {
+                                    _changeLanguage(
+                                      context: dialogContext,
+                                      locale: const Locale('ar'),
+                                      cacheValue: 'arabic',
+                                    );
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: theme.colorScheme.primary,
+                                  foregroundColor:
+                                      theme.colorScheme.onPrimary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                ),
+                                child: Text(
+                                  S.of(context).profileLanguageConfirmButton,
+                                  style: TextStyles.bold18(context).copyWith(
+                                    color: theme.colorScheme.onPrimary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 12.w),
+                          Expanded(
+                            child: SizedBox(
+                              height: 48.h,
+                              child: ElevatedButton(
+                                onPressed: () =>
+                                    Navigator.of(dialogContext).pop(),
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 0,
+                                  backgroundColor: theme.colorScheme.primary
+                                      .withValues(alpha: 0.1),
+                                  foregroundColor: theme.colorScheme.primary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.r),
+                                  ),
+                                ),
+                                child: Text(
+                                  S.of(context).notificationsCancel,
+                                  style: TextStyles.bold18(context).copyWith(
+                                    color: theme.colorScheme.primary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    S.of(context).profileLanguageDialogMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyles.regular20(
-                      context,
-                    ).copyWith(color: Theme.of(context).hintColor, height: 1.4),
-                  ),
-                  SizedBox(height: 24.h),
-                  _LanguageOptionTile(
-                    label: S.of(context).kEnglish,
-                    value: 'english',
-                    groupValue: selectedLanguage,
-                    onTap: () => _changeLanguage(
-                      context: dialogContext,
-                      locale: const Locale('en'),
-                      cacheValue: 'english',
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  _LanguageOptionTile(
-                    label: S.of(context).kArabic,
-                    value: 'arabic',
-                    groupValue: selectedLanguage,
-                    onTap: () => _changeLanguage(
-                      context: dialogContext,
-                      locale: const Locale('ar'),
-                      cacheValue: 'arabic',
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );
@@ -476,37 +537,30 @@ class _LanguageOptionTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSelected = value == groupValue;
+    final primary = Theme.of(context).colorScheme.primary;
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(14.r),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 6.h),
-        decoration: BoxDecoration(
-          color: isSelected ? Theme.of(context).colorScheme.secondary : Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(14.r),
-          border: Border.all(
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Theme.of(context).dividerColor,
-          ),
-        ),
+      borderRadius: BorderRadius.circular(8.r),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 4.h),
         child: Row(
           children: [
-            Expanded(
-              child: Text(
-                label,
-                style: TextStyles.semiBold16(
-                  context,
-                ).copyWith(color: Theme.of(context).colorScheme.primary),
-              ),
-            ),
             Icon(
               isSelected
                   ? Icons.radio_button_checked_rounded
                   : Icons.radio_button_off_rounded,
-              color: Theme.of(context).colorScheme.primary,
-              size: 22.sp,
+              color: primary,
+              size: 24.sp,
+            ),
+            SizedBox(width: 14.w),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyles.regular16(
+                  context,
+                ).copyWith(color: primary),
+              ),
             ),
           ],
         ),

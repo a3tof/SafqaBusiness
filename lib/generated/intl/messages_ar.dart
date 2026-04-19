@@ -547,11 +547,17 @@ class MessageLookup extends MessageLookupByLibrary {
       "كلمتا المرور غير متطابقتين",
     ),
     "phoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "profileLanguageConfirmButton": MessageLookupByLibrary.simpleMessage(
+      "تأكيد",
+    ),
     "profileLanguageDialogMessage": MessageLookupByLibrary.simpleMessage(
       "اختر اللغة التي تريد استخدامها.",
     ),
     "profileLogoutDialogMessage": MessageLookupByLibrary.simpleMessage(
       "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    ),
+    "profileSelectLanguageTitle": MessageLookupByLibrary.simpleMessage(
+      "اختر اللغة",
     ),
     "resend": MessageLookupByLibrary.simpleMessage("إعادة الإرسال"),
     "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
