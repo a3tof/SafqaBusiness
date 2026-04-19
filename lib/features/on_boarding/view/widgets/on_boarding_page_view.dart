@@ -20,7 +20,9 @@ class OnBoardingPageView extends StatelessWidget {
           subtitle: S.of(context).onBoardingSubtitle1,
           title: Text(
             S.of(context).onBoardingTitle1,
-            style: TextStyles.bold23(context),
+            style: TextStyles.bold23(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
@@ -30,7 +32,9 @@ class OnBoardingPageView extends StatelessWidget {
           subtitle: S.of(context).onBoardingSubtitle2,
           title: Text(
             S.of(context).onBoardingTitle2,
-            style: TextStyles.bold23(context),
+            style: TextStyles.bold23(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
@@ -40,7 +44,9 @@ class OnBoardingPageView extends StatelessWidget {
           subtitle: S.of(context).onBoardingSubtitle3,
           title: Text(
             S.of(context).onBoardingTitle3,
-            style: TextStyles.bold23(context),
+            style: TextStyles.bold23(context).copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+            ),
             textAlign: TextAlign.center,
           ),
         ),
