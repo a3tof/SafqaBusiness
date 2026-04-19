@@ -55,12 +55,17 @@ class PageViewItem extends StatelessWidget {
                       Assets.imagesIconoirLanguage,
                       width: 24.sp,
                       height: 24.sp,
+                      colorFilter: ColorFilter.mode(
+                        Theme.of(context).colorScheme.onSurface,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     SizedBox(width: 8.w),
                     Text(
                       isArabic ? 'AR' : 'EN',
-                      style: TextStyles.semiBold13(context)
-                          .copyWith(color: Colors.black87),
+                      style: TextStyles.semiBold13(context).copyWith(
+                        color: Theme.of(context).colorScheme.onSurface,
+                      ),
                     ),
                   ],
                 ),
@@ -91,8 +96,10 @@ class PageViewItem extends StatelessWidget {
             child: Text(
               subtitle,
               textAlign: TextAlign.center,
-              style: TextStyles.regular13(context)
-                  .copyWith(color: Colors.black, height: 1.25),
+              style: TextStyles.regular13(context).copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                height: 1.25,
+              ),
             ),
           ),
           const Spacer(flex: 1),
