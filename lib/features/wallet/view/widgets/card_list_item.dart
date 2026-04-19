@@ -62,15 +62,14 @@ class CardListItem extends StatelessWidget {
                 style: TextStyles.medium18(context),
               ),
               SizedBox(height: 2.h),
-              RichText(
-                text: TextSpan(
+              Text.rich(
+                TextSpan(
                   children: [
                     TextSpan(
                       text: '.... .... .... ',
                       style: TextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
-                        color: Colors.black,
                         letterSpacing: 1,
                       ),
                     ),
@@ -79,7 +78,6 @@ class CardListItem extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black,
                       ),
                     ),
                   ],
