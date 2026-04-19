@@ -61,7 +61,6 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
                 _jumpToActivePlanTab(viewModel.state.activePlanId);
               },
               child: SafeArea(
-                top: false,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   slivers: [
