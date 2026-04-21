@@ -1114,6 +1114,23 @@
   "@notificationsMarkAll": {
     "description": "Mark all notifications as read action"
   },
+  "notificationsAll": "All",
+  "@notificationsAll": {
+    "description": "Select-all checkbox label on notifications toolbar"
+  },
+  "notificationsSelect": "Select",
+  "@notificationsSelect": {
+    "description": "Enter multi-select mode on notifications screen"
+  },
+  "notificationsDeleteSelectionConfirm": "Delete {count} selected notifications?",
+  "@notificationsDeleteSelectionConfirm": {
+    "description": "Confirm deleting multiple selected notifications",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "notificationsOptionsTitle": "Notification Options",
   "@notificationsOptionsTitle": {
     "description": "Bottom sheet title for notification actions"

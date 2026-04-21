@@ -61,6 +61,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m17(count) => "${count} min ago";
 
+  static String m18(count) => "Delete $count selected notifications?";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addNewCard": MessageLookupByLibrary.simpleMessage("Add new card"),
@@ -534,6 +536,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationsHoursAgo": m16,
     "notificationsJustNow": MessageLookupByLibrary.simpleMessage("Just now"),
     "notificationsMarkAll": MessageLookupByLibrary.simpleMessage("Mark all"),
+    "notificationsAll": MessageLookupByLibrary.simpleMessage("All"),
+    "notificationsSelect": MessageLookupByLibrary.simpleMessage("Select"),
+    "notificationsDeleteSelectionConfirm": m18,
     "notificationsMinutesAgo": m17,
     "notificationsOptionsTitle": MessageLookupByLibrary.simpleMessage(
       "Notification Options",

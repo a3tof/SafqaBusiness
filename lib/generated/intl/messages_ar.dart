@@ -59,6 +59,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m17(count) => "منذ ${count} دقيقة";
 
+  static String m18(count) => "حذف ${count} إشعار محدد؟";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "addNewCard": MessageLookupByLibrary.simpleMessage("إضافة بطاقة جديدة"),
@@ -510,6 +512,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "notificationsHoursAgo": m16,
     "notificationsJustNow": MessageLookupByLibrary.simpleMessage("الآن"),
     "notificationsMarkAll": MessageLookupByLibrary.simpleMessage("تحديد الكل"),
+    "notificationsAll": MessageLookupByLibrary.simpleMessage("الكل"),
+    "notificationsSelect": MessageLookupByLibrary.simpleMessage("تحديد"),
+    "notificationsDeleteSelectionConfirm": m18,
     "notificationsMinutesAgo": m17,
     "notificationsOptionsTitle": MessageLookupByLibrary.simpleMessage(
       "خيارات الإشعار",

@@ -2921,6 +2921,36 @@ class S {
     );
   }
 
+  /// `All`
+  String get notificationsAll {
+    return Intl.message(
+      'All',
+      name: 'notificationsAll',
+      desc: 'Select-all checkbox label on notifications toolbar',
+      args: [],
+    );
+  }
+
+  /// `Select`
+  String get notificationsSelect {
+    return Intl.message(
+      'Select',
+      name: 'notificationsSelect',
+      desc: 'Enter multi-select mode on notifications screen',
+      args: [],
+    );
+  }
+
+  /// `Delete {count} selected notifications?`
+  String notificationsDeleteSelectionConfirm(int count) {
+    return Intl.message(
+      'Delete $count selected notifications?',
+      name: 'notificationsDeleteSelectionConfirm',
+      desc: 'Confirm deleting multiple selected notifications',
+      args: [count],
+    );
+  }
+
   /// `Notification Options`
   String get notificationsOptionsTitle {
     return Intl.message(

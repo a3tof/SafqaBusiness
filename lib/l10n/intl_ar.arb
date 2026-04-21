@@ -1114,6 +1114,23 @@
   "@notificationsMarkAll": {
     "description": "Mark all notifications as read action"
   },
+  "notificationsAll": "الكل",
+  "@notificationsAll": {
+    "description": "Select-all checkbox label on notifications toolbar"
+  },
+  "notificationsSelect": "تحديد",
+  "@notificationsSelect": {
+    "description": "Enter multi-select mode on notifications screen"
+  },
+  "notificationsDeleteSelectionConfirm": "حذف {count} إشعار محدد؟",
+  "@notificationsDeleteSelectionConfirm": {
+    "description": "Confirm deleting multiple selected notifications",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "notificationsOptionsTitle": "خيارات الإشعار",
   "@notificationsOptionsTitle": {
     "description": "Bottom sheet title for notification actions"
