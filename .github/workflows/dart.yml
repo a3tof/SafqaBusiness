@@ -8,27 +8,48 @@ jobs:
     name: 🎉 iOS Build
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - uses: subosito/flutter-action@v2
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
           architecture: x64
-      - run: flutter pub get
-      
 
-      - run: pod repo update
-        working-directory: ios
+      - name: Install dependencies
+        run: flutter pub get
 
-      - run: flutter build ios --release --no-codesign
+      - name: Force iOS Deployment Target to 13.0 in Podfile
+        run: |
+          echo "Checking Podfile..."
+          if [ -f "ios/Podfile" ]; then
+            sed -i '' 's/platform :ios, .*/platform :ios, "13.0"/' ios/Podfile
+          else
+            echo "platform :ios, '13.0'" > ios/Podfile
+          fi
+          echo "Updated Podfile:"
+          cat ios/Podfile  # Debugging: Verify changes
 
-      - run: mkdir Payload
+      - name: Force iOS 13.0 in Xcode project
+        run: |
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 13.0;/g' ios/Runner.xcodeproj/project.pbxproj
+          echo "Updated Xcode project deployment target."
+
+      - name: Install CocoaPods dependencies
+        run: |
+          cd ios
+          rm -rf Pods Podfile.lock
+          pod install --repo-update
+
+      - name: Build iOS App
+        run: flutter build ios --release --no-codesign
+
+      - name: Prepare IPA packaging
+        run: mkdir -p Payload && mv Runner.app Payload
         working-directory: build/ios/iphoneos
 
-      - run: mv Runner.app/ Payload
-        working-directory: build/ios/iphoneos
-
-      - name: Zip output
+      - name: Create IPA file
         run: zip -qq -r -9 FlutterIpaExport.ipa Payload
         working-directory: build/ios/iphoneos
 
@@ -39,4 +60,4 @@ jobs:
           file: build/ios/iphoneos/FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "This is first release"
+          body: "This is the first release"
