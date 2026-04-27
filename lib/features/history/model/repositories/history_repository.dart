@@ -23,6 +23,11 @@ class HistoryRepository {
       },
     );
 
+    // 403 = seller profile not yet complete; return empty page silently.
+    if (response.statusCode == 403) {
+      return HistoryPage(items: [], totalCount: 0, page: page, pageSize: pageSize);
+    }
+
     _require(response);
 
     // ── TEMP DEBUG: print raw response to see actual field names ─────────────

@@ -14,6 +14,8 @@ class WalletRepository {
       endPoint: 'Wallet/balance',
       requiresAuth: true,
     );
+    // 403 = seller profile not yet complete; return zero balance silently.
+    if (r.statusCode == 403) return const WalletBalance(balance: 0);
     _require(r);
     final body = _asMap(r.data);
     if (body != null) {
@@ -70,6 +72,8 @@ class WalletRepository {
       endPoint: 'Card/cards',
       requiresAuth: true,
     );
+    // 403 = seller profile not yet complete; return empty cards silently.
+    if (r.statusCode == 403) return [];
     _require(r);
     final list = _asList(r.data);
     if (list == null) {
