@@ -252,11 +252,22 @@ class _HistoryList extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.5,
               child: Center(
-                child: Text(
-                  isSearchActive ? s.historyNoMatchingItems : s.historyNoItems,
-                  style: TextStyles.regular14(
-                    context,
-                  ).copyWith(color: const Color(0xFF666666)),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.history_rounded,
+                      size: 60.sp,
+                      color: const Color(0xFF666666),
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      isSearchActive ? s.historyNoMatchingItems : s.historyNoItems,
+                      style: TextStyles.regular14(
+                        context,
+                      ).copyWith(color: const Color(0xFF666666)),
+                    ),
+                  ],
                 ),
               ),
             )
