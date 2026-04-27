@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:safqaseller/core/network/dio_client.dart';
 import 'package:safqaseller/features/history/model/models/history_models.dart';
 
@@ -23,6 +24,11 @@ class HistoryRepository {
     );
 
     _require(response);
+
+    // ── TEMP DEBUG: print raw response to see actual field names ─────────────
+    debugPrint('📋 Get-History raw response: ${response.data}');
+    // ────────────────────────────────────────────────────────────────────────
+
     return HistoryPage.fromJson(
       response.data,
       page: page,

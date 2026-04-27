@@ -60,9 +60,13 @@ class _LotDetailViewState extends State<LotDetailView> {
     );
 
     if (confirmed == true && mounted) {
-      await context.read<AuctionDetailViewModel>().deleteAuction(
-        widget.args.item.auctionId,
-      );
+      final cubit = context.read<AuctionDetailViewModel>();
+      // Use detail.id (from viewAuction response) when it's valid (> 0).
+      // Fall back to args.item.auctionId when the id wasn't parsed from the
+      // view response (detail.id defaults to 0 if the server field is missing).
+      final detailId = cubit.detail?.id ?? 0;
+      final idToDelete = detailId > 0 ? detailId : widget.args.item.auctionId;
+      await cubit.deleteAuction(idToDelete);
     }
   }
 

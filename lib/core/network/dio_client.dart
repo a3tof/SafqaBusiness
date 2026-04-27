@@ -373,7 +373,10 @@ class DioHelper {
     try {
       return await dio.delete<dynamic>(
         endPoint,
-        options: Options(extra: {'requiresAuth': requiresAuth}),
+        options: Options(
+          contentType: Headers.jsonContentType,
+          extra: {'requiresAuth': requiresAuth},
+        ),
       );
     } on DioException catch (e) {
       throw Exception(_dioConnectionError(e));

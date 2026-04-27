@@ -58,6 +58,9 @@ class HistoryItem {
 
     return HistoryItem(
       id: rawId ?? rawLotId ?? rawAuctionId ?? 0,
+      // The Get-History response uses 'id' as the auction id (same value that
+      // Auction/View/{id} and Auction/Delete/{id} expect).
+      // 'auctionId' is kept as an alias but 'id' is the primary source.
       auctionId: rawAuctionId ?? rawId ?? rawLotId ?? 0,
       lotNumber:
           _firstNonEmptyString([

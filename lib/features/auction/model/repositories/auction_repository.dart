@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safqaseller/core/network/dio_client.dart';
 import 'package:safqaseller/features/auction/model/models/auction_detail_model.dart';
@@ -151,8 +152,31 @@ class AuctionRepository {
     );
     _requireSuccess(response);
 
-    final body = _asMap(response.data);
-    return AuctionDetailModel.fromJson(body);
+    final envelope = _asMap(response.data);
+
+    // DEBUG: log raw keys so we can see the actual field names from the server
+    if (kDebugMode) {
+      debugPrint('🔍 View[$id] envelope keys: ${envelope.keys.toList()}');
+      debugPrint('🔍 View[$id] raw: ${response.data}');
+    }
+
+    // The server may wrap the payload in an envelope:
+    //   { "isSuccess": true, "data": { "id": ..., ... } }
+    // Unwrap it so fromJson sees the real auction fields.
+    final data =
+        _asMapOrNull(envelope['data'] ?? envelope['Data']) ??
+        _asMapOrNull(envelope['result'] ?? envelope['Result']) ??
+        _asMapOrNull(envelope['auction'] ?? envelope['Auction']) ??
+        (envelope.containsKey('id') || envelope.containsKey('Id')
+            ? envelope
+            : null) ??
+        envelope;
+
+    if (kDebugMode) {
+      debugPrint('🔍 View[$id] parsed id: ${data['id'] ?? data['Id']}');
+    }
+
+    return AuctionDetailModel.fromJson(data);
   }
 
   Future<void> editAuction({
@@ -271,6 +295,16 @@ class AuctionRepository {
       return decoded.map((key, value) => MapEntry(key.toString(), value));
     }
     return const {};
+  }
+
+  Map<String, dynamic>? _asMapOrNull(dynamic data) {
+    if (data == null) return null;
+    final decoded = _decodeIfNeeded(data);
+    if (decoded is Map<String, dynamic>) return decoded;
+    if (decoded is Map) {
+      return decoded.map((key, value) => MapEntry(key.toString(), value));
+    }
+    return null;
   }
 
   void _requireBackendSuccess(dynamic data, {required String fallbackMessage}) {
