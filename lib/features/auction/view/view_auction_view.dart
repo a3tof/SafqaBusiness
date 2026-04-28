@@ -569,22 +569,91 @@ class _AttributeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5), width: 0.5),
+        color: scheme.primary.withValues(alpha: 0.06),
+        borderRadius: BorderRadius.circular(8.r),
+        border: Border.all(color: scheme.primary.withValues(alpha: 0.35), width: 1),
       ),
-      child: Text(
-        value,
-        style: TextStyles.regular14(context).copyWith(
-          color: Theme.of(context).colorScheme.onSurface,
-        ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            _iconForAttribute(value),
+            size: 14.sp,
+            color: scheme.primary,
+          ),
+          SizedBox(width: 5.w),
+          Text(
+            value,
+            style: TextStyles.regular13(context).copyWith(color: scheme.primary),
+          ),
+        ],
       ),
     );
   }
+
+  /// Picks a contextual icon based on the attribute value text.
+  IconData _iconForAttribute(String val) {
+    final v = val.trim().toLowerCase();
+
+    // Strip thousand separators to test for a plain number
+    final digits = v.replaceAll(',', '').replaceAll('.', '').replaceAll(' ', '');
+    final asInt = int.tryParse(digits);
+
+    // Year (4-digit number 1900–2099)
+    if (asInt != null && asInt >= 1900 && asInt <= 2099) {
+      return Icons.directions_car_outlined;
+    }
+
+    // Large numeric → mileage / odometer
+    if (asInt != null && asInt > 2099) {
+      return Icons.speed_outlined;
+    }
+
+    // Transmission
+    if (v.contains('automatic') || v.contains('auto') ||
+        v.contains('manual') || v.contains('أوتوماتيك') || v.contains('يدوي')) {
+      return Icons.settings_outlined;
+    }
+
+    // Hybrid
+    if (v.contains('hybrid') || v.contains('هجين')) {
+      return Icons.electric_bolt_outlined;
+    }
+
+    // Electric
+    if (v.contains('electric') || v.contains('كهربائي')) {
+      return Icons.electric_car_outlined;
+    }
+
+    // Fuel type
+    if (v.contains('petrol') || v.contains('diesel') || v.contains('gas') ||
+        v.contains('benzin') || v.contains('بنزين') || v.contains('ديزل')) {
+      return Icons.local_gas_station_outlined;
+    }
+
+    // Location (value has comma like "Cairo, Egypt")
+    if (val.contains(',')) return Icons.public_outlined;
+
+    // Colour names (EN + AR)
+    const colorWords = [
+      'red', 'blue', 'green', 'yellow', 'black', 'white', 'silver',
+      'gray', 'grey', 'orange', 'purple', 'brown', 'pink', 'gold',
+      'أحمر', 'أزرق', 'أخضر', 'أصفر', 'أسود', 'أبيض', 'فضي', 'رمادي',
+    ];
+    if (colorWords.any((c) => v.contains(c))) return Icons.palette_outlined;
+
+    // Condition
+    if (v.contains('new') || v.contains('جديد')) return Icons.fiber_new_outlined;
+    if (v.contains('used') || v.contains('مستعمل')) return Icons.history_outlined;
+
+    return Icons.label_outline;
+  }
 }
+
 
 // ── Date range card ───────────────────────────────────────────────────────────
 
