@@ -560,7 +560,7 @@ class _AttributeChip extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: const Color(0xFFCCCCCC), width: 0.5),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5), width: 0.5),
       ),
       child: Text(
         value,
@@ -589,7 +589,7 @@ class _DateRangeCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: const Color(0xFFCCCCCC), width: 0.5),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5), width: 0.5),
       ),
       child: Row(
         children: [
@@ -666,7 +666,7 @@ class _InfoSection extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: const Color(0xFFCCCCCC), width: 0.5),
+        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5), width: 0.5),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -675,7 +675,7 @@ class _InfoSection extends StatelessWidget {
             width: double.infinity,
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
             decoration: BoxDecoration(
-              color: const Color(0xFFE6E6E6),
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.r),
                 topRight: Radius.circular(10.r),
@@ -684,7 +684,7 @@ class _InfoSection extends StatelessWidget {
             child: Text(
               title,
               style: TextStyles.semiBold16(context).copyWith(
-                color: const Color(0xFF1F2024),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ),
