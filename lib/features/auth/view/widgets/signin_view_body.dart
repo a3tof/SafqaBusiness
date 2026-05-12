@@ -125,7 +125,7 @@ class _SigninViewBodyState extends State<SigninViewBody> {
                       ? const CustomLoadingButton()
                       : CustomButton(
                           backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white,
+                          textColor: Theme.of(context).colorScheme.onPrimary,
                           text: S.of(context).signIn,
                           onPressed: () {
                             if (formKey.currentState!.validate()) {

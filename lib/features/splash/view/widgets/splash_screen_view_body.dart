@@ -1,4 +1,4 @@
-﻿import 'dart:math' as math;
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -155,7 +155,16 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
                     alignment: Alignment.center,
                     child: Transform.scale(
                       scale: _rippleScaleAnim.value,
-                      child: Image.asset(Assets.imagesRipple, width: 100.w),
+                      child: Image.asset(
+                        Assets.imagesRipple,
+                        width: 100.w,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context)
+                                .colorScheme
+                                .primary
+                                .withValues(alpha: 0.5)
+                            : null,
+                      ),
                     ),
                   ),
                 ),
@@ -167,7 +176,13 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
                       angle: _hammerRotateAnim.value * math.pi,
                       child: Transform.scale(
                         scale: _hammerScaleAnim.value,
-                        child: Image.asset(Assets.imagesHammer, width: 90.w),
+                        child: Image.asset(
+                          Assets.imagesHammer,
+                          width: 90.w,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Theme.of(context).colorScheme.primary
+                              : null,
+                        ),
                       ),
                     ),
                   ),
@@ -178,7 +193,13 @@ class _SplashScreenBodyState extends State<SplashScreenBody>
                     position: _textSlideAnim,
                     child: FadeTransition(
                       opacity: _textOpacityAnim,
-                      child: Image.asset(Assets.imagesSAFQA, width: 180.w),
+                      child: Image.asset(
+                        Assets.imagesSAFQA,
+                        width: 180.w,
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Theme.of(context).colorScheme.primary
+                            : null,
+                      ),
                     ),
                   ),
                 ),

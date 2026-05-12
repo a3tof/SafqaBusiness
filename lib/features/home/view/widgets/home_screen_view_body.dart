@@ -268,7 +268,9 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                       onTap: () => _maybeShowDialog(homeState: state),
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.black.withOpacity(0.45),
+                                          color: Theme.of(context).brightness == Brightness.dark
+                                              ? Colors.black.withValues(alpha: 0.6)
+                                              : Colors.black.withValues(alpha: 0.45),
                                           borderRadius: BorderRadius.circular(12.r),
                                         ),
                                         child: Center(
@@ -277,7 +279,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                             children: [
                                               Icon(
                                                 Icons.lock_rounded,
-                                                color: Colors.white.withOpacity(0.9),
+                                                color: Colors.white,
                                                 size: 40.sp,
                                               ),
                                               SizedBox(height: 8.h),

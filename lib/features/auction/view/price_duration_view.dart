@@ -293,7 +293,7 @@ class _PriceDurationViewState extends State<PriceDurationView> {
                           s.auctionDuration,
                           style: TextStyles.regular12(
                             context,
-                          ).copyWith(color: const Color(0xFF666666)),
+                          ).copyWith(color: Theme.of(context).hintColor),
                         ),
                         SizedBox(height: 4.h),
                         Text(
@@ -351,7 +351,7 @@ class _DateField extends StatelessWidget {
         hintText: hintText,
         hintStyle: TextStyles.regular12(
           context,
-        ).copyWith(color: const Color(0xFF9A9A9A)),
+        ).copyWith(color: Theme.of(context).hintColor),
         suffixIcon: Icon(
           Icons.calendar_today_outlined,
           color: Theme.of(context).colorScheme.primary,
@@ -447,7 +447,7 @@ class _ChoiceChipBox extends StatelessWidget {
         child: Text(
           label,
           style: TextStyles.regular11(context).copyWith(
-            color: selected ? Theme.of(context).colorScheme.primary : Color(0xFF888888),
+            color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).hintColor,
           ),
         ),
       ),
@@ -476,7 +476,7 @@ class _PrimaryButton extends StatelessWidget {
         ),
         child: Text(
           label,
-          style: TextStyles.semiBold14(context).copyWith(color: Colors.white),
+          style: TextStyles.semiBold14(context).copyWith(color: Theme.of(context).colorScheme.onPrimary),
         ),
       ),
     );

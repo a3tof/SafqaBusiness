@@ -23,10 +23,11 @@ class HomeActionCard extends StatelessWidget {
   final bool showAddIcon;
   final double? width;
 
-  static const _overlay = Color.fromRGBO(2, 62, 138, 0.30);
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final overlayColor = theme.colorScheme.primary.withValues(alpha: 0.35);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -34,23 +35,20 @@ class HomeActionCard extends StatelessWidget {
         height: 148.h,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
-          border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
-          // Shadow from design: 0 2px 2px rgba(0,0,0,0.25)
-          boxShadow: const [
+          border: Border.all(color: theme.colorScheme.primary, width: 2),
+          boxShadow: [
             BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.25),
+              color: Colors.black.withValues(alpha: 0.25),
               blurRadius: 2,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        // ClipRRect keeps image + overlay inside the rounded border
         child: ClipRRect(
           borderRadius: BorderRadius.circular(14.r),
           child: Stack(
             fit: StackFit.expand,
             children: [
-              // Background image
               if (backgroundImage != null)
                 Image.asset(
                   backgroundImage!,
@@ -58,9 +56,7 @@ class HomeActionCard extends StatelessWidget {
                   errorBuilder: (context, error, stack) =>
                       const SizedBox.shrink(),
                 ),
-              // Blue tinted overlay
-              Container(color: _overlay),
-              // Centred label row
+              Container(color: overlayColor),
               Center(
                 child: Builder(
                   builder: (context) => Row(
