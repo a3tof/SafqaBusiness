@@ -130,6 +130,7 @@ class AuthRepository {
   ) async {
     final r = await dioHelper.postData(
       endPoint: 'Auth/google',
+      queryParams: {'role': 'seller'},
       data: model.toJson(),
     );
     _requireSuccess(r);
@@ -143,6 +144,7 @@ class AuthRepository {
   ) async {
     final r = await dioHelper.postData(
       endPoint: 'Auth/facebook',
+      queryParams: {'role': 'seller'},
       data: model.toJson(),
     );
     _requireSuccess(r);

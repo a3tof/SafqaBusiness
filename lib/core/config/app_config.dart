@@ -23,7 +23,7 @@ abstract class AppConfig {
   /// Used as `serverClientId` in `GoogleSignIn.instance.initialize()`.
   /// Get it from: https://console.cloud.google.com → APIs & Services → Credentials
   static const String googleWebClientId =
-      '384971087142-tiq0tughjavrprnc34v4r9i18nhedl25.apps.googleusercontent.com';
+      '78103533008-o2atss4kcbc7d0h2r8elqfgvglcl2fkb.apps.googleusercontent.com';
 
   // ── Facebook Login ─────────────────────────────────────────────────────────
 
