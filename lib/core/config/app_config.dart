@@ -23,16 +23,17 @@ abstract class AppConfig {
   /// Used as `serverClientId` in `GoogleSignIn.instance.initialize()`.
   /// Get it from: https://console.cloud.google.com → APIs & Services → Credentials
   static const String googleWebClientId =
-      '78103533008-o2atss4kcbc7d0h2r8elqfgvglcl2fkb.apps.googleusercontent.com';
+      '384971087142-tiq0tughjavrprnc34v4r9i18nhedl25.apps.googleusercontent.com';
 
   // ── Facebook Login ─────────────────────────────────────────────────────────
 
   /// Facebook App ID from https://developers.facebook.com → Your App → Settings → Basic
-  static const String facebookAppId = '1646710110114006';
+  static const String facebookAppId = 'REPLACE_WITH_FACEBOOK_APP_ID';
 
   /// Facebook Client Token from: App → Settings → Advanced → Security → Client Token
   /// (This is NOT the App Secret — it is safe to ship in the client binary.)
-  static const String facebookClientToken = 'd8c31e8242b7a71e889c0c1eba1c39b6';
+  static const String facebookClientToken =
+      'REPLACE_WITH_FACEBOOK_CLIENT_TOKEN';
 
   /// Facebook custom-tab redirect scheme — must be  fb{appId}  (auto-derived).
   static const String facebookProtocolScheme = 'fb$facebookAppId';
