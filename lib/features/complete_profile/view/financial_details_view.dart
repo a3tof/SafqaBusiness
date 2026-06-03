@@ -258,10 +258,10 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                       Container(
                         padding: EdgeInsets.all((isTabletOrUp ? 12.0 : 12.w)),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF5F8FF),
+                          color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.05),
                           borderRadius: BorderRadius.circular(8.rSp(context)),
                           border: Border.all(
-                              color: const Color(0xFFDDE3EE)),
+                              color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.2)),
                         ),
                         child: RichText(
                           text: TextSpan(
@@ -277,7 +277,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                                     '"Bank account name must strictly match the legal business name provided in the Commercial Register."',
                                 style:
                                     TextStyles.regular13(context).copyWith(
-                                  color: const Color(0xFF444444),
+                                  color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
                                   height: 1.5,
                                 ),
                               ),
@@ -356,8 +356,8 @@ class _InputField extends StatelessWidget {
       controller: controller,
       keyboardType: keyboardType,
       validator: validator,
-      style: TextStyles.regular14(context).copyWith(color: Colors.black87),
-      decoration: _inputDecoration(hint),
+      style: TextStyles.regular14(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+      decoration: _inputDecoration(context, hint),
     );
   }
 }
@@ -380,9 +380,9 @@ class _BankDropdown extends StatelessWidget {
       height: (isTabletOrUp ? 48.0 : 48.h),
       padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 12.0 : 12.w)),
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFDDE3EE)),
+        border: Border.all(color: Theme.of(context).colorScheme.outline),
         borderRadius: BorderRadius.circular(8.rSp(context)),
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -391,12 +391,13 @@ class _BankDropdown extends StatelessWidget {
           hint: Text(
             'Bank Name',
             style: TextStyles.regular14(context)
-                .copyWith(color: const Color(0xFF999999)),
+                .copyWith(color: Theme.of(context).hintColor),
           ),
           icon:
-              Icon(Icons.arrow_drop_down, size: 20.rSp(context), color: Colors.grey),
+              Icon(Icons.arrow_drop_down, size: 20.rSp(context), color: Theme.of(context).hintColor),
           style:
-              TextStyles.regular14(context).copyWith(color: Colors.black87),
+              TextStyles.regular14(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+          dropdownColor: Theme.of(context).cardColor,
           items: banks
               .map((b) => DropdownMenuItem(value: b, child: Text(b)))
               .toList(),
@@ -407,32 +408,29 @@ class _BankDropdown extends StatelessWidget {
   }
 }
 
-InputDecoration _inputDecoration(String hint) {
+InputDecoration _inputDecoration(BuildContext context, String hint) {
+  final theme = Theme.of(context);
   return InputDecoration(
     hintText: hint,
-    hintStyle: const TextStyle(
-      fontSize: 14,
-      color: Color(0xFF999999),
-      fontWeight: FontWeight.w400,
-    ),
+    hintStyle: TextStyles.regular14(context).copyWith(color: theme.hintColor),
     filled: true,
-    fillColor: Colors.white,
+    fillColor: theme.cardColor,
     contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Color(0xFFDDE3EE)),
+      borderSide: BorderSide(color: theme.colorScheme.outline),
     ),
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Color(0xFF023E8A), width: 1.5),
+      borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Colors.red),
+      borderSide: BorderSide(color: theme.colorScheme.error),
     ),
     focusedErrorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: const BorderSide(color: Colors.red, width: 1.5),
+      borderSide: BorderSide(color: theme.colorScheme.error, width: 1.5),
     ),
   );
 }

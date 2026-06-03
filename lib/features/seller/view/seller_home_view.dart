@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
@@ -43,25 +44,26 @@ class _SellerHomeBody extends StatelessWidget {
             }
 
             if (state is SellerError) {
+              final isTabletOrUp = Breakpoints.isTabletOrUp(context);
               return Center(
                 child: Padding(
-                  padding: EdgeInsets.all(24.w),
+                  padding: EdgeInsets.all((isTabletOrUp ? 24.0 : 24.rSp(context))),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
                         Icons.error_outline_rounded,
                         color: Colors.red.shade400,
-                        size: 48.sp,
+                        size: (isTabletOrUp ? 48.0 : 48.rSp(context)),
                       ),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: (isTabletOrUp ? 16.0 : 16.rSp(context))),
                       Text(
                         state.message,
                         textAlign: TextAlign.center,
                         style: TextStyles.regular16(context)
                             .copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                       ),
-                      SizedBox(height: 24.h),
+                      SizedBox(height: (isTabletOrUp ? 24.0 : 24.rSp(context))),
                       TextButton(
                         onPressed: () {
                           context.read<SellerViewModel>().getSellerHome();
@@ -185,15 +187,16 @@ class _StoreLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget child;
 
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     if (logoBase64 != null && logoBase64!.isNotEmpty) {
       try {
         final bytes = base64Decode(logoBase64!);
         child = ClipRRect(
-          borderRadius: BorderRadius.circular(40.r),
+          borderRadius: BorderRadius.circular((isTabletOrUp ? 40.0 : 40.rSp(context))),
           child: Image.memory(
             bytes,
-            width: 80.w,
-            height: 80.w,
+            width: (isTabletOrUp ? 80.0 : 80.rSp(context)),
+            height: (isTabletOrUp ? 80.0 : 80.rSp(context)),
             fit: BoxFit.cover,
           ),
         );
@@ -208,9 +211,10 @@ class _StoreLogo extends StatelessWidget {
   }
 
   Widget _defaultLogo(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
-      width: 80.w,
-      height: 80.w,
+      width: (isTabletOrUp ? 80.0 : 80.rSp(context)),
+      height: (isTabletOrUp ? 80.0 : 80.rSp(context)),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: Theme.of(context).colorScheme.secondary,
@@ -222,7 +226,7 @@ class _StoreLogo extends StatelessWidget {
       child: Icon(
         Icons.storefront_rounded,
         color: Theme.of(context).colorScheme.primary,
-        size: 40.sp,
+        size: (isTabletOrUp ? 40.0 : 40.rSp(context)),
       ),
     );
   }

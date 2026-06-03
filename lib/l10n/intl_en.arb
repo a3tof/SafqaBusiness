@@ -1414,5 +1414,6 @@
   "kLightMode": "Light Mode",
   "@kLightMode": {
     "description": "Auto-generated"
-  }
+  },
+  "serverError": "A server error occurred. Please try again later."
 }

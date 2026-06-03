@@ -1414,5 +1414,6 @@
   "kLightMode": "الوضع الفاتح",
   "@kLightMode": {
     "description": "Auto-generated"
-  }
+  },
+  "serverError": "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا."
 }
