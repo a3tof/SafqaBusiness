@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/complete_profile/view/store_information_view.dart';
@@ -117,6 +119,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
         },
         builder: (context, state) {
           final isLoading = state is SellerLoading;
+          final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -125,12 +128,16 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
               title: S.of(context).kIdentityVerificatio,
             ),
             body: SafeArea(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 24.h),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w)),
+                child: ResponsiveFormShell(
+                  enabled: isTabletOrUp,
+                  maxWidth: 700,
+                  child: ResponsiveFormSection(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                     Text(
                       'To start selling, we need to confirm it\'s you',
                       style: TextStyles.regular16(context).copyWith(
@@ -138,21 +145,21 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                         height: 1.5,
                       ),
                     ),
-                    SizedBox(height: 24.h),
+                    SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                     _UploadTile(
                       icon: Icons.camera_alt_outlined,
                       label: S.of(context).kUploadNationalId,
                       uploaded: _idFrontFile != null,
                       onTap: () => _pickImage((f) => _idFrontFile = f),
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
                     _UploadTile(
                       icon: Icons.camera_alt_outlined,
                       label: S.of(context).kUploadNationalId,
                       uploaded: _idBackFile != null,
                       onTap: () => _pickImage((f) => _idBackFile = f),
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
                     _UploadTile(
                       icon: Icons.sentiment_satisfied_alt_outlined,
                       label: S.of(context).kTakeASelfieWithI,
@@ -169,7 +176,10 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                           )
-                        : CustomButton(
+                        : SizedBox(
+                            width: double.infinity,
+                            height: isTabletOrUp ? 54.0 : 54.h,
+                            child: CustomButton(
                             onPressed: () {
                               _submit(context.read<SellerViewModel>());
                             },
@@ -181,12 +191,15 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                               context,
                             ).colorScheme.primary,
                           ),
-                    SizedBox(height: 24.h),
+                            ),
+                    SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                   ],
                 ),
               ),
             ),
-          );
+          ),
+          ),
+        );
         },
       ),
     );
@@ -209,16 +222,17 @@ class _UploadTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 14.0 : 14.h)),
         decoration: BoxDecoration(
           color: uploaded ? theme.colorScheme.secondary : theme.cardColor,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12.rSp(context)),
           border: Border.all(
             color: uploaded
                 ? theme.colorScheme.primary
@@ -229,8 +243,8 @@ class _UploadTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 40.w,
-              height: 40.w,
+              width: (isTabletOrUp ? 40.0 : 40.w),
+              height: (isTabletOrUp ? 40.0 : 40.w),
               decoration: BoxDecoration(
                 color: theme.colorScheme.secondary,
                 shape: BoxShape.circle,
@@ -238,10 +252,10 @@ class _UploadTile extends StatelessWidget {
               child: Icon(
                 uploaded ? Icons.check_rounded : icon,
                 color: theme.colorScheme.primary,
-                size: 22.sp,
+                size: 22.rSp(context),
               ),
             ),
-            SizedBox(width: 14.w),
+            SizedBox(width: (isTabletOrUp ? 14.0 : 14.w)),
             Expanded(
               child: Text(
                 label,
@@ -254,7 +268,7 @@ class _UploadTile extends StatelessWidget {
               Icon(
                 Icons.check_circle_rounded,
                 color: theme.colorScheme.primary,
-                size: 20.sp,
+                size: 20.rSp(context),
               ),
           ],
         ),

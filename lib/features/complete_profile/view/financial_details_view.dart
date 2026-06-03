@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
@@ -119,6 +121,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return BlocProvider(
       create: (_) => getIt<SellerViewModel>(),
       child: BlocConsumer<SellerViewModel, SellerViewModelState>(
@@ -162,77 +165,101 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
-                  padding: EdgeInsets.fromLTRB(16.w, 20.h, 16.w, 16.h),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Insta Pay Number
-                      _FieldLabel(label: S.of(context).kInstaPayNumberOp),
-                      SizedBox(height: 6.h),
-                      _InputField(
-                        controller: _iPayController,
-                        hint: 'IP Number',
-                        keyboardType: TextInputType.number,
-                      ),
-                      SizedBox(height: 16.h),
+                  padding: EdgeInsets.fromLTRB((isTabletOrUp ? 16.0 : 16.w), (isTabletOrUp ? 20.0 : 20.h), (isTabletOrUp ? 16.0 : 16.w), (isTabletOrUp ? 16.0 : 16.h)),
+                  child: ResponsiveFormShell(
+                    enabled: isTabletOrUp,
+                    maxWidth: 700,
+                    child: ResponsiveFormSection(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ResponsiveFormRow(
+                            leading: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Insta Pay Number
+                                _FieldLabel(label: S.of(context).kInstaPayNumberOp),
+                                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
+                                _InputField(
+                                  controller: _iPayController,
+                                  hint: 'IP Number',
+                                  keyboardType: TextInputType.number,
+                                ),
+                              ],
+                            ),
+                            trailing: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Bank Name
+                                _FieldLabel(label: S.of(context).kBankName),
+                                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
+                                _BankDropdown(
+                                  value: _selectedBank,
+                                  banks: _banks,
+                                  onChanged: (v) =>
+                                      setState(() => _selectedBank = v),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
 
-                      // Bank Name
-                      _FieldLabel(label: S.of(context).kBankName),
-                      SizedBox(height: 6.h),
-                      _BankDropdown(
-                        value: _selectedBank,
-                        banks: _banks,
-                        onChanged: (v) =>
-                            setState(() => _selectedBank = v),
-                      ),
-                      SizedBox(height: 16.h),
+                          ResponsiveFormRow(
+                            leading: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Account Name / Beneficiary Name
+                                _FieldLabel(
+                                    label: S.of(context).kAccountNameBenef),
+                                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
+                                _InputField(
+                                  controller: _accountNameController,
+                                  hint: 'Account Name',
+                                  keyboardType: TextInputType.name,
+                                  validator: (v) =>
+                                      v == null || v.trim().isEmpty
+                                          ? 'Account name is required'
+                                          : null,
+                                ),
+                              ],
+                            ),
+                            trailing: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Company IBAN
+                                _FieldLabel(label: S.of(context).kCompanyIban),
+                                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
+                                _InputField(
+                                  controller: _ibanController,
+                                  hint: 'IBAN',
+                                  keyboardType: TextInputType.text,
+                                  validator: (v) =>
+                                      v == null || v.trim().isEmpty
+                                          ? 'IBAN is required'
+                                          : null,
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
 
-                      // Account Name / Beneficiary Name
-                      _FieldLabel(
-                          label: S.of(context).kAccountNameBenef),
-                      SizedBox(height: 6.h),
-                      _InputField(
-                        controller: _accountNameController,
-                        hint: 'Account Name',
-                        keyboardType: TextInputType.name,
-                        validator: (v) =>
-                            v == null || v.trim().isEmpty
-                                ? 'Account name is required'
-                                : null,
-                      ),
-                      SizedBox(height: 16.h),
+                          // Local Account Number (Optional)
+                          _FieldLabel(
+                              label: S.of(context).kLocalAccountNumber),
+                          SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
+                          _InputField(
+                            controller: _localAccountController,
+                            hint: 'Local Account Number',
+                            keyboardType: TextInputType.number,
+                          ),
+                          SizedBox(height: (isTabletOrUp ? 20.0 : 20.h)),
 
-                      // Company IBAN
-                      _FieldLabel(label: S.of(context).kCompanyIban),
-                      SizedBox(height: 6.h),
-                      _InputField(
-                        controller: _ibanController,
-                        hint: 'IBAN',
-                        keyboardType: TextInputType.text,
-                        validator: (v) =>
-                            v == null || v.trim().isEmpty
-                                ? 'IBAN is required'
-                                : null,
-                      ),
-                      SizedBox(height: 16.h),
-
-                      // Local Account Number (Optional)
-                      _FieldLabel(
-                          label: S.of(context).kLocalAccountNumber),
-                      SizedBox(height: 6.h),
-                      _InputField(
-                        controller: _localAccountController,
-                        hint: 'Local Account Number',
-                        keyboardType: TextInputType.number,
-                      ),
-                      SizedBox(height: 20.h),
-
-                      // Note
+                          // Note
                       Container(
-                        padding: EdgeInsets.all(12.w),
+                        padding: EdgeInsets.all((isTabletOrUp ? 12.0 : 12.w)),
                         decoration: BoxDecoration(
                           color: const Color(0xFFF5F8FF),
-                          borderRadius: BorderRadius.circular(8.r),
+                          borderRadius: BorderRadius.circular(8.rSp(context)),
                           border: Border.all(
                               color: const Color(0xFFDDE3EE)),
                         ),
@@ -258,7 +285,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 32.h),
+                      SizedBox(height: (isTabletOrUp ? 32.0 : 32.h)),
 
                       isLoading
                           ? Center(
@@ -266,23 +293,29 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             )
-                          : CustomButton(
-                              onPressed: () {
-                                _submit(
-                                    context.read<SellerViewModel>());
-                              },
-                              text: 'Submit for Review',
-                              textColor: Colors.white,
-                              backgroundColor: Theme.of(context).colorScheme.primary,
+                          : SizedBox(
+                              width: double.infinity,
+                              height: (isTabletOrUp ? 54.0 : 54.h),
+                              child: CustomButton(
+                                onPressed: () {
+                                  _submit(
+                                      context.read<SellerViewModel>());
+                                },
+                                text: 'Submit for Review',
+                                textColor: Colors.white,
+                                backgroundColor: Theme.of(context).colorScheme.primary,
+                              ),
                             ),
-                      SizedBox(height: 16.h),
+                      SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                     ],
                   ),
                 ),
               ),
             ),
-          );
-        },
+          ),
+        ),
+      );
+    },
       ),
     );
   }
@@ -342,12 +375,13 @@ class _BankDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
-      height: 48.h,
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      height: (isTabletOrUp ? 48.0 : 48.h),
+      padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 12.0 : 12.w)),
       decoration: BoxDecoration(
         border: Border.all(color: const Color(0xFFDDE3EE)),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(8.rSp(context)),
         color: Colors.white,
       ),
       child: DropdownButtonHideUnderline(
@@ -360,7 +394,7 @@ class _BankDropdown extends StatelessWidget {
                 .copyWith(color: const Color(0xFF999999)),
           ),
           icon:
-              Icon(Icons.arrow_drop_down, size: 20.sp, color: Colors.grey),
+              Icon(Icons.arrow_drop_down, size: 20.rSp(context), color: Colors.grey),
           style:
               TextStyles.regular14(context).copyWith(color: Colors.black87),
           items: banks

@@ -4,9 +4,11 @@ import 'package:safqaseller/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/complete_profile/view/financial_details_view.dart';
 
 /// Legal Documents screen – shown for Business Account after Store Information.
@@ -39,6 +41,7 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: buildAppBar(
@@ -46,40 +49,44 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
         title: S.of(context).kLegalDocuments,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 24.h),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w)),
+          child: ResponsiveFormShell(
+            enabled: isTabletOrUp,
+            maxWidth: 700,
+            child: ResponsiveFormSection(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
               Text(
                 'Verify your business now to build buyer trust and boost your sales',
                 style: TextStyles.regular14(
                   context,
                 ).copyWith(color: Theme.of(context).hintColor, height: 1.5),
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
               _DocumentTile(
                 icon: Icons.description_outlined,
                 label: S.of(context).kUploadCommercialRe,
                 uploaded: _crFile != null,
                 onTap: () => _pickFile((f) => _crFile = f),
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
               _DocumentTile(
                 icon: Icons.description_outlined,
                 label: S.of(context).kUploadTaxId,
                 uploaded: _taxIdFile != null,
                 onTap: () => _pickFile((f) => _taxIdFile = f),
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
               _DocumentTile(
                 icon: Icons.camera_alt_outlined,
                 label: S.of(context).kUploadOwners,
                 uploaded: _nationalIdFrontFile != null,
                 onTap: () => _pickFile((f) => _nationalIdFrontFile = f),
               ),
-              SizedBox(height: 12.h),
+              SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
               _DocumentTile(
                 icon: Icons.camera_alt_outlined,
                 label: S.of(context).kUploadOwners,
@@ -87,7 +94,10 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
                 onTap: () => _pickFile((f) => _nationalIdBackFile = f),
               ),
               const Spacer(),
-              CustomButton(
+              SizedBox(
+                width: double.infinity,
+                height: isTabletOrUp ? 54.0 : 54.h,
+                child: CustomButton(
                 onPressed: () {
                   if (_crFile == null ||
                       _taxIdFile == null ||
@@ -117,12 +127,15 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
                 textColor: Theme.of(context).colorScheme.onPrimary,
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
-              SizedBox(height: 24.h),
+                ),
+              SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
             ],
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }
 
@@ -157,16 +170,17 @@ class _DocumentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 14.0 : 14.h)),
         decoration: BoxDecoration(
           color: uploaded ? theme.colorScheme.secondary : theme.cardColor,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12.rSp(context)),
           border: Border.all(
             color: uploaded
                 ? theme.colorScheme.primary
@@ -177,8 +191,8 @@ class _DocumentTile extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 40.w,
-              height: 40.w,
+              width: (isTabletOrUp ? 40.0 : 40.w),
+              height: (isTabletOrUp ? 40.0 : 40.w),
               decoration: BoxDecoration(
                 color: theme.colorScheme.secondary,
                 shape: BoxShape.circle,
@@ -186,10 +200,10 @@ class _DocumentTile extends StatelessWidget {
               child: Icon(
                 uploaded ? Icons.check_rounded : icon,
                 color: theme.colorScheme.primary,
-                size: 22.sp,
+                size: 22.rSp(context),
               ),
             ),
-            SizedBox(width: 14.w),
+            SizedBox(width: (isTabletOrUp ? 14.0 : 14.w)),
             Expanded(
               child: Text(
                 label,
@@ -202,7 +216,7 @@ class _DocumentTile extends StatelessWidget {
               Icon(
                 Icons.check_circle_rounded,
                 color: theme.colorScheme.primary,
-                size: 20.sp,
+                size: 20.rSp(context),
               ),
           ],
         ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
@@ -19,55 +21,62 @@ class _AccountTypeViewState extends State<AccountTypeView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: buildAppBar(context: context, title: S.of(context).kAccountType),
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: 32.h),
-              _AccountTypeCard(
-                type: _AccountType.personal,
-                selected: _selected == _AccountType.personal,
-                onTap: () => setState(() => _selected = _AccountType.personal),
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w)),
+          child: ResponsiveFormShell(
+            enabled: isTabletOrUp,
+            maxWidth: 700,
+            child: ResponsiveFormSection(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: (isTabletOrUp ? 32.0 : 32.h)),
+                  _AccountTypeCard(
+                    type: _AccountType.personal,
+                    selected: _selected == _AccountType.personal,
+                    onTap: () => setState(() => _selected = _AccountType.personal),
+                  ),
+                  SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
+                  _AccountTypeCard(
+                    type: _AccountType.business,
+                    selected: _selected == _AccountType.business,
+                    onTap: () => setState(() => _selected = _AccountType.business),
+                  ),
+                  SizedBox(height: (isTabletOrUp ? 32.0 : 32.h)),
+                  CustomButton(
+                    onPressed: () {
+                      if (_selected == null) return;
+                      if (_selected == _AccountType.personal) {
+                        Navigator.pushNamed(
+                          context,
+                          SellerInformationView.routeName,
+                          arguments: _AccountType.personal,
+                        );
+                      } else {
+                        Navigator.pushNamed(
+                          context,
+                          SellerInformationView.routeName,
+                          arguments: _AccountType.business,
+                        );
+                      }
+                    },
+                    text: 'Continue',
+                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor: _selected != null
+                        ? Theme.of(context).colorScheme.primary
+                        : Theme.of(
+                            context,
+                          ).colorScheme.primary.withValues(alpha: 0.5),
+                  ),
+                  SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
+                ],
               ),
-              SizedBox(height: 16.h),
-              _AccountTypeCard(
-                type: _AccountType.business,
-                selected: _selected == _AccountType.business,
-                onTap: () => setState(() => _selected = _AccountType.business),
-              ),
-              const Spacer(),
-              CustomButton(
-                onPressed: () {
-                  if (_selected == null) return;
-                  if (_selected == _AccountType.personal) {
-                    Navigator.pushNamed(
-                      context,
-                      SellerInformationView.routeName,
-                      arguments: _AccountType.personal,
-                    );
-                  } else {
-                    Navigator.pushNamed(
-                      context,
-                      SellerInformationView.routeName,
-                      arguments: _AccountType.business,
-                    );
-                  }
-                },
-                text: 'Continue',
-                textColor: Theme.of(context).colorScheme.onPrimary,
-                backgroundColor: _selected != null
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(
-                        context,
-                      ).colorScheme.primary.withValues(alpha: 0.5),
-              ),
-              SizedBox(height: 24.h),
-            ],
+            ),
           ),
         ),
       ),
@@ -90,6 +99,7 @@ class _AccountTypeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final isPersonal = type == _AccountType.personal;
     final title = isPersonal ? 'Personal Account' : 'Business Account';
     final description = isPersonal
@@ -104,10 +114,10 @@ class _AccountTypeCard extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+        padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 16.0 : 16.h)),
         decoration: BoxDecoration(
           color: selected ? theme.colorScheme.secondary : theme.cardColor,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12.rSp(context)),
           border: Border.all(
             color: selected
                 ? theme.colorScheme.primary
@@ -118,8 +128,8 @@ class _AccountTypeCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: theme.colorScheme.primary, size: 32.sp),
-            SizedBox(width: 12.w),
+            Icon(icon, color: theme.colorScheme.primary, size: 32.rSp(context)),
+            SizedBox(width: (isTabletOrUp ? 12.0 : 12.w)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +140,7 @@ class _AccountTypeCard extends StatelessWidget {
                       context,
                     ).copyWith(color: theme.colorScheme.primary),
                   ),
-                  SizedBox(height: 4.h),
+                  SizedBox(height: (isTabletOrUp ? 4.0 : 4.h)),
                   Text(
                     description,
                     style: TextStyles.regular14(

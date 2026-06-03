@@ -73,11 +73,23 @@ class ResponsiveFormRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+    
+    if (!isTabletOrUp) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          leading,
+          SizedBox(height: spacing ?? 16.0),
+          trailing,
+        ],
+      );
+    }
+    
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: leading),
-        SizedBox(width: spacing ?? (isTabletOrUp ? 16.0 : 12.0)),
+        SizedBox(width: spacing ?? 16.0),
         Expanded(child: trailing),
       ],
     );

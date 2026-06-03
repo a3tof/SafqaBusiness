@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
@@ -52,6 +54,7 @@ class _StoreInformationViewState extends State<StoreInformationView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: buildAppBar(
@@ -62,92 +65,95 @@ class _StoreInformationViewState extends State<StoreInformationView> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 8.h),
+            padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 12.0 : 12.h)),
+            child: ResponsiveFormShell(
+              enabled: isTabletOrUp,
+              maxWidth: 700,
+              child: ResponsiveFormSection(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                SizedBox(height: (isTabletOrUp ? 8.0 : 8.h)),
                 Text(
                   'Verify your business now to build buyer trust and boost your sales',
                   style: TextStyles.regular14(
                     context,
                   ).copyWith(color: Theme.of(context).hintColor, height: 1.5),
                 ),
-                SizedBox(height: 20.h),
+                SizedBox(height: (isTabletOrUp ? 20.0 : 20.h)),
 
                 // Legal Business Name
                 _FieldLabel(label: S.of(context).kLegalBusinessName),
-                SizedBox(height: 6.h),
+                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
                 _buildInputField(
                   _nameController,
                   'Store Name',
                   keyboardType: TextInputType.name,
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
 
                 // Business Number
                 _FieldLabel(label: S.of(context).kBusinessNumber),
-                SizedBox(height: 6.h),
+                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
                 _PhoneRow(
                   phoneController: _phoneController,
                   countries: _countries,
                   selectedCode: _selectedPhoneCode,
                   onCodeChanged: (c) => setState(() => _selectedPhoneCode = c),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
 
                 // Business Address
                 _FieldLabel(label: S.of(context).kBusinessAddress),
-                SizedBox(height: 6.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _DropdownField(
-                        value: _selectedCountry,
-                        items: _countries.map((c) => c['name']!).toList(),
-                        hint: 'Country',
-                        onChanged: (v) => setState(
-                          () => _selectedCountry = v ?? _selectedCountry,
-                        ),
-                      ),
+                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
+                ResponsiveFormRow(
+                  leading: _DropdownField(
+                    value: _selectedCountry,
+                    items: _countries.map((c) => c['name']!).toList(),
+                    hint: 'Country',
+                    onChanged: (v) => setState(
+                      () => _selectedCountry = v ?? _selectedCountry,
                     ),
-                    SizedBox(width: 12.w),
-                    Expanded(
-                      child: _DropdownField(
-                        value: _selectedCity,
-                        items: _cities,
-                        hint: 'City',
-                        onChanged: (v) =>
-                            setState(() => _selectedCity = v ?? _selectedCity),
-                      ),
-                    ),
-                  ],
+                  ),
+                  trailing: _DropdownField(
+                    value: _selectedCity,
+                    items: _cities,
+                    hint: 'City',
+                    onChanged: (v) =>
+                        setState(() => _selectedCity = v ?? _selectedCity),
+                  ),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
 
                 // Store Logo (Optional)
                 _FieldLabel(label: S.of(context).kStoreLogoOptional),
-                SizedBox(height: 6.h),
+                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
                 _ImagePickerBox(),
-                SizedBox(height: 16.h),
+                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
 
                 // Store Description
                 _FieldLabel(label: S.of(context).kStoreDescription),
-                SizedBox(height: 6.h),
+                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
                 _DescriptionField(controller: _descController),
-                SizedBox(height: 32.h),
+                SizedBox(height: (isTabletOrUp ? 32.0 : 32.h)),
 
-                CustomButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, LegalDocumentsView.routeName);
-                  },
-                  text: 'Save & Continue',
-                  textColor: Theme.of(context).colorScheme.onPrimary,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                SizedBox(
+                  width: double.infinity,
+                  height: isTabletOrUp ? 54.0 : 54.h,
+                  child: CustomButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, LegalDocumentsView.routeName);
+                    },
+                    text: 'Save & Continue',
+                    textColor: Theme.of(context).colorScheme.onPrimary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
               ],
             ),
+          ),
+        ),
           ),
         ),
       ),
@@ -202,16 +208,17 @@ class _PhoneRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final theme = Theme.of(context);
 
     return Row(
       children: [
         Container(
-          height: 48.h,
-          padding: EdgeInsets.symmetric(horizontal: 8.w),
+          height: (isTabletOrUp ? 48.0 : 48.h),
+          padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 8.0 : 8.w)),
           decoration: BoxDecoration(
             border: Border.all(color: theme.colorScheme.outline),
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(8.rSp(context)),
             color: theme.cardColor,
           ),
           child: DropdownButtonHideUnderline(
@@ -220,7 +227,7 @@ class _PhoneRow extends StatelessWidget {
               dropdownColor: theme.cardColor,
               icon: Icon(
                 Icons.arrow_drop_down,
-                size: 18.sp,
+                size: 18.rSp(context),
                 color: theme.hintColor,
               ),
               items: countries.map((c) {
@@ -229,8 +236,8 @@ class _PhoneRow extends StatelessWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(c['flag']!, style: TextStyle(fontSize: 18.sp)),
-                      SizedBox(width: 4.w),
+                      Text(c['flag']!, style: TextStyle(fontSize: 18.rSp(context))),
+                      SizedBox(width: (isTabletOrUp ? 4.0 : 4.w)),
                       Text(
                         c['code']!,
                         style: TextStyles.regular13(
@@ -247,7 +254,7 @@ class _PhoneRow extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 8.w),
+        SizedBox(width: (isTabletOrUp ? 8.0 : 8.w)),
         Expanded(
           child: TextFormField(
             controller: phoneController,
@@ -278,14 +285,15 @@ class _DropdownField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final theme = Theme.of(context);
 
     return Container(
-      height: 48.h,
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      height: (isTabletOrUp ? 48.0 : 48.h),
+      padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 12.0 : 12.w)),
       decoration: BoxDecoration(
         border: Border.all(color: theme.colorScheme.outline),
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(8.rSp(context)),
         color: theme.cardColor,
       ),
       child: DropdownButtonHideUnderline(
@@ -295,7 +303,7 @@ class _DropdownField extends StatelessWidget {
           dropdownColor: theme.cardColor,
           icon: Icon(
             Icons.arrow_drop_down,
-            size: 20.sp,
+            size: 20.rSp(context),
             color: theme.hintColor,
           ),
           style: TextStyles.regular14(
@@ -316,16 +324,17 @@ class _ImagePickerBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final theme = Theme.of(context);
 
     return GestureDetector(
       onTap: () {},
       child: Container(
         width: double.infinity,
-        height: 52.h,
+        height: (isTabletOrUp ? 52.0 : 52.h),
         decoration: BoxDecoration(
           border: Border.all(color: theme.colorScheme.outline),
-          borderRadius: BorderRadius.circular(8.r),
+          borderRadius: BorderRadius.circular(8.rSp(context)),
           color: theme.cardColor,
         ),
         child: Row(
@@ -337,7 +346,7 @@ class _ImagePickerBox extends StatelessWidget {
                 context,
               ).copyWith(color: theme.hintColor),
             ),
-            Icon(Icons.add, size: 18.sp, color: theme.hintColor),
+            Icon(Icons.add, size: 18.rSp(context), color: theme.hintColor),
           ],
         ),
       ),
@@ -367,6 +376,7 @@ class _DescriptionFieldState extends State<_DescriptionField> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Stack(
       children: [
         TextFormField(
@@ -381,12 +391,12 @@ class _DescriptionFieldState extends State<_DescriptionField> {
             context,
           ).copyWith(color: Theme.of(context).colorScheme.onSurface),
           decoration: _inputDecoration(context, '').copyWith(
-            contentPadding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 28.h),
+            contentPadding: EdgeInsets.fromLTRB((isTabletOrUp ? 12.0 : 12.w), (isTabletOrUp ? 12.0 : 12.h), (isTabletOrUp ? 12.0 : 12.w), (isTabletOrUp ? 28.0 : 28.h)),
           ),
         ),
         Positioned(
-          bottom: 8.h,
-          right: 10.w,
+          bottom: (isTabletOrUp ? 8.0 : 8.h),
+          right: (isTabletOrUp ? 10.0 : 10.w),
           child: Text(
             '$_charCount/$_maxChars',
             style: TextStyles.regular12(
