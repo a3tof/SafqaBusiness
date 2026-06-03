@@ -53,13 +53,16 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
       },
       builder: (context, state) {
         final isLoading = state is ForgotPasswordLoading;
+        final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
         return SafeArea(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
-            child: SingleChildScrollView(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w),
+            child: Center(
+              child: SingleChildScrollView(
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: ResponsiveFormShell(
-                enabled: Breakpoints.isTabletOrUp(context),
+                enabled: isTabletOrUp,
                 maxWidth: 700,
                 child: Form(
                   key: _formKey,
@@ -68,7 +71,7 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(height: 16.sp),
+                        SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                       Text(
                         S.of(context).forgetPasswordDescription,
                         style: TextStyles.regular16(context).copyWith(
@@ -76,18 +79,18 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                           height: 1.5,
                         ),
                       ),
-                      SizedBox(height: 32.sp),
+                      SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                       Text(
                         S.of(context).email,
                         style: TextStyles.semiBold16(context),
                       ),
-                      SizedBox(height: 8.sp),
+                      SizedBox(height: isTabletOrUp ? 8.0 : 8.sp),
                       CustomTextFormField(
                         onSaved: (value) => _email = value!,
                         hintText: '',
                         textInputType: TextInputType.emailAddress,
                       ),
-                      SizedBox(height: 32.sp),
+                      SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                       isLoading
                           ? const CustomLoadingButton()
                           : CustomButton(
@@ -110,6 +113,7 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                     ),
                   ),
                 ),
+              ),
               ),
             ),
           ),
