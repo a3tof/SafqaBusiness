@@ -6,6 +6,7 @@ import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/main.dart';
 
 class PageViewItem extends StatelessWidget {
@@ -36,9 +37,10 @@ class PageViewItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : 24.w, vertical: isTabletOrUp ? 8.0 : 8.h),
       child: Column(
         children: [
           Align(
@@ -47,20 +49,20 @@ class PageViewItem extends StatelessWidget {
             child: InkWell(
               onTap: () => _toggleLanguage(context),
               child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 8.h),
+                padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 8.0 : 8.h),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
                       Assets.imagesIconoirLanguage,
-                      width: 24.sp,
-                      height: 24.sp,
+                      width: 24.rSp(context),
+                      height: 24.rSp(context),
                       colorFilter: ColorFilter.mode(
                         Theme.of(context).colorScheme.onSurface,
                         BlendMode.srcIn,
                       ),
                     ),
-                    SizedBox(width: 8.w),
+                    SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
                     Text(
                       isArabic ? 'AR' : 'EN',
                       style: TextStyles.semiBold13(context).copyWith(
@@ -74,13 +76,19 @@ class PageViewItem extends StatelessWidget {
           ),
           Flexible(
             flex: 2,
-            child: Image.asset(Assets.imagesSAFQA, fit: BoxFit.contain),
+            child: Image.asset(
+              Assets.imagesSAFQA,
+              fit: BoxFit.contain,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Theme.of(context).colorScheme.primary
+                  : null,
+            ),
           ),
           const Spacer(flex: 1),
           Flexible(
             flex: 8,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(20.rSp(context)),
               child: Image.asset(
                 image,
                 width: double.infinity,
@@ -90,7 +98,7 @@ class PageViewItem extends StatelessWidget {
           ),
           const Spacer(flex: 1),
           title,
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           Flexible(
             flex: 3,
             child: Text(
