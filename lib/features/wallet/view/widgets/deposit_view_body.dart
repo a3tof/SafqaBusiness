@@ -197,9 +197,9 @@ class _DepositViewBodyState extends State<DepositViewBody> {
                                 width: double.infinity,
                                 padding: EdgeInsets.all(16.rSp(context)),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(12.rSp(context)),
-                                  border: Border.all(color: Colors.grey.shade300),
+                                  border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.3)),
                                 ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
