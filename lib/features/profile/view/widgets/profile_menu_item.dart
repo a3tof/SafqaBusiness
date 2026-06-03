@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class ProfileMenuItem extends StatelessWidget {
@@ -24,14 +25,19 @@ class ProfileMenuItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 16.0 : 16.w,
+          vertical: isTabletOrUp ? 14.0 : 14.h,
+        ),
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12.rSp(context)),
           border: Border.all(color: Theme.of(context).dividerColor, width: 1),
         ),
         child: Row(
@@ -39,9 +45,9 @@ class ProfileMenuItem extends StatelessWidget {
             Icon(
               icon,
               color: iconColor ?? Theme.of(context).colorScheme.primary,
-              size: 22.sp,
+              size: 22.rSp(context),
             ),
-            SizedBox(width: 12.w),
+            SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
             Expanded(
               child: Text(
                 label,
@@ -54,7 +60,7 @@ class ProfileMenuItem extends StatelessWidget {
                 Icon(
                   trailingIcon,
                   color: iconColor ?? Theme.of(context).colorScheme.primary,
-                  size: 22.sp,
+                  size: 22.rSp(context),
                 ),
           ],
         ),

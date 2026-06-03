@@ -3,10 +3,12 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/services/notification_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/utils/theme_view_model.dart';
@@ -109,16 +111,23 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     return showDialog<void>(
       context: context,
       builder: (dialogContext) {
+        final isTabletOrUp = Breakpoints.isTabletOrUp(dialogContext);
+
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
           child: Dialog(
             backgroundColor: Theme.of(context).dialogTheme.backgroundColor,
-            insetPadding: EdgeInsets.symmetric(horizontal: 16.w),
+            insetPadding: EdgeInsets.symmetric(
+              horizontal: isTabletOrUp ? 16.0 : 16.w,
+            ),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.r),
+              borderRadius: BorderRadius.circular(20.rSp(context)),
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
+              padding: EdgeInsets.symmetric(
+                horizontal: isTabletOrUp ? 16.0 : 16.w,
+                vertical: isTabletOrUp ? 24.0 : 24.h,
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -129,7 +138,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       context,
                     ).copyWith(color: titleColor),
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
                   Text(
                     message,
                     textAlign: TextAlign.center,
@@ -137,13 +146,13 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       context,
                     ).copyWith(color: Theme.of(context).hintColor, height: 1.4),
                   ),
-                  SizedBox(height: 28.h),
+                  SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
                   Row(
                     children: [
                       for (var index = 0; index < actions.length; index++) ...[
                         Expanded(
                           child: SizedBox(
-                            height: 48.h,
+                            height: isTabletOrUp ? 48.0 : 48.h,
                             child: ElevatedButton(
                               onPressed: actions[index].onPressed,
                               style: ElevatedButton.styleFrom(
@@ -151,7 +160,9 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                                 backgroundColor: actions[index].backgroundColor,
                                 foregroundColor: actions[index].foregroundColor,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14.r),
+                                  borderRadius: BorderRadius.circular(
+                                    14.rSp(context),
+                                  ),
                                 ),
                               ),
                               child: Text(
@@ -166,7 +177,8 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                             ),
                           ),
                         ),
-                        if (index != actions.length - 1) SizedBox(width: 12.w),
+                        if (index != actions.length - 1)
+                          SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
                       ],
                     ],
                   ),
@@ -217,29 +229,38 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
         final theme = Theme.of(context);
         return StatefulBuilder(
           builder: (context, setModalState) {
+            final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
             return BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
               child: Dialog(
                 backgroundColor: theme.cardColor,
                 elevation: 12,
                 shadowColor: theme.colorScheme.shadow.withValues(alpha: 0.22),
-                insetPadding: EdgeInsets.symmetric(horizontal: 28.w),
+                insetPadding: EdgeInsets.symmetric(
+                  horizontal: isTabletOrUp ? 28.0 : 28.w,
+                ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(18.r),
+                  borderRadius: BorderRadius.circular(18.rSp(context)),
                 ),
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(22.w, 28.h, 22.w, 22.h),
+                  padding: EdgeInsets.fromLTRB(
+                    isTabletOrUp ? 22.0 : 22.w,
+                    isTabletOrUp ? 28.0 : 28.h,
+                    isTabletOrUp ? 22.0 : 22.w,
+                    isTabletOrUp ? 22.0 : 22.h,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         S.of(context).profileSelectLanguageTitle,
                         textAlign: TextAlign.center,
-                        style: TextStyles.bold22(context).copyWith(
-                          color: theme.colorScheme.primary,
-                        ),
+                        style: TextStyles.bold22(
+                          context,
+                        ).copyWith(color: theme.colorScheme.primary),
                       ),
-                      SizedBox(height: 28.h),
+                      SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
                       _LanguageOptionTile(
                         label: S.of(context).kEnglish,
                         value: 'english',
@@ -247,7 +268,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                         onTap: () =>
                             setModalState(() => draftLanguage = 'english'),
                       ),
-                      SizedBox(height: 18.h),
+                      SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
                       _LanguageOptionTile(
                         label: S.of(context).kArabic,
                         value: 'arabic',
@@ -255,12 +276,12 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                         onTap: () =>
                             setModalState(() => draftLanguage = 'arabic'),
                       ),
-                      SizedBox(height: 28.h),
+                      SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
                       Row(
                         children: [
                           Expanded(
                             child: SizedBox(
-                              height: 48.h,
+                              height: isTabletOrUp ? 48.0 : 48.h,
                               child: ElevatedButton(
                                 onPressed: () {
                                   if (draftLanguage == 'english') {
@@ -280,10 +301,11 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                                 style: ElevatedButton.styleFrom(
                                   elevation: 0,
                                   backgroundColor: theme.colorScheme.primary,
-                                  foregroundColor:
-                                      theme.colorScheme.onPrimary,
+                                  foregroundColor: theme.colorScheme.onPrimary,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderRadius: BorderRadius.circular(
+                                      10.rSp(context),
+                                    ),
                                   ),
                                 ),
                                 child: Text(
@@ -295,10 +317,10 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 12.w),
+                          SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
                           Expanded(
                             child: SizedBox(
-                              height: 48.h,
+                              height: isTabletOrUp ? 48.0 : 48.h,
                               child: ElevatedButton(
                                 onPressed: () =>
                                     Navigator.of(dialogContext).pop(),
@@ -308,14 +330,16 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                                       .withValues(alpha: 0.1),
                                   foregroundColor: theme.colorScheme.primary,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.r),
+                                    borderRadius: BorderRadius.circular(
+                                      10.rSp(context),
+                                    ),
                                   ),
                                 ),
                                 child: Text(
                                   S.of(context).notificationsCancel,
-                                  style: TextStyles.bold18(context).copyWith(
-                                    color: theme.colorScheme.primary,
-                                  ),
+                                  style: TextStyles.bold18(
+                                    context,
+                                  ).copyWith(color: theme.colorScheme.primary),
                                 ),
                               ),
                             ),
@@ -335,6 +359,8 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return SafeArea(
       child: BlocBuilder<ProfileViewModel, ProfileViewModelState>(
         builder: (context, profileState) {
@@ -375,139 +401,166 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             onRefresh: () => _refreshProfile(context),
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-              child: Column(
-                children: [
-                  // ── Profile Header (Avatar + Buttons) ──
-                  ProfileHeaderSection(
-                    logoBytes: logoBytes,
-                    activePlanId: activePlanId,
-                  ),
-                  SizedBox(height: 20.h),
-
-                  // ── Metrics Row (Rating, Users, Deliveries) ──
-                  ProfileMetricsRow(
-                    rating: rating,
-                    followersCount: followersCount,
-                    auctionsCount: auctionsCount,
-                  ),
-                  SizedBox(height: 24.h),
-
-                  // ── User Info Fields — data from GET Auth/profile ──
-                  ProfileInfoField(icon: Icons.person_outline, value: fullName),
-                  SizedBox(height: 12.h),
-                  ProfileInfoField(icon: Icons.email_outlined, value: email),
-                  SizedBox(height: 12.h),
-                  ProfileInfoField(
-                    icon: Icons.phone_outlined,
-                    value: phoneNumber,
-                  ),
-                  SizedBox(height: 12.h),
-
-                  // ── Navigation Menu Items ──
-                  ProfileMenuItem(
-                    icon: Icons.account_balance_wallet_outlined,
-                    label: S.of(context).kWallet,
-                    onTap: () {
-                      Navigator.pushNamed(context, WalletView.routeName);
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.location_on_outlined,
-                    label: cityLabel,
-                    onTap: () {},
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.access_time,
-                    label: S.of(context).kHistory,
-                    onTap: () {
-                      Navigator.pushNamed(context, HistoryView.routeName);
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.bar_chart_outlined,
-                    label: S.of(context).kStatistics,
-                    onTap: () async {
-                      try {
-                        await launchUrl(
-                          Uri.parse('https://safqa-navy.vercel.app/seller-statistics'),
-                          mode: LaunchMode.externalApplication,
-                        );
-                      } catch (e) {
-                        debugPrint('Could not launch URL: $e');
-                      }
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.lock_outline_rounded,
-                    label: S.of(context).kChangePassword,
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        ChangePasswordView.routeName,
-                      );
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.language_outlined,
-                    label: S.of(context).kChangeLanguage,
-                    onTap: () {
-                      _showLanguageDialog(context);
-                    },
-                  ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.notifications_outlined,
-                    label: S.of(context).notificationsTitle,
-                    trailing: IgnorePointer(
-                      child: Switch.adaptive(
-                        value: _notificationsEnabled,
-                        onChanged: (_) {},
-                        activeTrackColor: Theme.of(context).primaryColor,
+              padding: isTabletOrUp
+                  ? const EdgeInsets.symmetric(vertical: 24.0)
+                  : EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+              child: ResponsiveFormShell(
+                enabled: isTabletOrUp,
+                maxWidth: 700,
+                child: ResponsiveFormSection(
+                  child: Column(
+                    children: [
+                      // ── Profile Header (Avatar + Buttons) ──
+                      ProfileHeaderSection(
+                        logoBytes: logoBytes,
+                        activePlanId: activePlanId,
                       ),
-                    ),
-                    onTap: () => _toggleNotifications(!_notificationsEnabled),
-                  ),
-                  SizedBox(height: 12.h),
-                  BlocBuilder<ThemeViewModel, ThemeMode>(
-                    builder: (context, themeMode) {
-                      final isDark = themeMode == ThemeMode.dark ||
-                          (themeMode == ThemeMode.system &&
-                              MediaQuery.platformBrightnessOf(context) == Brightness.dark);
-                      return ProfileMenuItem(
-                        icon: isDark ? Icons.dark_mode_outlined : Icons.light_mode_outlined,
-                        label: isDark ? S.of(context).kDarkMode : S.of(context).kLightMode,
+                      SizedBox(height: isTabletOrUp ? 20.0 : 20.h),
+
+                      // ── Metrics Row (Rating, Users, Deliveries) ──
+                      ProfileMetricsRow(
+                        rating: rating,
+                        followersCount: followersCount,
+                        auctionsCount: auctionsCount,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
+
+                      // ── User Info Fields — data from GET Auth/profile ──
+                      ProfileInfoField(
+                        icon: Icons.person_outline,
+                        value: fullName,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileInfoField(
+                        icon: Icons.email_outlined,
+                        value: email,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileInfoField(
+                        icon: Icons.phone_outlined,
+                        value: phoneNumber,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+
+                      // ── Navigation Menu Items ──
+                      ProfileMenuItem(
+                        icon: Icons.account_balance_wallet_outlined,
+                        label: S.of(context).kWallet,
+                        onTap: () {
+                          Navigator.pushNamed(context, WalletView.routeName);
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.location_on_outlined,
+                        label: cityLabel,
+                        onTap: () {},
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.access_time,
+                        label: S.of(context).kHistory,
+                        onTap: () {
+                          Navigator.pushNamed(context, HistoryView.routeName);
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.bar_chart_outlined,
+                        label: S.of(context).kStatistics,
+                        onTap: () async {
+                          try {
+                            await launchUrl(
+                              Uri.parse(
+                                'https://safqa-navy.vercel.app/seller-statistics',
+                              ),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          } catch (e) {
+                            debugPrint('Could not launch URL: $e');
+                          }
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.lock_outline_rounded,
+                        label: S.of(context).kChangePassword,
+                        onTap: () {
+                          Navigator.pushNamed(
+                            context,
+                            ChangePasswordView.routeName,
+                          );
+                        },
+                      ),
+                      SizedBox(height: 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.language_outlined,
+                        label: S.of(context).kChangeLanguage,
+                        onTap: () {
+                          _showLanguageDialog(context);
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.notifications_outlined,
+                        label: S.of(context).notificationsTitle,
                         trailing: IgnorePointer(
                           child: Switch.adaptive(
-                            value: isDark,
+                            value: _notificationsEnabled,
                             onChanged: (_) {},
                             activeTrackColor: Theme.of(context).primaryColor,
                           ),
                         ),
-                        onTap: () {
-                          final vm = context.read<ThemeViewModel>();
-                          vm.setThemeMode(isDark ? ThemeMode.light : ThemeMode.dark);
+                        onTap: () =>
+                            _toggleNotifications(!_notificationsEnabled),
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      BlocBuilder<ThemeViewModel, ThemeMode>(
+                        builder: (context, themeMode) {
+                          final isDark =
+                              themeMode == ThemeMode.dark ||
+                              (themeMode == ThemeMode.system &&
+                                  MediaQuery.platformBrightnessOf(context) ==
+                                      Brightness.dark);
+                          return ProfileMenuItem(
+                            icon: isDark
+                                ? Icons.dark_mode_outlined
+                                : Icons.light_mode_outlined,
+                            label: isDark
+                                ? S.of(context).kDarkMode
+                                : S.of(context).kLightMode,
+                            trailing: IgnorePointer(
+                              child: Switch.adaptive(
+                                value: isDark,
+                                onChanged: (_) {},
+                                activeTrackColor: Theme.of(
+                                  context,
+                                ).primaryColor,
+                              ),
+                            ),
+                            onTap: () {
+                              final vm = context.read<ThemeViewModel>();
+                              vm.setThemeMode(
+                                isDark ? ThemeMode.light : ThemeMode.dark,
+                              );
+                            },
+                          );
                         },
-                      );
-                    },
+                      ),
+                      SizedBox(height: 12.h),
+                      ProfileMenuItem(
+                        icon: Icons.logout_rounded,
+                        label: S.of(context).kLogout,
+                        iconColor: Colors.red,
+                        textColor: Colors.red,
+                        onTap: () {
+                          _showLogoutDialog(context);
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
+                    ],
                   ),
-                  SizedBox(height: 12.h),
-                  ProfileMenuItem(
-                    icon: Icons.logout_rounded,
-                    label: S.of(context).kLogout,
-                    iconColor: Colors.red,
-                    textColor: Colors.red,
-                    onTap: () {
-                      _showLogoutDialog(context);
-                    },
-                  ),
-                  SizedBox(height: 24.h),
-                ],
+                ),
               ),
             ),
           );
@@ -546,14 +599,15 @@ class _LanguageOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final isSelected = value == groupValue;
     final primary = Theme.of(context).colorScheme.primary;
 
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8.r),
+      borderRadius: BorderRadius.circular(8.rSp(context)),
       child: Padding(
-        padding: EdgeInsets.symmetric(vertical: 4.h),
+        padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 4.0 : 4.h),
         child: Row(
           children: [
             Icon(
@@ -561,15 +615,13 @@ class _LanguageOptionTile extends StatelessWidget {
                   ? Icons.radio_button_checked_rounded
                   : Icons.radio_button_off_rounded,
               color: primary,
-              size: 24.sp,
+              size: 24.rSp(context),
             ),
-            SizedBox(width: 14.w),
+            SizedBox(width: isTabletOrUp ? 14.0 : 14.w),
             Expanded(
               child: Text(
                 label,
-                style: TextStyles.regular16(
-                  context,
-                ).copyWith(color: primary),
+                style: TextStyles.regular16(context).copyWith(color: primary),
               ),
             ),
           ],

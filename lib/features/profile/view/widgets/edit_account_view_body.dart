@@ -1,14 +1,16 @@
-﻿import 'dart:convert';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/location_picker_field.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/auth/model/models/location_model.dart';
 import 'package:safqaseller/features/auth/model/repositories/auth_repository.dart';
 import 'package:safqaseller/features/profile/model/models/edit_profile_request.dart';
@@ -188,7 +190,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
       isScrollControlled: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24.rSp(context))),
       ),
       builder: (sheetContext) {
         return StatefulBuilder(
@@ -212,12 +214,14 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
               }
             }
 
+            final isTabletOrUp = Breakpoints.isTabletOrUp(sheetContext);
+
             return Padding(
               padding: EdgeInsets.fromLTRB(
-                20.w,
-                24.h,
-                20.w,
-                MediaQuery.of(sheetContext).viewInsets.bottom + 24.h,
+                isTabletOrUp ? 20.0 : 20.w,
+                isTabletOrUp ? 24.0 : 24.h,
+                isTabletOrUp ? 20.0 : 20.w,
+                MediaQuery.of(sheetContext).viewInsets.bottom + (isTabletOrUp ? 24.0 : 24.h),
               ),
               child: SingleChildScrollView(
                 child: Column(
@@ -226,27 +230,27 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                   children: [
                     Center(
                       child: Container(
-                        width: 48.w,
-                        height: 4.h,
+                        width: isTabletOrUp ? 48.0 : 48.w,
+                        height: isTabletOrUp ? 4.0 : 4.h,
                         decoration: BoxDecoration(
                           color: const Color(0xFFD9D9D9),
-                          borderRadius: BorderRadius.circular(999.r),
+                          borderRadius: BorderRadius.circular(999.rSp(context)),
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: isTabletOrUp ? 20.0 : 20.h),
                     Text(
                       S.of(context).kCity,
                       style: TextStyles.bold18(
                         context,
                       ).copyWith(color: Theme.of(context).colorScheme.primary),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                     Text(
                       S.of(context).kCountry,
                       style: TextStyles.semiBold14(context),
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
                     LocationPickerField(
                       enabled: _countries.isNotEmpty,
                       hintText: S.of(context).kSelectCountry,
@@ -261,12 +265,12 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                         }
                       },
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                     Text(
                       S.of(context).kCity,
                       style: TextStyles.semiBold14(context),
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
                     if (isLoadingCities)
                       Center(
                         child: Padding(
@@ -286,16 +290,16 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                           setSheetState(() => localCity = location);
                         },
                       ),
-                    SizedBox(height: 24.h),
+                    SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
                     SizedBox(
                       width: double.infinity,
-                      height: 44.h,
+                      height: isTabletOrUp ? 44.0 : 44.h,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Theme.of(context).colorScheme.primary,
                           foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.r),
+                            borderRadius: BorderRadius.circular(8.rSp(context)),
                           ),
                         ),
                         onPressed: () {
@@ -360,6 +364,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
   Widget build(BuildContext context) {
     final profileState = context.watch<ProfileViewModel>().state;
     final isProfileLoading = profileState is ProfileInitial;
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -394,14 +399,20 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                 child: RefreshIndicator(
                   color: Theme.of(context).colorScheme.primary,
                   onRefresh: _refreshProfile,
-                  child: Form(
-                    key: _formKey,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: isTabletOrUp
+                        ? const EdgeInsets.symmetric(vertical: 24.0)
+                        : EdgeInsets.fromLTRB(24.w, 8.h, 24.w, 24.h),
+                    child: ResponsiveFormShell(
+                      enabled: isTabletOrUp,
+                      maxWidth: 700,
+                      child: ResponsiveFormSection(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                           if (profileState is ProfileError) ...[
                             Text(
                               profileState.message,
@@ -409,7 +420,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                                 context,
                               ).copyWith(color: Colors.red),
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                           ],
                           Center(
                             child: Column(
@@ -419,7 +430,7 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                                   onTap: isProfileLoading ? null : _pickImage,
                                   tooltip: S.of(context).kEditAccountPhotoHint,
                                 ),
-                                SizedBox(height: 10.h),
+                                SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
                                 Text(
                                   S.of(context).kEditAccountPhotoHint,
                                   style: TextStyles.regular13(
@@ -429,34 +440,64 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                               ],
                             ),
                           ),
-                          SizedBox(height: 30.h),
-                          _EditFieldRow(
-                            icon: Icons.person_outline,
-                            controller: _storeNameController,
-                            hintText: S.of(context).kStoreName,
-                            enabled: !isProfileLoading && !isSubmitting,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return S.of(context).fieldRequired;
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 18.h),
-                          _EditFieldRow(
-                            icon: Icons.phone_outlined,
-                            controller: _phoneNumberController,
-                            hintText: S.of(context).kPhoneNumber,
-                            enabled: !isProfileLoading && !isSubmitting,
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return S.of(context).fieldRequired;
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 18.h),
+                          SizedBox(height: isTabletOrUp ? 30.0 : 30.h),
+                          if (isTabletOrUp)
+                            ResponsiveFormRow(
+                              leading: _EditFieldRow(
+                                icon: Icons.person_outline,
+                                controller: _storeNameController,
+                                hintText: S.of(context).kStoreName,
+                                enabled: !isProfileLoading && !isSubmitting,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return S.of(context).fieldRequired;
+                                  }
+                                  return null;
+                                },
+                              ),
+                              trailing: _EditFieldRow(
+                                icon: Icons.phone_outlined,
+                                controller: _phoneNumberController,
+                                hintText: S.of(context).kPhoneNumber,
+                                enabled: !isProfileLoading && !isSubmitting,
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return S.of(context).fieldRequired;
+                                  }
+                                  return null;
+                                },
+                              ),
+                            )
+                          else ...[
+                            _EditFieldRow(
+                              icon: Icons.person_outline,
+                              controller: _storeNameController,
+                              hintText: S.of(context).kStoreName,
+                              enabled: !isProfileLoading && !isSubmitting,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return S.of(context).fieldRequired;
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 18.h),
+                            _EditFieldRow(
+                              icon: Icons.phone_outlined,
+                              controller: _phoneNumberController,
+                              hintText: S.of(context).kPhoneNumber,
+                              enabled: !isProfileLoading && !isSubmitting,
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return S.of(context).fieldRequired;
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                          SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
                           _PickerFieldRow(
                             icon: Icons.location_on_outlined,
                             value:
@@ -470,21 +511,21 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                                 ? null
                                 : _openLocationSheet,
                           ),
-                          SizedBox(height: 26.h),
+                          SizedBox(height: isTabletOrUp ? 26.0 : 26.h),
                           Text(
                             S.of(context).kDescription,
                             style: TextStyles.semiBold16(
                               context,
                             ).copyWith(color: Theme.of(context).colorScheme.primary),
                           ),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
                           Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 16.w,
-                              vertical: 12.h,
+                              horizontal: isTabletOrUp ? 16.0 : 16.w,
+                              vertical: isTabletOrUp ? 12.0 : 12.h,
                             ),
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(18.r),
+                              borderRadius: BorderRadius.circular(18.rSp(context)),
                               border: Border.all(
                                 color: const Color(0xFFB3B3B3),
                               ),
@@ -510,17 +551,17 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 26.h),
+                          SizedBox(height: isTabletOrUp ? 26.0 : 26.h),
                           SizedBox(
                             width: double.infinity,
-                            height: 40.h,
+                            height: isTabletOrUp ? 54.0 : 54.h,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Theme.of(context).colorScheme.primary,
                                 foregroundColor: Colors.white,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.r),
+                                  borderRadius: BorderRadius.circular(isTabletOrUp ? 16.0 : 16.r),
                                 ),
                               ),
                               onPressed: isSubmitting || isProfileLoading
@@ -549,11 +590,13 @@ class _EditAccountViewBodyState extends State<EditAccountViewBody> {
                   ),
                 ),
               ),
-            );
-          },
-        ),
-      ),
-    );
+            ),
+          ),
+        );
+      },
+    ),
+  ),
+);
   }
 }
 
@@ -570,14 +613,16 @@ class _EditableAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Stack(
       clipBehavior: Clip.none,
       children: [
         GestureDetector(
           onTap: onTap,
           child: Container(
-            width: 128.w,
-            height: 128.w,
+            width: isTabletOrUp ? 128.0 : 128.w,
+            height: isTabletOrUp ? 128.0 : 128.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: const Color(0xFFF5F5F5),
@@ -588,22 +633,22 @@ class _EditableAvatar extends StatelessWidget {
                   ? Image.memory(imageBytes!, fit: BoxFit.cover)
                   : Icon(
                       Icons.store_rounded,
-                      size: 56.sp,
+                      size: 56.rSp(context),
                       color: Theme.of(context).colorScheme.primary,
                     ),
             ),
           ),
         ),
         PositionedDirectional(
-          bottom: 2.h,
-          end: 4.w,
+          bottom: isTabletOrUp ? 2.0 : 2.h,
+          end: isTabletOrUp ? 4.0 : 4.w,
           child: Tooltip(
             message: tooltip,
             child: GestureDetector(
               onTap: onTap,
               child: Container(
-                width: 38.w,
-                height: 38.w,
+                width: isTabletOrUp ? 38.0 : 38.w,
+                height: isTabletOrUp ? 38.0 : 38.w,
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
@@ -612,7 +657,7 @@ class _EditableAvatar extends StatelessWidget {
                 child: Icon(
                   Icons.camera_alt_outlined,
                   color: Colors.white,
-                  size: 18.sp,
+                  size: 18.rSp(context),
                 ),
               ),
             ),
@@ -642,12 +687,14 @@ class _EditFieldRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Column(
       children: [
         Row(
           children: [
-            Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22.sp),
-            SizedBox(width: 14.w),
+            Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22.rSp(context)),
+            SizedBox(width: isTabletOrUp ? 14.0 : 14.w),
             Expanded(
               child: TextFormField(
                 controller: controller,
@@ -662,7 +709,7 @@ class _EditFieldRow extends StatelessWidget {
                   ).copyWith(color: const Color(0xFF939393)),
                   border: InputBorder.none,
                   isDense: true,
-                  contentPadding: EdgeInsets.symmetric(vertical: 10.h),
+                  contentPadding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 10.0 : 10.h),
                   errorStyle: TextStyles.regular12(
                     context,
                   ).copyWith(color: Colors.red),
@@ -671,7 +718,7 @@ class _EditFieldRow extends StatelessWidget {
             ),
           ],
         ),
-        Divider(color: const Color(0xFFD9D9D9), height: 1.h),
+        Divider(color: const Color(0xFFD9D9D9), height: isTabletOrUp ? 1.0 : 1.h),
       ],
     );
   }
@@ -692,14 +739,16 @@ class _PickerFieldRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+    
     return InkWell(
       onTap: onTap,
       child: Column(
         children: [
           Row(
             children: [
-              Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22.sp),
-              SizedBox(width: 14.w),
+              Icon(icon, color: Theme.of(context).colorScheme.primary, size: 22.rSp(context)),
+              SizedBox(width: isTabletOrUp ? 14.0 : 14.w),
               Expanded(
                 child: Text(
                   value,
@@ -713,12 +762,12 @@ class _PickerFieldRow extends StatelessWidget {
               Icon(
                 Icons.keyboard_arrow_down_rounded,
                 color: const Color(0xFF939393),
-                size: 24.sp,
+                size: 24.rSp(context),
               ),
             ],
           ),
-          SizedBox(height: 10.h),
-          Divider(color: const Color(0xFFD9D9D9), height: 1.h),
+          SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+          Divider(color: const Color(0xFFD9D9D9), height: isTabletOrUp ? 1.0 : 1.h),
         ],
       ),
     );

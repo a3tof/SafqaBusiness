@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/profile/view/edit_account_view.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
@@ -19,8 +20,10 @@ class ProfileHeaderSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final activePlanLabel = _planLabel(context, activePlanId);
 
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -32,7 +35,7 @@ class ProfileHeaderSection extends StatelessWidget {
                 children: [
                   _buildAvatar(context),
                   if (activePlanLabel != null) ...[
-                    SizedBox(height: 12.h),
+                    SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
                     _PlanBadge(
                       label: '${S.of(context).kActivePlan}: $activePlanLabel',
                     ),
@@ -41,7 +44,7 @@ class ProfileHeaderSection extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 16.w),
+          SizedBox(width: isTabletOrUp ? 16.0 : 16.w),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -57,7 +60,7 @@ class ProfileHeaderSection extends StatelessWidget {
                   context.read<ProfileViewModel>().loadFromCache();
                 },
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               _ActionButton(
                 label: S.of(context).kEdit,
                 backgroundColor: Theme.of(context).colorScheme.surface,
@@ -97,11 +100,13 @@ class ProfileHeaderSection extends StatelessWidget {
   }
 
   Widget _buildAvatar(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Stack(
       children: [
         Container(
-          width: 90.w,
-          height: 90.w,
+          width: isTabletOrUp ? 90.0 : 90.w,
+          height: isTabletOrUp ? 90.0 : 90.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: Theme.of(context).colorScheme.secondary,
@@ -113,22 +118,26 @@ class ProfileHeaderSection extends StatelessWidget {
                 : Icon(
                     Icons.store_rounded,
                     color: Theme.of(context).colorScheme.primary,
-                    size: 50.sp,
+                    size: 50.rSp(context),
                   ),
           ),
         ),
         Positioned(
-          bottom: 2.h,
-          right: 2.w,
+          bottom: isTabletOrUp ? 2.0 : 2.h,
+          right: isTabletOrUp ? 2.0 : 2.w,
           child: Container(
-            width: 24.w,
-            height: 24.w,
+            width: isTabletOrUp ? 24.0 : 24.w,
+            height: isTabletOrUp ? 24.0 : 24.w,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Theme.of(context).colorScheme.primary,
               border: Border.all(color: Colors.white, width: 2),
             ),
-            child: Icon(Icons.check, color: Colors.white, size: 14.sp),
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+              size: 14.rSp(context),
+            ),
           ),
         ),
       ],
@@ -149,14 +158,16 @@ class _ActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 88.w,
-        padding: EdgeInsets.symmetric(vertical: 8.h),
+        width: isTabletOrUp ? 88.0 : 88.w,
+        padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 8.0 : 8.h),
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10.rSp(context)),
         ),
         child: Center(
           child: Text(
@@ -179,12 +190,17 @@ class _PlanBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Container(
-      constraints: BoxConstraints(maxWidth: 170.w),
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+      constraints: BoxConstraints(maxWidth: isTabletOrUp ? 170.0 : 170.w),
+      padding: EdgeInsets.symmetric(
+        horizontal: isTabletOrUp ? 12.0 : 12.w,
+        vertical: isTabletOrUp ? 8.0 : 8.h,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(14.r),
+        borderRadius: BorderRadius.circular(14.rSp(context)),
       ),
       child: Text(
         label,

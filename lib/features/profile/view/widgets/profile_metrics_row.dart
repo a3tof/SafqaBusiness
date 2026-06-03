@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class ProfileMetricsRow extends StatelessWidget {
@@ -16,8 +17,10 @@ class ProfileMetricsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w),
+      padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -26,13 +29,13 @@ class ProfileMetricsRow extends StatelessWidget {
             iconColor: const Color(0xFFFFC107),
             value: rating,
           ),
-          SizedBox(width: 32.w),
+          SizedBox(width: isTabletOrUp ? 32.0 : 32.w),
           _MetricItem(
             icon: Icons.groups_outlined,
             iconColor: Theme.of(context).colorScheme.primary,
             value: followersCount,
           ),
-          SizedBox(width: 32.w),
+          SizedBox(width: isTabletOrUp ? 32.0 : 32.w),
           _MetricItem(
             icon: Icons.gavel_outlined,
             iconColor: Theme.of(context).colorScheme.primary,
@@ -57,16 +60,18 @@ class _MetricItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, color: iconColor, size: 22.sp),
-        SizedBox(width: 6.w),
+        Icon(icon, color: iconColor, size: 22.rSp(context)),
+        SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
         Text(
           value,
-          style: TextStyles.semiBold14(context).copyWith(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          style: TextStyles.semiBold14(
+            context,
+          ).copyWith(color: Theme.of(context).colorScheme.primary),
         ),
       ],
     );

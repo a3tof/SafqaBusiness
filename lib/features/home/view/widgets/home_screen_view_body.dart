@@ -419,7 +419,11 @@ class _GreetingRow extends StatelessWidget {
                         S.of(context).homeWelcomeGreeting,
                         style: TextStyles.regular18(
                           context,
-                        ).copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
+                        ).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white.withValues(alpha: 0.7)
+                              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                       SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
