@@ -216,48 +216,25 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                     padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
                                     child: Column(
                                       children: [
-                                      if (isTabletOrUp)
-                                        ResponsiveFormRow(
-                                          leading: HomeActionCard(
-                                            label: S.of(context).kNewLotAuction,
-                                            showAddIcon: true,
-                                            backgroundImage: Assets.imagesFrame1,
-                                            onTap: () async {
-                                              await Navigator.pushNamed(context, LotAuctionView.routeName);
-                                              await _refreshHome();
-                                            },
-                                          ),
-                                          trailing: HomeActionCard(
-                                            label: S.of(context).kNewSingleAuction,
-                                            showAddIcon: true,
-                                            backgroundImage: Assets.imagesFrame1,
-                                            onTap: () async {
-                                              await Navigator.pushNamed(context, ItemAuctionView.routeName);
-                                              await _refreshHome();
-                                            },
-                                          ),
-                                        )
-                                      else ...[
-                                        HomeActionCard(
-                                          label: S.of(context).kNewLotAuction,
-                                          showAddIcon: true,
-                                          backgroundImage: Assets.imagesFrame1,
-                                          onTap: () async {
-                                            await Navigator.pushNamed(context, LotAuctionView.routeName);
-                                            await _refreshHome();
-                                          },
-                                        ),
-                                        SizedBox(height: 16.h),
-                                        HomeActionCard(
-                                          label: S.of(context).kNewSingleAuction,
-                                          showAddIcon: true,
-                                          backgroundImage: Assets.imagesFrame1,
-                                          onTap: () async {
-                                            await Navigator.pushNamed(context, ItemAuctionView.routeName);
-                                            await _refreshHome();
-                                          },
-                                        ),
-                                      ],
+                                      HomeActionCard(
+                                        label: S.of(context).kNewLotAuction,
+                                        showAddIcon: true,
+                                        backgroundImage: Assets.imagesFrame1,
+                                        onTap: () async {
+                                          await Navigator.pushNamed(context, LotAuctionView.routeName);
+                                          await _refreshHome();
+                                        },
+                                      ),
+                                      SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
+                                      HomeActionCard(
+                                        label: S.of(context).kNewSingleAuction,
+                                        showAddIcon: true,
+                                        backgroundImage: Assets.imagesFrame1,
+                                        onTap: () async {
+                                          await Navigator.pushNamed(context, ItemAuctionView.routeName);
+                                          await _refreshHome();
+                                        },
+                                      ),
                                       SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                                         Row(
                                         children: [

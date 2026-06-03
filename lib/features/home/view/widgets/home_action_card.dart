@@ -52,11 +52,13 @@ class HomeActionCard extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               if (backgroundImage != null)
-                Image.asset(
-                  backgroundImage!,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stack) =>
-                      const SizedBox.shrink(),
+                Transform.scale(
+                  scale: 1.15,
+                  child: Image.asset(
+                    backgroundImage!,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stack) => const SizedBox.shrink(),
+                  ),
                 ),
               Container(color: overlayColor),
               Center(
