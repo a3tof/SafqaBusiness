@@ -93,7 +93,7 @@ class _LegalDocumentsViewState extends State<LegalDocumentsView> {
                 uploaded: _nationalIdBackFile != null,
                 onTap: () => _pickFile((f) => _nationalIdBackFile = f),
               ),
-              const Spacer(),
+              SizedBox(height: (isTabletOrUp ? 32.0 : 32.h)),
               SizedBox(
                 width: double.infinity,
                 height: isTabletOrUp ? 54.0 : 54.h,

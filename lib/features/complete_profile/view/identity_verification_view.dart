@@ -169,7 +169,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
                         source: ImageSource.camera,
                       ),
                     ),
-                    Spacer(),
+                    SizedBox(height: (isTabletOrUp ? 32.0 : 32.h)),
                     isLoading
                         ? Center(
                             child: CircularProgressIndicator(
