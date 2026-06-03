@@ -34,11 +34,13 @@ class CompleteProfileDialog extends StatelessWidget {
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         insetPadding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
-        child: Padding(
-          padding: isTabletOrUp 
-              ? const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0)
-              : EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
-          child: Column(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 400),
+          child: Padding(
+            padding: isTabletOrUp 
+                ? const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 16.0)
+                : EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               // Close button — hidden in forced mode
@@ -110,6 +112,7 @@ class CompleteProfileDialog extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }
