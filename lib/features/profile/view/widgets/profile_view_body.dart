@@ -123,8 +123,10 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.rSp(context)),
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Padding(
+                padding: EdgeInsets.symmetric(
                 horizontal: isTabletOrUp ? 16.0 : 16.w,
                 vertical: isTabletOrUp ? 24.0 : 24.h,
               ),
@@ -186,9 +188,10 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
               ),
             ),
           ),
-        );
-      },
-    );
+        ),
+      );
+    },
+  );
   }
 
   Future<void> _showLogoutDialog(BuildContext context) {
@@ -243,110 +246,113 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.rSp(context)),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    isTabletOrUp ? 22.0 : 22.w,
-                    isTabletOrUp ? 28.0 : 28.h,
-                    isTabletOrUp ? 22.0 : 22.w,
-                    isTabletOrUp ? 22.0 : 22.h,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        S.of(context).profileSelectLanguageTitle,
-                        textAlign: TextAlign.center,
-                        style: TextStyles.bold22(
-                          context,
-                        ).copyWith(color: theme.colorScheme.primary),
-                      ),
-                      SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
-                      _LanguageOptionTile(
-                        label: S.of(context).kEnglish,
-                        value: 'english',
-                        groupValue: draftLanguage,
-                        onTap: () =>
-                            setModalState(() => draftLanguage = 'english'),
-                      ),
-                      SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
-                      _LanguageOptionTile(
-                        label: S.of(context).kArabic,
-                        value: 'arabic',
-                        groupValue: draftLanguage,
-                        onTap: () =>
-                            setModalState(() => draftLanguage = 'arabic'),
-                      ),
-                      SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SizedBox(
-                              height: isTabletOrUp ? 48.0 : 48.h,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  if (draftLanguage == 'english') {
-                                    _changeLanguage(
-                                      context: dialogContext,
-                                      locale: const Locale('en'),
-                                      cacheValue: 'english',
-                                    );
-                                  } else {
-                                    _changeLanguage(
-                                      context: dialogContext,
-                                      locale: const Locale('ar'),
-                                      cacheValue: 'arabic',
-                                    );
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  backgroundColor: theme.colorScheme.primary,
-                                  foregroundColor: theme.colorScheme.onPrimary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      10.rSp(context),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 400),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      isTabletOrUp ? 22.0 : 22.w,
+                      isTabletOrUp ? 28.0 : 28.h,
+                      isTabletOrUp ? 22.0 : 22.w,
+                      isTabletOrUp ? 22.0 : 22.h,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          S.of(context).profileSelectLanguageTitle,
+                          textAlign: TextAlign.center,
+                          style: TextStyles.bold22(
+                            context,
+                          ).copyWith(color: theme.colorScheme.primary),
+                        ),
+                        SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
+                        _LanguageOptionTile(
+                          label: S.of(context).kEnglish,
+                          value: 'english',
+                          groupValue: draftLanguage,
+                          onTap: () =>
+                              setModalState(() => draftLanguage = 'english'),
+                        ),
+                        SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
+                        _LanguageOptionTile(
+                          label: S.of(context).kArabic,
+                          value: 'arabic',
+                          groupValue: draftLanguage,
+                          onTap: () =>
+                              setModalState(() => draftLanguage = 'arabic'),
+                        ),
+                        SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: SizedBox(
+                                height: isTabletOrUp ? 48.0 : 48.h,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    if (draftLanguage == 'english') {
+                                      _changeLanguage(
+                                        context: dialogContext,
+                                        locale: const Locale('en'),
+                                        cacheValue: 'english',
+                                      );
+                                    } else {
+                                      _changeLanguage(
+                                        context: dialogContext,
+                                        locale: const Locale('ar'),
+                                        cacheValue: 'arabic',
+                                      );
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: theme.colorScheme.primary,
+                                    foregroundColor: theme.colorScheme.onPrimary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        10.rSp(context),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Text(
-                                  S.of(context).profileLanguageConfirmButton,
-                                  style: TextStyles.bold18(context).copyWith(
-                                    color: theme.colorScheme.onPrimary,
+                                  child: Text(
+                                    S.of(context).profileLanguageConfirmButton,
+                                    style: TextStyles.bold18(context).copyWith(
+                                      color: theme.colorScheme.onPrimary,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
-                          Expanded(
-                            child: SizedBox(
-                              height: isTabletOrUp ? 48.0 : 48.h,
-                              child: ElevatedButton(
-                                onPressed: () =>
-                                    Navigator.of(dialogContext).pop(),
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 0,
-                                  backgroundColor: theme.colorScheme.primary
-                                      .withValues(alpha: 0.1),
-                                  foregroundColor: theme.colorScheme.primary,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
-                                      10.rSp(context),
+                            SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
+                            Expanded(
+                              child: SizedBox(
+                                height: isTabletOrUp ? 48.0 : 48.h,
+                                child: ElevatedButton(
+                                  onPressed: () =>
+                                      Navigator.of(dialogContext).pop(),
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: theme.colorScheme.primary
+                                        .withValues(alpha: 0.1),
+                                    foregroundColor: theme.colorScheme.primary,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                        10.rSp(context),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                child: Text(
-                                  S.of(context).notificationsCancel,
-                                  style: TextStyles.bold18(
-                                    context,
-                                  ).copyWith(color: theme.colorScheme.primary),
+                                  child: Text(
+                                    S.of(context).notificationsCancel,
+                                    style: TextStyles.bold18(
+                                      context,
+                                    ).copyWith(color: theme.colorScheme.primary),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
