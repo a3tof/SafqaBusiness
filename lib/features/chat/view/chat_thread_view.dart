@@ -15,8 +15,15 @@ class ChatThreadView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          getIt<ChatThreadViewModel>()..loadMessages(args.conversationId),
+      create: (_) {
+        final vm = getIt<ChatThreadViewModel>();
+        if (args.disputeId != null) {
+          vm.initDisputeConversation(args.disputeId!);
+        } else {
+          vm.loadMessages(args.conversationId);
+        }
+        return vm;
+      },
       child: ChatThreadViewBody(args: args),
     );
   }

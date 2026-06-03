@@ -17,12 +17,18 @@ class ChatThreadSuccess extends ChatThreadState {
   final List<MessageModel> messages;
   final bool isSending;
   final String? sendErrorMessage;
+  final String? disputeReason;
+  final String? currentBuyerId;
+  final String? currentSellerId;
 
   const ChatThreadSuccess({
     required this.conversationId,
     required this.messages,
     this.isSending = false,
     this.sendErrorMessage,
+    this.disputeReason,
+    this.currentBuyerId,
+    this.currentSellerId,
   });
 
   ChatThreadSuccess copyWith({
@@ -30,6 +36,9 @@ class ChatThreadSuccess extends ChatThreadState {
     List<MessageModel>? messages,
     bool? isSending,
     Object? sendErrorMessage = _sentinel,
+    String? disputeReason,
+    String? currentBuyerId,
+    String? currentSellerId,
   }) {
     return ChatThreadSuccess(
       conversationId: conversationId ?? this.conversationId,
@@ -38,6 +47,9 @@ class ChatThreadSuccess extends ChatThreadState {
       sendErrorMessage: identical(sendErrorMessage, _sentinel)
           ? this.sendErrorMessage
           : sendErrorMessage as String?,
+      disputeReason: disputeReason ?? this.disputeReason,
+      currentBuyerId: currentBuyerId ?? this.currentBuyerId,
+      currentSellerId: currentSellerId ?? this.currentSellerId,
     );
   }
 
@@ -47,6 +59,9 @@ class ChatThreadSuccess extends ChatThreadState {
     messages,
     isSending,
     sendErrorMessage,
+    disputeReason,
+    currentBuyerId,
+    currentSellerId,
   ];
 }
 

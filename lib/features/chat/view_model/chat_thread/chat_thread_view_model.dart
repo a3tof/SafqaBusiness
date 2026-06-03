@@ -21,10 +21,46 @@ class ChatThreadViewModel extends Cubit<ChatThreadState> {
     }
   }
 
+  Future<void> initDisputeConversation(int disputeId) async {
+    emit(ChatThreadLoading());
+    try {
+      final data = await chatRepository.createConversation(disputeId);
+      final int conversationId = data['id'] as int;
+      final String? currentBuyerId = data['buyerId'] as String?;
+      final String? currentSellerId = data['sellerId'] as String?;
+      final String? disputeReason = data['reason'] as String?;
+      
+      final msgs = data['messages'];
+      List<MessageModel> initialMessages = [];
+      if (msgs is List) {
+        initialMessages = msgs
+            .map((item) => MessageModel.fromJson(Map<String, dynamic>.from(item as Map)))
+            .toList();
+      }
+      initialMessages.sort((a, b) => b.sentAt.compareTo(a.sentAt));
+
+      emit(
+        ChatThreadSuccess(
+          conversationId: conversationId,
+          messages: initialMessages,
+          disputeReason: disputeReason,
+          currentBuyerId: currentBuyerId,
+          currentSellerId: currentSellerId,
+        ),
+      );
+    } catch (e) {
+      emit(ChatThreadFailure(_clean(e)));
+    }
+  }
+
   Future<void> refresh() async {
     final currentState = state;
     if (currentState is! ChatThreadSuccess) return;
-    await loadMessages(currentState.conversationId);
+    try {
+      final messages = await chatRepository.getMessages(currentState.conversationId);
+      messages.sort((a, b) => b.sentAt.compareTo(a.sentAt));
+      emit(currentState.copyWith(messages: messages));
+    } catch (_) {}
   }
 
   Future<void> sendMessage(String content) async {

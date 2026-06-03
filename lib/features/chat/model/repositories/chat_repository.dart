@@ -7,6 +7,28 @@ class ChatRepository {
 
   ChatRepository({required this.dioHelper});
 
+  Future<Map<String, dynamic>> createConversation(int disputeId) async {
+    final response = await dioHelper.postData(
+      endPoint: 'Chat/conversation/$disputeId',
+      requiresAuth: true,
+      data: {
+        'disputeId': disputeId,
+      },
+    );
+
+    final statusCode = response.statusCode ?? 500;
+    if (statusCode < 200 || statusCode >= 300) {
+      throw Exception(extractResponseError(response.data, statusCode));
+    }
+
+    final data = response.data;
+    if (data is Map && data.containsKey('id')) {
+      return data as Map<String, dynamic>;
+    } else {
+      throw Exception('Invalid response format: missing conversation id');
+    }
+  }
+
   Future<List<ConversationModel>> getConversations() async {
     final response = await dioHelper.getData(
       endPoint: 'Chat/conversations',

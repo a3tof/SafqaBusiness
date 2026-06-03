@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:safqaseller/core/utils/app_text_styles.dart';
-import 'package:safqaseller/features/chat/view/chat_list_view.dart';
 import 'package:safqaseller/features/chat/view/chat_thread_view.dart';
 import 'package:safqaseller/features/chat/view/chat_thread_view_args.dart';
 import 'package:safqaseller/features/notifications/model/models/notification_model.dart';
@@ -148,20 +147,20 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                         child: ResponsiveFormSection(
                           child: _NotificationsList(
                             notifications: List.generate(
-                      6,
-                      (index) => NotificationModel(
-                        id: index,
-                        title: 'Loading Title for Skeleton',
-                        message: 'Loading Message for Skeletonizer',
-                        timeAgo: 'Now',
-                        type: NotificationType.newAuction,
-                        isRead: true,
-                      ),
-                    ),
-                    selectionMode: false,
-                    selectedIds: const {},
-                    onToggleItem: (_) {},
-                    onStartSelectionWith: (_) {},
+                              6,
+                              (index) => NotificationModel(
+                                id: index,
+                                title: 'Loading Title for Skeleton',
+                                message: 'Loading Message for Skeletonizer',
+                                timeAgo: 'Now',
+                                type: NotificationType.newAuction,
+                                isRead: true,
+                              ),
+                            ),
+                            selectionMode: false,
+                            selectedIds: const {},
+                            onToggleItem: (_) {},
+                            onStartSelectionWith: (_) {},
                           ),
                         ),
                       ),
@@ -242,7 +241,8 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                               _SelectionToolbar(
                                 selectedCount: _selectedIds.length,
                                 allSelected:
-                                    _selectedIds.length == state.notifications.length,
+                                    _selectedIds.length ==
+                                    state.notifications.length,
                                 onDismiss: _onToolbarDismiss,
                                 onToggleSelectAll: () =>
                                     _toggleSelectAll(state.notifications),
@@ -370,7 +370,12 @@ class _SelectionToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: EdgeInsets.fromLTRB(8.rSp(context), 0, 16.rSp(context), 8.rSp(context)),
+      padding: EdgeInsets.fromLTRB(
+        8.rSp(context),
+        0,
+        16.rSp(context),
+        8.rSp(context),
+      ),
       child: Row(
         children: [
           IconButton(
@@ -441,7 +446,9 @@ class _NotificationsList extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: EdgeInsets.zero,
       itemCount: notifications.length,
-      separatorBuilder: (_, _) => SizedBox(height: Breakpoints.isTabletOrUp(context) ? 12.0 : 12.rSp(context)),
+      separatorBuilder: (_, _) => SizedBox(
+        height: Breakpoints.isTabletOrUp(context) ? 12.0 : 12.rSp(context),
+      ),
       itemBuilder: (context, index) {
         final notification = notifications[index];
         final selected = selectedIds.contains(notification.id);
@@ -466,9 +473,19 @@ class _NotificationsList extends StatelessWidget {
             context.read<NotificationsViewModel>().markNotificationSeenAndRead(
               notification.id,
             );
-            
+
             if (notification.type == NotificationType.report) {
-              Navigator.pushNamed(context, ChatListView.routeName);
+              Navigator.pushNamed(
+                context,
+                ChatThreadView.routeName,
+                arguments: ChatThreadViewArgs(
+                  conversationId: -1, // will be resolved via disputeId
+                  buyerName: notification.title.isEmpty
+                      ? S.of(context).chatTitle
+                      : notification.title,
+                  disputeId: notification.id,
+                ),
+              );
             } else {
               Navigator.pushNamed(
                 context,
