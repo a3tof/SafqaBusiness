@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/wallet/model/models/wallet_models.dart';
@@ -17,19 +18,20 @@ class CardListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Row(
       children: [
         // Card brand icon (mastercard-style circles)
         SizedBox(
-          width: 32.w,
-          height: 32.w,
+          width: (isTabletOrUp ? 32.0 : 32.w),
+          height: (isTabletOrUp ? 32.0 : 32.w),
           child: Stack(
             children: [
               Positioned(
                 left: 0,
                 child: Container(
-                  width: 22.w,
-                  height: 22.w,
+                  width: (isTabletOrUp ? 22.0 : 22.w),
+                  height: (isTabletOrUp ? 22.0 : 22.w),
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: Color(0xFFEB001B),
@@ -40,8 +42,8 @@ class CardListItem extends StatelessWidget {
                 right: 0,
                 bottom: 0,
                 child: Container(
-                  width: 22.w,
-                  height: 22.w,
+                  width: (isTabletOrUp ? 22.0 : 22.w),
+                  height: (isTabletOrUp ? 22.0 : 22.w),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: const Color(0xFFF79E1B).withValues(alpha: 0.9),
@@ -51,7 +53,7 @@ class CardListItem extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(width: 16.w),
+        SizedBox(width: (isTabletOrUp ? 16.0 : 16.w)),
         // Card info
         Expanded(
           child: Column(
@@ -61,14 +63,14 @@ class CardListItem extends StatelessWidget {
                 card.label?.isNotEmpty == true ? card.label! : 'Master Card',
                 style: TextStyles.medium18(context),
               ),
-              SizedBox(height: 2.h),
+              SizedBox(height: (isTabletOrUp ? 2.0 : 2.h)),
               Text.rich(
                 TextSpan(
                   children: [
                     TextSpan(
                       text: '.... .... .... ',
                       style: TextStyle(
-                        fontSize: 20.sp,
+                        fontSize: 20.rSp(context),
                         fontWeight: FontWeight.bold,
                         letterSpacing: 1,
                       ),
@@ -76,7 +78,7 @@ class CardListItem extends StatelessWidget {
                     TextSpan(
                       text: card.last4,
                       style: TextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 12.rSp(context),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -104,7 +106,7 @@ class CardListItem extends StatelessWidget {
           icon: Icon(
             Icons.more_vert_rounded,
             color: Theme.of(context).colorScheme.primary,
-            size: 28.sp,
+            size: 28.rSp(context),
           ),
         ),
       ],

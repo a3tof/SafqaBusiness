@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/service_locator.dart';
@@ -8,6 +9,7 @@ import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/features/wallet/model/models/wallet_models.dart';
 import 'package:safqaseller/features/wallet/model/repositories/wallet_repository.dart';
 import 'package:safqaseller/features/wallet/view/add_card_view.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/wallet/view/widgets/wallet_skeleton_data.dart';
 import 'package:safqaseller/features/wallet/view_model/withdrawal/withdrawal_view_model.dart';
 import 'package:safqaseller/features/wallet/view_model/withdrawal/withdrawal_view_model_state.dart';
@@ -96,6 +98,7 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return BlocListener<WithdrawalViewModel, WithdrawalState>(
       listener: (context, state) {
         if (state is WithdrawalSuccess) {
@@ -129,9 +132,9 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                 onRefresh: _refreshCards,
                 child: ListView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
+                  padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 24.0 : 24.w), vertical: (isTabletOrUp ? 24.0 : 24.h)),
                   children: [
-                    SizedBox(height: 160.h),
+                    SizedBox(height: (isTabletOrUp ? 160.0 : 160.h)),
                     Column(
                       children: [
                         Text(
@@ -139,7 +142,7 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                           textAlign: TextAlign.center,
                           style: TextStyles.regular16(context),
                         ),
-                        SizedBox(height: 16.h),
+                        SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                         ElevatedButton(
                           onPressed: _refreshCards,
                           style: ElevatedButton.styleFrom(
@@ -171,31 +174,33 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                   builder: (context, constraints) => SingleChildScrollView(
                     physics: const AlwaysScrollableScrollPhysics(),
                     padding:
-                        EdgeInsets.symmetric(horizontal: 16.w, vertical: 24.h),
-                    child: ConstrainedBox(
-                      constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
+                        EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 24.0 : 24.h)),
+                    child: ResponsiveFormShell(
+                      enabled: isTabletOrUp,
+                      maxWidth: 700,
+                      child: ResponsiveFormSection(
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               S.of(context).kEnterWithdrawalAmo,
                               style: TextStyles.medium20(context),
                             ),
-                            SizedBox(height: 24.h),
+                            SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                             Text(
                               S.of(context).savedCard,
                               style: TextStyles.medium16(context),
                             ),
-                            SizedBox(height: 12.h),
+                            SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
                             if (cards.isEmpty)
                               Container(
                                 width: double.infinity,
-                                padding: EdgeInsets.all(16.r),
+                                padding: EdgeInsets.all(16.rSp(context)),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12.r),
+                                  borderRadius: BorderRadius.circular(12.rSp(context)),
                                   border: Border.all(color: Colors.grey.shade300),
                                 ),
                                 child: Column(
@@ -205,7 +210,7 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                                       S.of(context).kNoSavedCards,
                                       style: TextStyles.regular16(context),
                                     ),
-                                    SizedBox(height: 12.h),
+                                    SizedBox(height: (isTabletOrUp ? 12.0 : 12.h)),
                                     ElevatedButton(
                                       onPressed: _openAddCard,
                                       style: ElevatedButton.styleFrom(
@@ -244,20 +249,20 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                                 },
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12.r),
+                                    borderRadius: BorderRadius.circular(12.rSp(context)),
                                   ),
                                   contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 14.h,
+                                    horizontal: (isTabletOrUp ? 16.0 : 16.w),
+                                    vertical: (isTabletOrUp ? 14.0 : 14.h),
                                   ),
                                 ),
                               ),
-                            SizedBox(height: 24.h),
+                            SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                             Container(
-                              height: 56.h,
+                              height: (isTabletOrUp ? 56.0 : 56.h),
                               decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius: BorderRadius.circular(12.r),
+                                borderRadius: BorderRadius.circular(12.rSp(context)),
                                 border: Border.all(
                                   color: Theme.of(context).colorScheme.primary,
                                   width: 1.5,
@@ -288,49 +293,49 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                                   return null;
                                 },
                                 style: TextStyle(
-                                  fontSize: 20.sp,
+                                  fontSize: 20.rSp(context),
                                   fontWeight: FontWeight.w500,
                                 ),
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 16.h,
+                                    horizontal: (isTabletOrUp ? 16.0 : 16.w),
+                                    vertical: (isTabletOrUp ? 16.0 : 16.h),
                                   ),
                                   hintText: '0.00',
                                   hintStyle: TextStyle(
-                                    fontSize: 20.sp,
+                                    fontSize: 20.rSp(context),
                                     color: Colors.grey[400],
                                   ),
                                   prefixText: '${CurrencyFormatter.getSymbol()} ',
                                   prefixStyle: TextStyle(
-                                    fontSize: 20.sp,
+                                    fontSize: 20.rSp(context),
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context).colorScheme.primary,
                                   ),
                                 ),
                               ),
                             ),
-                            SizedBox(height: 24.h),
+                            SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                             BlocBuilder<WithdrawalViewModel, WithdrawalState>(
                               builder: (context, state) {
                                 final isLoading = state is WithdrawalLoading;
                                 return SizedBox(
                                   width: double.infinity,
-                                  height: 54.h,
+                                  height: (isTabletOrUp ? 54.0 : 54.h),
                                   child: ElevatedButton(
                                     onPressed: isLoading ? null : () => _submit(cards),
                                     style: ElevatedButton.styleFrom(
                                       backgroundColor: Theme.of(context).colorScheme.primary,
                                       elevation: 0,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16.r),
+                                        borderRadius: BorderRadius.circular(16.rSp(context)),
                                       ),
                                     ),
                                     child: isLoading
                                         ? SizedBox(
-                                            width: 22.w,
-                                            height: 22.w,
+                                            width: (isTabletOrUp ? 22.0 : 22.w),
+                                            height: (isTabletOrUp ? 22.0 : 22.w),
                                             child: const CircularProgressIndicator(
                                               color: Colors.white,
                                               strokeWidth: 2,
@@ -346,7 +351,7 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                                 );
                               },
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                           ],
                         ),
                       ),
@@ -354,7 +359,8 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
                   ),
                 ),
               ),
-            );
+            ),
+          );
           },
         ),
       ),

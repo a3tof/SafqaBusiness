@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
@@ -32,16 +33,17 @@ class TransactionItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final locale = Localizations.localeOf(context).toLanguageTag();
     final dateStr = DateFormat('d MMM, yyyy', locale).format(transaction.date);
     final amountStr = CurrencyFormatter.format(transaction.amount);
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all((isTabletOrUp ? 16.0 : 16.w)),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12.rSp(context)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,7 +60,7 @@ class TransactionItem extends StatelessWidget {
                     context,
                   ).copyWith(color: Theme.of(context).colorScheme.primary),
                 ),
-                SizedBox(height: 6.h),
+                SizedBox(height: (isTabletOrUp ? 6.0 : 6.h)),
                 Text(
                   dateStr,
                   maxLines: 1,
@@ -70,7 +72,7 @@ class TransactionItem extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: (isTabletOrUp ? 12.0 : 12.w)),
           Text(
             amountStr,
             maxLines: 1,

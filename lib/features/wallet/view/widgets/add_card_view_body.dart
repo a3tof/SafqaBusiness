@@ -1,4 +1,5 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:safqaseller/features/wallet/view_model/add_card/add_card_view_mo
 import 'package:safqaseller/features/wallet/view_model/add_card/add_card_view_model_state.dart';
 import 'package:safqaseller/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 
 class AddCardViewBody extends StatefulWidget {
   const AddCardViewBody({super.key});
@@ -98,6 +100,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return BlocListener<AddCardViewModel, AddCardState>(
       listener: (context, state) {
         if (state is AddCardSuccess) {
@@ -128,7 +131,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                   icon: Icon(
                     Icons.close_rounded,
                     color: Theme.of(context).colorScheme.error,
-                    size: 28.sp,
+                    size: 28.rSp(context),
                   ),
                 ),
                 title: Text(
@@ -137,7 +140,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: 'AlegreyaSC',
-                    fontSize: 28.sp,
+                    fontSize: 28.rSp(context),
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -150,19 +153,23 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                     Expanded(
                       child: SingleChildScrollView(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 16.w,
-                          vertical: 16.h,
+                          horizontal: (isTabletOrUp ? 16.0 : 16.w),
+                          vertical: (isTabletOrUp ? 16.0 : 16.h),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
+                        child: ResponsiveFormShell(
+                          enabled: isTabletOrUp,
+                          maxWidth: 700,
+                          child: ResponsiveFormSection(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                             Text(
                               'Enter your card information',
                               style: TextStyles.medium20(context).copyWith(
                                 color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                             _CardField(
                               controller: _cardNumberCtrl,
                               hint: 'Card Number',
@@ -171,7 +178,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                               inputFormatters: _cardNumberFormatters,
                               validator: _validateCardNumber,
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                             Row(
                               children: [
                                 Expanded(
@@ -184,7 +191,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                     validator: _validateExpiryDate,
                                   ),
                                 ),
-                                SizedBox(width: 9.w),
+                                SizedBox(width: (isTabletOrUp ? 9.0 : 9.w)),
                                 Expanded(
                                   child: _CardField(
                                     controller: _cvvCtrl,
@@ -198,7 +205,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                             _CardField(
                               controller: _holderCtrl,
                               hint: 'Cardholder Name',
@@ -206,62 +213,62 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                   ? S.of(context).fieldRequired
                                   : null,
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                             _CardField(
                               controller: _labelCtrl,
                               hint: 'Card Label (Optional)',
+                            ),
+                            SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
+                            SizedBox(
+                              width: double.infinity,
+                              height: (isTabletOrUp ? 54.0 : 54.h),
+                              child: ElevatedButton(
+                                onPressed: isLoading ? null : _submit,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).colorScheme.primary,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.rSp(context)),
+                                  ),
+                                ),
+                                child: isLoading
+                                    ? SizedBox(
+                                        width: (isTabletOrUp ? 20.0 : 20.w),
+                                        height: (isTabletOrUp ? 20.0 : 20.w),
+                                        child: CircularProgressIndicator(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : Text(
+                                        S.of(context).kAddCard,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyles.semiBold16(context)
+                                            .copyWith(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimary,
+                                            ),
+                                      ),
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 40.h),
-                      child: SizedBox(
-                        width: double.infinity,
-                        height: 40.h,
-                        child: ElevatedButton(
-                          onPressed: isLoading ? null : _submit,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(
-                              context,
-                            ).colorScheme.primary,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r),
-                            ),
-                          ),
-                          child: isLoading
-                              ? SizedBox(
-                                  width: 20.w,
-                                  height: 20.w,
-                                  child: CircularProgressIndicator(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onPrimary,
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : Text(
-                                  S.of(context).kAddCard,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyles.semiBold16(context)
-                                      .copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onPrimary,
-                                      ),
-                                ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          );
-        },
+          ),
+        ),
+      );
+    },
       ),
     );
   }
@@ -289,6 +296,7 @@ class _CardField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final theme = Theme.of(context);
 
     return TextFormField(
@@ -310,20 +318,20 @@ class _CardField extends StatelessWidget {
         filled: true,
         fillColor: theme.cardColor,
         errorMaxLines: 3,
-        constraints: BoxConstraints(minHeight: 48.h),
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
-        border: _buildBorder(theme),
-        enabledBorder: _buildBorder(theme),
-        focusedBorder: _buildBorder(theme, color: theme.colorScheme.primary),
-        errorBorder: _buildBorder(theme, color: theme.colorScheme.error),
-        focusedErrorBorder: _buildBorder(theme, color: theme.colorScheme.error),
+        constraints: BoxConstraints(minHeight: (isTabletOrUp ? 48.0 : 48.h)),
+        contentPadding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 14.0 : 14.h)),
+        border: _buildBorder(theme, context),
+        enabledBorder: _buildBorder(theme, context),
+        focusedBorder: _buildBorder(theme, context, color: theme.colorScheme.primary),
+        errorBorder: _buildBorder(theme, context, color: theme.colorScheme.error),
+        focusedErrorBorder: _buildBorder(theme, context, color: theme.colorScheme.error),
       ),
     );
   }
 
-  OutlineInputBorder _buildBorder(ThemeData theme, {Color? color}) {
+  OutlineInputBorder _buildBorder(ThemeData theme, BuildContext context, {Color? color}) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4.r),
+      borderRadius: BorderRadius.circular(4.rSp(context)),
       borderSide: BorderSide(
         color: color ?? theme.colorScheme.outline,
         width: 0.5,

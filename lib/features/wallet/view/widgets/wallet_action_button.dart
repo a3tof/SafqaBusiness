@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
@@ -23,6 +24,7 @@ class WalletActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final displayLabel = label.replaceAll(r'\n', '\n');
     final circleColor = backgroundColor ?? Theme.of(context).colorScheme.secondary;
     final foregroundColor = iconColor ?? Theme.of(context).colorScheme.primary;
@@ -33,8 +35,8 @@ class WalletActionButton extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Container(
-            width: 50.w,
-            height: 50.w,
+            width: (isTabletOrUp ? 50.0 : 50.w),
+            height: (isTabletOrUp ? 50.0 : 50.w),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: circleColor,
@@ -42,12 +44,12 @@ class WalletActionButton extends StatelessWidget {
             child: Icon(
               icon,
               color: foregroundColor,
-              size: 24.sp,
+              size: 24.rSp(context),
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: (isTabletOrUp ? 8.0 : 8.h)),
           SizedBox(
-            width: 86.w,
+            width: (isTabletOrUp ? 86.0 : 86.w),
             child: Text(
               displayLabel,
               maxLines: 2,
