@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/features/subscription/model/subscription_plan_model.dart';
@@ -8,6 +8,9 @@ import 'package:safqaseller/features/subscription/view_model/subscription_view_m
 import 'package:safqaseller/features/subscription/view_model/subscription_view_model_state.dart';
 import 'package:safqaseller/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
+import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class SubscriptionViewBody extends StatefulWidget {
   const SubscriptionViewBody({super.key});
@@ -48,6 +51,7 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
       },
       child: BlocBuilder<SubscriptionViewModel, SubscriptionState>(
         builder: (context, state) {
+          final isTabletOrUp = Breakpoints.isTabletOrUp(context);
           final plans = SubscriptionPlanModel.plans(context);
           final isSkeletonLoading = state is SubscriptionScreenLoading;
 
@@ -61,17 +65,23 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
                 _jumpToActivePlanTab(viewModel.state.activePlanId);
               },
               child: SafeArea(
-                child: CustomScrollView(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [
+                child: ResponsiveFormShell(
+                  enabled: isTabletOrUp,
+                  maxWidth: 700,
+                  child: ResponsiveFormSection(
+                    child: CustomScrollView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
                     SliverToBoxAdapter(
                       child: Column(
                         children: [
-                          SizedBox(height: 8.h),
-                          Center(child: _buildLogo()),
-                          SizedBox(height: 20.h),
+                          SizedBox(height: isTabletOrUp ? 16.0 : 8.h),
+                          Center(child: _buildLogo(context)),
+                          SizedBox(height: isTabletOrUp ? 24.0 : 20.h),
                           Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 24.w),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isTabletOrUp ? 16.0 : 24.w,
+                            ),
                             child: SubscriptionTabBar(
                               tabController: _tabController,
                               labels: [
@@ -81,7 +91,7 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
                               ],
                             ),
                           ),
-                          SizedBox(height: 16.h),
+                          SizedBox(height: isTabletOrUp ? 24.0 : 16.h),
                         ],
                       ),
                     ),
@@ -98,10 +108,12 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
                 ),
               ),
             ),
-          );
-        },
-      ),
-    );
+          ),
+        ),
+      );
+    },
+  ),
+);
   }
 
   void _jumpToActivePlanTab(String? activePlanId) {
@@ -114,7 +126,7 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
     _tabController.animateTo(tabIndex);
   }
 
-  Widget _buildLogo() {
+  Widget _buildLogo(BuildContext context) {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
@@ -123,7 +135,7 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
             text: 'safqa',
             style: TextStyle(
               fontFamily: 'AlegreyaSC',
-              fontSize: 40.sp,
+              fontSize: 40.rSp(context),
               fontWeight: FontWeight.normal,
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -132,7 +144,7 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
             text: '.',
             style: TextStyle(
               fontFamily: 'AlegreyaSC',
-              fontSize: 40.sp,
+              fontSize: 40.rSp(context),
               fontWeight: FontWeight.normal,
               color: Theme.of(context).hintColor,
             ),
@@ -141,7 +153,7 @@ class _SubscriptionViewBodyState extends State<SubscriptionViewBody>
             text: 'Business',
             style: TextStyle(
               fontFamily: 'AlegreyaSC',
-              fontSize: 24.sp,
+              fontSize: 24.rSp(context),
               fontWeight: FontWeight.normal,
               color: Theme.of(context).colorScheme.primary,
             ),

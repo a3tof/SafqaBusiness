@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/subscription/model/subscription_plan_model.dart';
 import 'package:safqaseller/features/subscription/view_model/subscription_view_model.dart';
@@ -14,6 +15,7 @@ class SubscriptionPlanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final planId = plan.upgradeType.toString();
 
     return BlocConsumer<SubscriptionViewModel, SubscriptionState>(
@@ -69,15 +71,17 @@ class SubscriptionPlanCard extends StatelessWidget {
             : primary.withValues(alpha: 0.12);
 
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          padding: EdgeInsets.symmetric(
+            horizontal: isTabletOrUp ? 20.0 : 20.w,
+          ),
           child: Column(
             children: [
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: theme.cardColor,
-                  borderRadius: BorderRadius.circular(18.r),
+                  borderRadius: BorderRadius.circular(18.rSp(context)),
                   border: Border.all(color: cardBorderColor),
                   boxShadow: [
                     BoxShadow(
@@ -97,7 +101,12 @@ class SubscriptionPlanCard extends StatelessWidget {
                         ),
                       ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(20.w, 24.h, 20.w, 22.h),
+                      padding: EdgeInsets.fromLTRB(
+                        isTabletOrUp ? 20.0 : 20.w,
+                        isTabletOrUp ? 24.0 : 24.h,
+                        isTabletOrUp ? 20.0 : 20.w,
+                        isTabletOrUp ? 22.0 : 22.h,
+                      ),
                       child: Column(
                         children: [
                           Text(
@@ -106,32 +115,34 @@ class SubscriptionPlanCard extends StatelessWidget {
                               context,
                             ).copyWith(color: primary),
                           ),
-                          SizedBox(height: 18.h),
+                          SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
                           Icon(
                             Icons.campaign_outlined,
-                            size: 56.sp,
+                            size: 56.rSp(context),
                             color: primary,
                           ),
-                          SizedBox(height: 14.h),
+                          SizedBox(height: isTabletOrUp ? 14.0 : 14.h),
                           Text(
                             plan.price,
                             style: TextStyles.bold28(
                               context,
                             ).copyWith(color: primary),
                           ),
-                          SizedBox(height: 28.h),
+                          SizedBox(height: isTabletOrUp ? 28.0 : 28.h),
                           ...plan.features.map(
                             (feature) => Padding(
-                              padding: EdgeInsets.only(bottom: 12.h),
+                              padding: EdgeInsets.only(
+                                bottom: isTabletOrUp ? 12.0 : 12.h,
+                              ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(
                                     Icons.check_circle_rounded,
                                     color: primary,
-                                    size: 20.sp,
+                                    size: 20.rSp(context),
                                   ),
-                                  SizedBox(width: 12.w),
+                                  SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
                                   Expanded(
                                     child: Text(
                                       feature,
@@ -152,10 +163,10 @@ class SubscriptionPlanCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
               SizedBox(
                 width: double.infinity,
-                height: 50.h,
+                height: isTabletOrUp ? 50.0 : 50.h,
                 child: ElevatedButton(
                   onPressed: canUpgrade
                       ? () {
@@ -170,14 +181,14 @@ class SubscriptionPlanCard extends StatelessWidget {
                     disabledBackgroundColor: buttonColor,
                     disabledForegroundColor: onPrimary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.r),
+                      borderRadius: BorderRadius.circular(12.rSp(context)),
                     ),
                     elevation: 0,
                   ),
                   child: isLoading
                       ? SizedBox(
-                          width: 22.w,
-                          height: 22.w,
+                          width: isTabletOrUp ? 22.0 : 22.w,
+                          height: isTabletOrUp ? 22.0 : 22.w,
                           child: CircularProgressIndicator(
                             strokeWidth: 2.4,
                             valueColor: AlwaysStoppedAnimation<Color>(
@@ -193,7 +204,7 @@ class SubscriptionPlanCard extends StatelessWidget {
                         ),
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: isTabletOrUp ? 20.0 : 20.h),
             ],
           ),
         );
