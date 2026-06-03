@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/widgets/custom_text_field.dart';
+import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
@@ -41,8 +41,8 @@ class _PasswordFieldState extends State<PasswordField> {
           setState(() {});
         },
         child: obscureText
-            ? Icon(Icons.remove_red_eye, color: iconColor, size: 24.sp)
-            : Icon(Icons.visibility_off, color: iconColor, size: 24.sp),
+            ? Icon(Icons.remove_red_eye, color: iconColor, size: 24.rSp(context))
+            : Icon(Icons.visibility_off, color: iconColor, size: 24.rSp(context)),
       ),
     );
   }

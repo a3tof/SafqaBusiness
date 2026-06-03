@@ -8,6 +8,8 @@ import 'package:safqaseller/core/widgets/custom_text_field.dart';
 import 'package:safqaseller/core/widgets/date_picker_field.dart';
 import 'package:safqaseller/core/widgets/gender_picker_field.dart';
 import 'package:safqaseller/core/widgets/password_field.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/auth/view/auth_route_args.dart';
 import 'package:safqaseller/features/auth/view/verification_code_view.dart';
 import 'package:safqaseller/features/auth/view/widgets/have_an_account_widget.dart';
@@ -89,88 +91,174 @@ class _SignupViewBodyState extends State<SignupViewBody> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
-            child: Form(
-              key: formKey,
-              autovalidateMode: autoValidateMode,
-              child: Column(
-                children: [
-                  SizedBox(height: 24.sp),
-                  CustomTextFormField(
-                    enabled: !isLoading,
-                    onSaved: (value) => userName = value!,
-                    hintText: S.of(context).fullName,
-                    textInputType: TextInputType.name,
-                  ),
-                  SizedBox(height: 16.sp),
-                  CustomTextFormField(
-                    enabled: !isLoading,
-                    onSaved: (value) => email = value!,
-                    hintText: S.of(context).email,
-                    textInputType: TextInputType.emailAddress,
-                  ),
-                  SizedBox(height: 16.sp),
-                  CustomTextFormField(
-                    enabled: !isLoading,
-                    onSaved: (value) => phoneNumber = value!,
-                    hintText: S.of(context).phoneNumber,
-                    textInputType: TextInputType.phone,
-                  ),
-                  SizedBox(height: 16.sp),
-                  DatePickerField(
-                    enabled: !isLoading,
-                    hintText: S.of(context).birthdate,
-                    onSaved: (value) => birthdate = value,
-                  ),
-                  SizedBox(height: 16.sp),
-                  LocationPickerField(
-                    enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
-                    hintText: S.of(context).kCountry,
-                    locations: context.read<RegisterViewModel>().countries,
-                    selectedLocation: context.read<RegisterViewModel>().selectedCountry,
-                    onChanged: (location) {
-                      context.read<RegisterViewModel>().selectedCountry = location;
-                      if (location != null) {
-                        context.read<RegisterViewModel>().loadCities(location.id);
-                      }
-                    },
-                  ),
-                  SizedBox(height: 16.sp),
-                  LocationPickerField(
-                    enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
-                    hintText: S.of(context).kCity,
-                    locations: context.read<RegisterViewModel>().cities,
-                    selectedLocation: context.read<RegisterViewModel>().selectedCity,
-                    onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
-                  ),
-                  SizedBox(height: 16.sp),
-                  GenderPickerField(
-                    enabled: !isLoading,
-                    hintText: S.of(context).gender,
-                    maleText: S.of(context).male,
-                    femaleText: S.of(context).female,
-                    onSaved: (value) => gender = value,
-                  ),
-                  SizedBox(height: 16.sp),
-                  PasswordField(
-                    enabled: !isLoading,
-                    controller: _passwordController,
-                    hintText: S.of(context).password,
-                    onSaved: (value) => password = value!,
-                  ),
-                  SizedBox(height: 16.sp),
-                  PasswordField(
-                    enabled: !isLoading,
-                    hintText: S.of(context).confirmPassword,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return S.of(context).fieldRequired;
-                      }
-                      if (value != _passwordController.text) {
-                        return S.of(context).passwordsDoNotMatch;
-                      }
-                      return null;
-                    },
-                  ),
+            child: ResponsiveFormShell(
+              enabled: Breakpoints.isTabletOrUp(context),
+              maxWidth: 700,
+              child: Form(
+                key: formKey,
+                autovalidateMode: autoValidateMode,
+                child: ResponsiveFormSection(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: 24.sp),
+                      if (Breakpoints.isTabletOrUp(context))
+                        ResponsiveFormRow(
+                          leading: CustomTextFormField(
+                            enabled: !isLoading,
+                            onSaved: (value) => userName = value!,
+                            hintText: S.of(context).fullName,
+                            textInputType: TextInputType.name,
+                          ),
+                          trailing: CustomTextFormField(
+                            enabled: !isLoading,
+                            onSaved: (value) => email = value!,
+                            hintText: S.of(context).email,
+                            textInputType: TextInputType.emailAddress,
+                          ),
+                        )
+                      else ...[
+                        CustomTextFormField(
+                          enabled: !isLoading,
+                          onSaved: (value) => userName = value!,
+                          hintText: S.of(context).fullName,
+                          textInputType: TextInputType.name,
+                        ),
+                        SizedBox(height: 16.sp),
+                        CustomTextFormField(
+                          enabled: !isLoading,
+                          onSaved: (value) => email = value!,
+                          hintText: S.of(context).email,
+                          textInputType: TextInputType.emailAddress,
+                        ),
+                      ],
+                    SizedBox(height: 16.sp),
+                      if (Breakpoints.isTabletOrUp(context))
+                        ResponsiveFormRow(
+                          leading: CustomTextFormField(
+                            enabled: !isLoading,
+                            onSaved: (value) => phoneNumber = value!,
+                            hintText: S.of(context).phoneNumber,
+                            textInputType: TextInputType.phone,
+                          ),
+                          trailing: DatePickerField(
+                            enabled: !isLoading,
+                            hintText: S.of(context).birthdate,
+                            onSaved: (value) => birthdate = value,
+                          ),
+                        )
+                      else ...[
+                        CustomTextFormField(
+                          enabled: !isLoading,
+                          onSaved: (value) => phoneNumber = value!,
+                          hintText: S.of(context).phoneNumber,
+                          textInputType: TextInputType.phone,
+                        ),
+                        SizedBox(height: 16.sp),
+                        DatePickerField(
+                          enabled: !isLoading,
+                          hintText: S.of(context).birthdate,
+                          onSaved: (value) => birthdate = value,
+                        ),
+                      ],
+                    SizedBox(height: 16.sp),
+                      if (Breakpoints.isTabletOrUp(context))
+                        ResponsiveFormRow(
+                          leading: LocationPickerField(
+                            enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
+                            hintText: S.of(context).kCountry,
+                            locations: context.read<RegisterViewModel>().countries,
+                            selectedLocation: context.read<RegisterViewModel>().selectedCountry,
+                            onChanged: (location) {
+                              context.read<RegisterViewModel>().selectedCountry = location;
+                              if (location != null) {
+                                context.read<RegisterViewModel>().loadCities(location.id);
+                              }
+                            },
+                          ),
+                          trailing: LocationPickerField(
+                            enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
+                            hintText: S.of(context).kCity,
+                            locations: context.read<RegisterViewModel>().cities,
+                            selectedLocation: context.read<RegisterViewModel>().selectedCity,
+                            onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
+                          ),
+                        )
+                      else ...[
+                        LocationPickerField(
+                          enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
+                          hintText: S.of(context).kCountry,
+                          locations: context.read<RegisterViewModel>().countries,
+                          selectedLocation: context.read<RegisterViewModel>().selectedCountry,
+                          onChanged: (location) {
+                            context.read<RegisterViewModel>().selectedCountry = location;
+                            if (location != null) {
+                              context.read<RegisterViewModel>().loadCities(location.id);
+                            }
+                          },
+                        ),
+                        SizedBox(height: 16.sp),
+                        LocationPickerField(
+                          enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
+                          hintText: S.of(context).kCity,
+                          locations: context.read<RegisterViewModel>().cities,
+                          selectedLocation: context.read<RegisterViewModel>().selectedCity,
+                          onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
+                        ),
+                      ],
+                    SizedBox(height: 16.sp),
+                    GenderPickerField(
+                      enabled: !isLoading,
+                      hintText: S.of(context).gender,
+                      maleText: S.of(context).male,
+                      femaleText: S.of(context).female,
+                      onSaved: (value) => gender = value,
+                    ),
+                    SizedBox(height: 16.sp),
+                      if (Breakpoints.isTabletOrUp(context))
+                        ResponsiveFormRow(
+                          leading: PasswordField(
+                            enabled: !isLoading,
+                            controller: _passwordController,
+                            hintText: S.of(context).password,
+                            onSaved: (value) => password = value!,
+                          ),
+                          trailing: PasswordField(
+                            enabled: !isLoading,
+                            hintText: S.of(context).confirmPassword,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return S.of(context).fieldRequired;
+                              }
+                              if (value != _passwordController.text) {
+                                return S.of(context).passwordsDoNotMatch;
+                              }
+                              return null;
+                            },
+                          ),
+                        )
+                      else ...[
+                        PasswordField(
+                          enabled: !isLoading,
+                          controller: _passwordController,
+                          hintText: S.of(context).password,
+                          onSaved: (value) => password = value!,
+                        ),
+                        SizedBox(height: 16.sp),
+                        PasswordField(
+                          enabled: !isLoading,
+                          hintText: S.of(context).confirmPassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return S.of(context).fieldRequired;
+                            }
+                            if (value != _passwordController.text) {
+                              return S.of(context).passwordsDoNotMatch;
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
                   SizedBox(height: 16.sp),
                   TermsAndConditions(
                     onChanged: (value) => isTermsAccepted = value,
@@ -228,11 +316,13 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                         ),
                   SizedBox(height: 26.sp),
                   HaveAnAccountWidget(),
-                ],
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        );
+        ),
+      );
       },
     );
   }

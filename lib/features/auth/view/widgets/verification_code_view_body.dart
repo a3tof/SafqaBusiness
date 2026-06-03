@@ -10,6 +10,8 @@ import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
 import 'package:safqaseller/core/widgets/custom_pin_box.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/auth/view/auth_route_args.dart';
 import 'package:safqaseller/features/auth/view/create_password_view.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
@@ -224,95 +226,101 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
         padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
         child: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: Form(
-            key: _formKey,
-            autovalidateMode: _autoValidateMode,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(height: 16.sp),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 8.sp),
-                  child: Text(
-                    S.of(context).verificationCodeDescription,
-                    textAlign: TextAlign.center,
-                    style: TextStyles.regular14(context).copyWith(
-                      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                      height: 1.5,
+          child: ResponsiveFormShell(
+            enabled: Breakpoints.isTabletOrUp(context),
+            maxWidth: 700,
+            child: Form(
+              key: _formKey,
+              autovalidateMode: _autoValidateMode,
+              child: ResponsiveFormSection(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                  SizedBox(height: 16.sp),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.sp),
+                    child: Text(
+                      S.of(context).verificationCodeDescription,
+                      textAlign: TextAlign.center,
+                      style: TextStyles.regular14(context).copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                        height: 1.5,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 32.sp),
-                Directionality(
-                  textDirection: TextDirection.ltr,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) {
-                      final double boxSize =
-                          (constraints.maxWidth -
-                                  (_digitCount - 1) * _boxSpacing) /
-                              _digitCount;
-                      return Row(
-                        children: List.generate(
-                          _digitCount,
-                          (index) => Padding(
-                            padding: EdgeInsets.only(
-                              right:
-                                  index < _digitCount - 1 ? _boxSpacing : 0,
-                            ),
-                            child: CustomPinBox(
-                              size: boxSize,
-                              controller: _controllers[index],
-                              focusNode: _focusNodes[index],
-                              onChanged: (value) {
-                                if (value.isNotEmpty &&
-                                    index < _digitCount - 1) {
-                                  _focusNodes[index + 1].requestFocus();
-                                } else if (value.isEmpty && index > 0) {
-                                  _focusNodes[index - 1].requestFocus();
-                                }
-                              },
-                              validator: (value) {
-                                if (value == null || value.isEmpty) return '';
-                                return null;
-                              },
+                  SizedBox(height: 32.sp),
+                  Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        final double boxSize =
+                            (constraints.maxWidth -
+                                    (_digitCount - 1) * _boxSpacing) /
+                                _digitCount;
+                        return Row(
+                          children: List.generate(
+                            _digitCount,
+                            (index) => Padding(
+                              padding: EdgeInsets.only(
+                                right:
+                                    index < _digitCount - 1 ? _boxSpacing : 0,
+                              ),
+                              child: CustomPinBox(
+                                size: boxSize,
+                                controller: _controllers[index],
+                                focusNode: _focusNodes[index],
+                                onChanged: (value) {
+                                  if (value.isNotEmpty &&
+                                      index < _digitCount - 1) {
+                                    _focusNodes[index + 1].requestFocus();
+                                  } else if (value.isEmpty && index > 0) {
+                                    _focusNodes[index - 1].requestFocus();
+                                  }
+                                },
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) return '';
+                                  return null;
+                                },
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                SizedBox(height: 32.sp),
-                isLoading
-                    ? const CustomLoadingButton()
-                    : CustomButton(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        textColor: Colors.white,
-                        onPressed: _submit,
-                        text: S.of(context).verify,
+                  SizedBox(height: 32.sp),
+                  isLoading
+                      ? const CustomLoadingButton()
+                      : CustomButton(
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          textColor: Colors.white,
+                          onPressed: _submit,
+                          text: S.of(context).verify,
+                        ),
+                  SizedBox(height: 24.sp),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        S.of(context).dontReceiveCode,
+                        style: TextStyles.regular14(context)
+                            .copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                       ),
-                SizedBox(height: 24.sp),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      S.of(context).dontReceiveCode,
-                      style: TextStyles.regular14(context)
-                          .copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
-                    ),
-                    SizedBox(width: 4.sp),
-                    GestureDetector(
-                      onTap: _resend,
-                      child: Text(
-                        S.of(context).resend,
-                        style: TextStyles.semiBold14(context)
-                            .copyWith(color: Theme.of(context).colorScheme.primary),
+                      SizedBox(width: 4.sp),
+                      GestureDetector(
+                        onTap: _resend,
+                        child: Text(
+                          S.of(context).resend,
+                          style: TextStyles.semiBold14(context)
+                              .copyWith(color: Theme.of(context).colorScheme.primary),
+                        ),
                       ),
-                    ),
+                    ],
+                  ),
+                  SizedBox(height: 32.sp),
                   ],
                 ),
-                SizedBox(height: 32.sp),
-              ],
+              ),
             ),
           ),
         ),

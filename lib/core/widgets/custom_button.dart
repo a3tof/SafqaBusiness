@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({
@@ -17,9 +18,10 @@ class CustomButton extends StatelessWidget {
   final Color? backgroundColor;
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return SizedBox(
       width: double.infinity,
-      height: 54.sp,
+      height: isTabletOrUp ? 54.0 : 54.sp,
       child: TextButton(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(

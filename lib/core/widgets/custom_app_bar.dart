@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 AppBar buildAppBar({required BuildContext context, required String title}) {
   final isArabic = Localizations.localeOf(context).languageCode == 'ar';
@@ -20,7 +20,7 @@ AppBar buildAppBar({required BuildContext context, required String title}) {
       icon: Icon(
         Icons.arrow_back_ios_new,
         color: theme.colorScheme.primary,
-        size: 22.sp,
+        size: 22.rSp(context),
       ),
     ),
     title: Text(
@@ -29,7 +29,7 @@ AppBar buildAppBar({required BuildContext context, required String title}) {
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-        fontSize: 28.sp,
+        fontSize: 28.rSp(context),
         fontWeight: FontWeight.w700,
         color: theme.colorScheme.primary,
         fontFamily: isArabic ? 'Cairo' : 'AlegreyaSC',

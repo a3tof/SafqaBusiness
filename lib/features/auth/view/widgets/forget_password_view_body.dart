@@ -6,6 +6,8 @@ import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
 import 'package:safqaseller/core/widgets/custom_text_field.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/auth/view/auth_route_args.dart';
 import 'package:safqaseller/features/auth/view/verification_code_view.dart';
 import 'package:safqaseller/features/forgot_password/view_model/forgot_password_view_model.dart';
@@ -56,51 +58,57 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
             padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
             child: SingleChildScrollView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Form(
-                key: _formKey,
-                autovalidateMode: _autoValidateMode,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 16.sp),
-                    Text(
-                      S.of(context).forgetPasswordDescription,
-                      style: TextStyles.regular16(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        height: 1.5,
+              child: ResponsiveFormShell(
+                enabled: Breakpoints.isTabletOrUp(context),
+                maxWidth: 700,
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: _autoValidateMode,
+                  child: ResponsiveFormSection(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 16.sp),
+                      Text(
+                        S.of(context).forgetPasswordDescription,
+                        style: TextStyles.regular16(context).copyWith(
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          height: 1.5,
+                        ),
                       ),
+                      SizedBox(height: 32.sp),
+                      Text(
+                        S.of(context).email,
+                        style: TextStyles.semiBold16(context),
+                      ),
+                      SizedBox(height: 8.sp),
+                      CustomTextFormField(
+                        onSaved: (value) => _email = value!,
+                        hintText: '',
+                        textInputType: TextInputType.emailAddress,
+                      ),
+                      SizedBox(height: 32.sp),
+                      isLoading
+                          ? const CustomLoadingButton()
+                          : CustomButton(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              textColor: Colors.white,
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  context
+                                      .read<ForgotPasswordViewModel>()
+                                      .requestOtp(_email);
+                                } else {
+                                  setState(() => _autoValidateMode =
+                                      AutovalidateMode.always);
+                                }
+                              },
+                              text: S.of(context).sendCode,
+                            ),
+                      ],
                     ),
-                    SizedBox(height: 32.sp),
-                    Text(
-                      S.of(context).email,
-                      style: TextStyles.semiBold16(context),
-                    ),
-                    SizedBox(height: 8.sp),
-                    CustomTextFormField(
-                      onSaved: (value) => _email = value!,
-                      hintText: '',
-                      textInputType: TextInputType.emailAddress,
-                    ),
-                    SizedBox(height: 32.sp),
-                    isLoading
-                        ? const CustomLoadingButton()
-                        : CustomButton(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            textColor: Colors.white,
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                context
-                                    .read<ForgotPasswordViewModel>()
-                                    .requestOtp(_email);
-                              } else {
-                                setState(() => _autoValidateMode =
-                                    AutovalidateMode.always);
-                              }
-                            },
-                            text: S.of(context).sendCode,
-                          ),
-                  ],
+                  ),
                 ),
               ),
             ),

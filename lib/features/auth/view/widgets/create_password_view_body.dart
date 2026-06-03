@@ -6,6 +6,8 @@ import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/core/widgets/custom_loading_button.dart';
 import 'package:safqaseller/core/widgets/password_field.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/auth/view/auth_route_args.dart';
 import 'package:safqaseller/features/auth/view/signin_view.dart';
 import 'package:safqaseller/features/forgot_password/view_model/forgot_password_view_model.dart';
@@ -64,60 +66,91 @@ class _CreatePasswordViewBodyState extends State<CreatePasswordViewBody> {
             padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
             child: SingleChildScrollView(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    SizedBox(height: 16.sp),
-                    Text(
-                      S.of(context).createPasswordDescription,
-                      style: TextStyles.regular14(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        height: 1.5,
+              child: ResponsiveFormShell(
+                enabled: Breakpoints.isTabletOrUp(context),
+                maxWidth: 700,
+                child: Form(
+                  key: _formKey,
+                  child: ResponsiveFormSection(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 16.sp),
+                      Text(
+                        S.of(context).createPasswordDescription,
+                        style: TextStyles.regular14(context).copyWith(
+                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
+                          height: 1.5,
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 32.sp),
-                    PasswordField(
-                      enabled: !isLoading,
-                      controller: _passwordController,
-                      hintText: S.of(context).newPassword,
-                      onSaved: (value) => _newPassword = value ?? '',
-                    ),
-                    SizedBox(height: 32.sp),
-                    PasswordField(
-                      enabled: !isLoading,
-                      hintText: S.of(context).confirmPassword,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return S.of(context).fieldRequired;
-                        }
-                        if (value != _passwordController.text) {
-                          return S.of(context).passwordsDoNotMatch;
-                        }
-                        return null;
-                      },
-                    ),
-                    SizedBox(height: 32.sp),
-                    isLoading
-                        ? const CustomLoadingButton()
-                        : CustomButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                _formKey.currentState!.save();
-                                context
-                                    .read<ForgotPasswordViewModel>()
-                                    .resetPassword(
-                                      email: widget.args.email,
-                                      token: widget.args.token,
-                                      newPassword: _newPassword,
-                                    );
-                              }
-                            },
-                            text: S.of(context).createPassword,
-                            textColor: Colors.white,
-                            backgroundColor: Theme.of(context).colorScheme.primary,
+                      SizedBox(height: 32.sp),
+                      if (Breakpoints.isTabletOrUp(context))
+                        ResponsiveFormRow(
+                          leading: PasswordField(
+                            enabled: !isLoading,
+                            controller: _passwordController,
+                            hintText: S.of(context).newPassword,
+                            onSaved: (value) => _newPassword = value ?? '',
                           ),
-                  ],
+                          trailing: PasswordField(
+                            enabled: !isLoading,
+                            hintText: S.of(context).confirmPassword,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return S.of(context).fieldRequired;
+                              }
+                              if (value != _passwordController.text) {
+                                return S.of(context).passwordsDoNotMatch;
+                              }
+                              return null;
+                            },
+                          ),
+                        )
+                      else ...[
+                        PasswordField(
+                          enabled: !isLoading,
+                          controller: _passwordController,
+                          hintText: S.of(context).newPassword,
+                          onSaved: (value) => _newPassword = value ?? '',
+                        ),
+                        SizedBox(height: 16.sp),
+                        PasswordField(
+                          enabled: !isLoading,
+                          hintText: S.of(context).confirmPassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return S.of(context).fieldRequired;
+                            }
+                            if (value != _passwordController.text) {
+                              return S.of(context).passwordsDoNotMatch;
+                            }
+                            return null;
+                          },
+                        ),
+                      ],
+                      SizedBox(height: 32.sp),
+                      isLoading
+                          ? const CustomLoadingButton()
+                          : CustomButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  _formKey.currentState!.save();
+                                  context
+                                      .read<ForgotPasswordViewModel>()
+                                      .resetPassword(
+                                        email: widget.args.email,
+                                        token: widget.args.token,
+                                        newPassword: _newPassword,
+                                      );
+                                }
+                              },
+                              text: S.of(context).createPassword,
+                              textColor: Colors.white,
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                            ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),
