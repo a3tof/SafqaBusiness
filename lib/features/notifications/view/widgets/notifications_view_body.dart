@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:safqaseller/core/utils/app_text_styles.dart';
+import 'package:safqaseller/features/chat/view/chat_list_view.dart';
 import 'package:safqaseller/features/chat/view/chat_thread_view.dart';
 import 'package:safqaseller/features/chat/view/chat_thread_view_args.dart';
 import 'package:safqaseller/features/notifications/model/models/notification_model.dart';
@@ -465,16 +466,21 @@ class _NotificationsList extends StatelessWidget {
             context.read<NotificationsViewModel>().markNotificationSeenAndRead(
               notification.id,
             );
-            Navigator.pushNamed(
-              context,
-              ChatThreadView.routeName,
-              arguments: ChatThreadViewArgs(
-                conversationId: notification.id,
-                buyerName: notification.title.isEmpty
-                    ? S.of(context).chatTitle
-                    : notification.title,
-              ),
-            );
+            
+            if (notification.type == NotificationType.report) {
+              Navigator.pushNamed(context, ChatListView.routeName);
+            } else {
+              Navigator.pushNamed(
+                context,
+                ChatThreadView.routeName,
+                arguments: ChatThreadViewArgs(
+                  conversationId: notification.id,
+                  buyerName: notification.title.isEmpty
+                      ? S.of(context).chatTitle
+                      : notification.title,
+                ),
+              );
+            }
           },
         );
       },
