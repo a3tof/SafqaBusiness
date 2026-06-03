@@ -58,8 +58,7 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
         return SafeArea(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w),
-            child: Center(
-              child: SingleChildScrollView(
+            child: SingleChildScrollView(
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: ResponsiveFormShell(
                 enabled: isTabletOrUp,
@@ -71,7 +70,7 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                        SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                       Text(
                         S.of(context).forgetPasswordDescription,
                         style: TextStyles.regular16(context).copyWith(
@@ -113,7 +112,6 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
                     ),
                   ),
                 ),
-              ),
               ),
             ),
           ),

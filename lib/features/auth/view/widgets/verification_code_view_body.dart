@@ -226,8 +226,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w),
-        child: Center(
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             child: ResponsiveFormShell(
               enabled: isTabletOrUp,
@@ -239,7 +238,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 8.0 : 8.sp),
                     child: Text(
@@ -325,7 +324,6 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                   ],
                 ),
               ),
-            ),
             ),
           ),
         ),
