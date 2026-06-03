@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/notifications/model/models/notification_model.dart';
+import 'package:safqaseller/generated/l10n.dart';
 
 class NotificationItem extends StatelessWidget {
   const NotificationItem({
@@ -91,8 +92,8 @@ class NotificationItem extends StatelessWidget {
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (notification.hasAction &&
-                      notification.actionLabel != null)
+                  if ((notification.hasAction && notification.actionLabel != null) ||
+                      notification.type == NotificationType.report)
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Padding(
@@ -109,7 +110,9 @@ class NotificationItem extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10.rSp(context)),
                             ),
                             child: Text(
-                              notification.actionLabel!,
+                              notification.type == NotificationType.report
+                                  ? S.of(context).openChat
+                                  : notification.actionLabel!,
                               style: TextStyles.medium16(
                                 context,
                               ).copyWith(color: scheme.onPrimary),

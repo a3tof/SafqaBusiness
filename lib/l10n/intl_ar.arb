@@ -1415,5 +1415,6 @@
   "@kLightMode": {
     "description": "Auto-generated"
   },
-  "serverError": "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا."
+  "serverError": "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
+  "openChat": "فتح المحادثة"
 }

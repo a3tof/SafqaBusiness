@@ -3482,6 +3482,11 @@ class S {
       args: [],
     );
   }
+
+  /// `Open Chat`
+  String get openChat {
+    return Intl.message('Open Chat', name: 'openChat', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

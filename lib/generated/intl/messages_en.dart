@@ -566,6 +566,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "onBoardingTitle3": MessageLookupByLibrary.simpleMessage(
       "Experience Designed For You",
     ),
+    "openChat": MessageLookupByLibrary.simpleMessage("Open Chat"),
     "or": MessageLookupByLibrary.simpleMessage("Or"),
     "otpExpired": MessageLookupByLibrary.simpleMessage("OTP has expired"),
     "otpResentSuccessfully": MessageLookupByLibrary.simpleMessage(

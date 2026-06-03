@@ -1415,5 +1415,6 @@
   "@kLightMode": {
     "description": "Auto-generated"
   },
-  "serverError": "A server error occurred. Please try again later."
+  "serverError": "A server error occurred. Please try again later.",
+  "openChat": "Open Chat"
 }

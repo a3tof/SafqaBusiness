@@ -540,6 +540,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "onBoardingTitle2": MessageLookupByLibrary.simpleMessage("مزايدة ذكية"),
     "onBoardingTitle3": MessageLookupByLibrary.simpleMessage("تجربة مصمّمة لك"),
+    "openChat": MessageLookupByLibrary.simpleMessage("فتح المحادثة"),
     "or": MessageLookupByLibrary.simpleMessage("أو"),
     "otpExpired": MessageLookupByLibrary.simpleMessage(
       "انتهت صلاحية رمز التحقق",
