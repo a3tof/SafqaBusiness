@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 /// Action card used on the seller home screen.
@@ -27,14 +28,15 @@ class HomeActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final overlayColor = theme.colorScheme.primary.withValues(alpha: 0.35);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         width: width ?? double.infinity,
-        height: 148.h,
+        height: isTabletOrUp ? 148.0 : 148.h,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16.r),
+          borderRadius: BorderRadius.circular(16.rSp(context)),
           border: Border.all(color: theme.colorScheme.primary, width: 2),
           boxShadow: [
             BoxShadow(
@@ -45,7 +47,7 @@ class HomeActionCard extends StatelessWidget {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14.rSp(context)),
           child: Stack(
             fit: StackFit.expand,
             children: [
@@ -76,11 +78,11 @@ class HomeActionCard extends StatelessWidget {
                         ),
                       ),
                       if (showAddIcon) ...[
-                        SizedBox(width: 2.w),
+                        SizedBox(width: isTabletOrUp ? 2.0 : 2.w),
                         Icon(
                           Icons.add_rounded,
                           color: Colors.white,
-                          size: 40.sp,
+                          size: 40.rSp(context),
                           shadows: const [
                             Shadow(
                               blurRadius: 4,

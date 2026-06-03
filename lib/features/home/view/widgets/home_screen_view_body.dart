@@ -19,6 +19,8 @@ import 'package:safqaseller/features/notifications/view_model/notifications/noti
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model_state.dart';
 import 'package:safqaseller/features/profile/view/profile_view.dart';
 
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/wallet/view/wallet_view.dart';
 import 'package:safqaseller/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -139,6 +141,8 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                 );
               }
 
+              final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
               return Skeletonizer(
                 enabled: isLoading,
                 child: LayoutBuilder(
@@ -146,19 +150,24 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                     onRefresh: _refreshHome,
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.only(bottom: 24.h),
+                      padding: EdgeInsets.only(bottom: isTabletOrUp ? 24.0 : 24.h),
                       child: ConstrainedBox(
                         constraints: BoxConstraints(
                           minHeight: constraints.maxHeight,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            SizedBox(height: 4.h),
-                            const Center(child: _SafqaBusinessLogo()),
-                            SizedBox(height: 24.h),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                        child: Center(
+                          child: ResponsiveFormShell(
+                            enabled: isTabletOrUp,
+                            maxWidth: 700,
+                            child: ResponsiveFormSection(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                                  const Center(child: _SafqaBusinessLogo()),
+                                  SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
                               child: _GreetingRow(
                                 storeName: storeName,
                                 logoBytes: logoBytes,
@@ -166,11 +175,11 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                 onNotificationTap: _openNotifications,
                               ),
                             ),
-                            if (state is HomeFailure &&
-                                !_isProfileIncomplete(state)) ...[
-                              SizedBox(height: 8.h),
-                              Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              if (state is HomeFailure &&
+                                  !_isProfileIncomplete(state)) ...[
+                                SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
                                 child: Row(
                                   children: [
                                     Expanded(
@@ -196,44 +205,61 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                   ],
                                 ),
                               ),
-                            ],
-                            SizedBox(height: 32.h),
-                            // ── Action cards ─────────────────────────────────
-                            // When the profile is incomplete, overlay a dim
-                            // shield and absorb all taps so nothing is reachable.
-                            Stack(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                                  child: Column(
-                                    children: [
-                                      HomeActionCard(
-                                        label: S.of(context).kNewLotAuction,
-                                        showAddIcon: true,
-                                        backgroundImage: Assets.imagesFrame1,
-                                        onTap: () async {
-                                          await Navigator.pushNamed(
-                                            context,
-                                            LotAuctionView.routeName,
-                                          );
-                                          await _refreshHome();
-                                        },
-                                      ),
-                                      SizedBox(height: 16.h),
-                                      HomeActionCard(
-                                        label: S.of(context).kNewSingleAuction,
-                                        showAddIcon: true,
-                                        backgroundImage: Assets.imagesFrame1,
-                                        onTap: () async {
-                                          await Navigator.pushNamed(
-                                            context,
-                                            ItemAuctionView.routeName,
-                                          );
-                                          await _refreshHome();
-                                        },
-                                      ),
-                                      SizedBox(height: 16.h),
-                                      Row(
+                              ],
+                              SizedBox(height: isTabletOrUp ? 32.0 : 32.h),
+                              // ── Action cards ─────────────────────────────────
+                              // When the profile is incomplete, overlay a dim
+                              // shield and absorb all taps so nothing is reachable.
+                              Stack(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
+                                    child: Column(
+                                      children: [
+                                      if (isTabletOrUp)
+                                        ResponsiveFormRow(
+                                          leading: HomeActionCard(
+                                            label: S.of(context).kNewLotAuction,
+                                            showAddIcon: true,
+                                            backgroundImage: Assets.imagesFrame1,
+                                            onTap: () async {
+                                              await Navigator.pushNamed(context, LotAuctionView.routeName);
+                                              await _refreshHome();
+                                            },
+                                          ),
+                                          trailing: HomeActionCard(
+                                            label: S.of(context).kNewSingleAuction,
+                                            showAddIcon: true,
+                                            backgroundImage: Assets.imagesFrame1,
+                                            onTap: () async {
+                                              await Navigator.pushNamed(context, ItemAuctionView.routeName);
+                                              await _refreshHome();
+                                            },
+                                          ),
+                                        )
+                                      else ...[
+                                        HomeActionCard(
+                                          label: S.of(context).kNewLotAuction,
+                                          showAddIcon: true,
+                                          backgroundImage: Assets.imagesFrame1,
+                                          onTap: () async {
+                                            await Navigator.pushNamed(context, LotAuctionView.routeName);
+                                            await _refreshHome();
+                                          },
+                                        ),
+                                        SizedBox(height: 16.h),
+                                        HomeActionCard(
+                                          label: S.of(context).kNewSingleAuction,
+                                          showAddIcon: true,
+                                          backgroundImage: Assets.imagesFrame1,
+                                          onTap: () async {
+                                            await Navigator.pushNamed(context, ItemAuctionView.routeName);
+                                            await _refreshHome();
+                                          },
+                                        ),
+                                      ],
+                                      SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
+                                        Row(
                                         children: [
                                           Expanded(
                                             child: HomeActionCard(
@@ -246,9 +272,9 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                                 );
                                               },
                                             ),
-                                          ),
-                                          SizedBox(width: 8.w),
-                                          Expanded(
+                                            ),
+                                            SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
+                                            Expanded(
                                             child: HomeActionCard(
                                               label: S.of(context).kStatistics,
                                               backgroundImage: Assets.imagesFrame2,
@@ -271,7 +297,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                           color: Theme.of(context).brightness == Brightness.dark
                                               ? Colors.black.withValues(alpha: 0.6)
                                               : Colors.black.withValues(alpha: 0.45),
-                                          borderRadius: BorderRadius.circular(12.r),
+                                          borderRadius: BorderRadius.circular(12.rSp(context)),
                                         ),
                                         child: Center(
                                           child: Column(
@@ -280,9 +306,9 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                               Icon(
                                                 Icons.lock_rounded,
                                                 color: Colors.white,
-                                                size: 40.sp,
+                                                size: 40.rSp(context),
                                               ),
-                                              SizedBox(height: 8.h),
+                                              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
                                               Text(
                                                 'Complete your profile to unlock',
                                                 style: TextStyles.semiBold14(context)
@@ -295,15 +321,18 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                       ),
                                     ),
                                   ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              );
+                                ],
+                              ), // End Stack
+                            ],
+                          ), // End Column
+                        ), // End ResponsiveFormSection
+                      ), // End ResponsiveFormShell
+                    ), // End Center
+                  ), // End ConstrainedBox
+                ), // End SingleChildScrollView
+              ), // End RefreshIndicator
+            ), // End LayoutBuilder
+          ); // End Skeletonizer
             },
           ),
         ),
@@ -325,7 +354,7 @@ class _SafqaBusinessLogo extends StatelessWidget {
             text: 'safqa',
             style: TextStyle(
               fontFamily: 'AlegreyaSC',
-              fontSize: 40.sp,
+              fontSize: 40.rSp(context),
               fontWeight: FontWeight.normal,
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -334,7 +363,7 @@ class _SafqaBusinessLogo extends StatelessWidget {
             text: '.',
             style: TextStyle(
               fontFamily: 'AlegreyaSC',
-              fontSize: 40.sp,
+              fontSize: 40.rSp(context),
               fontWeight: FontWeight.normal,
               color: Theme.of(context).hintColor,
             ),
@@ -343,7 +372,7 @@ class _SafqaBusinessLogo extends StatelessWidget {
             text: 'Business',
             style: TextStyle(
               fontFamily: 'AlegreyaSC',
-              fontSize: 24.sp,
+              fontSize: 24.rSp(context),
               fontWeight: FontWeight.normal,
               color: Theme.of(context).colorScheme.primary,
             ),
@@ -369,6 +398,7 @@ class _GreetingRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -379,8 +409,8 @@ class _GreetingRow extends StatelessWidget {
               GestureDetector(
                 onTap: onProfileTap,
                 child: Container(
-                  width: 70.w,
-                  height: 70.w,
+                  width: isTabletOrUp ? 70.0 : 70.w,
+                  height: isTabletOrUp ? 70.0 : 70.w,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: Theme.of(context).colorScheme.secondary,
@@ -395,15 +425,15 @@ class _GreetingRow extends StatelessWidget {
                         : Icon(
                             Icons.store_rounded,
                             color: Theme.of(context).colorScheme.primary,
-                            size: 38.sp,
+                            size: 38.rSp(context),
                           ),
                   ),
                 ),
               ),
-              SizedBox(width: 8.w),
+              SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
               Flexible(
                 child: SizedBox(
-                  width: 103.w,
+                  width: isTabletOrUp ? 103.0 : 103.w,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
@@ -412,15 +442,19 @@ class _GreetingRow extends StatelessWidget {
                         S.of(context).homeWelcomeGreeting,
                         style: TextStyles.regular18(
                           context,
-                        ).copyWith(color: Theme.of(context).hintColor),
+                        ).copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: 2.h),
+                      SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
                       Text(
                         storeName,
                         style: TextStyles.medium18(
                           context,
-                        ).copyWith(color: Theme.of(context).colorScheme.primary),
+                        ).copyWith(
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.white
+                              : Theme.of(context).colorScheme.primary,
+                        ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
@@ -434,7 +468,7 @@ class _GreetingRow extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _NotificationBadgeIcon(onTap: onNotificationTap),
-            SizedBox(width: 8.w),
+            SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
             _HeaderIcon(
               icon: Icons.wallet_rounded,
               onTap: () {
@@ -469,15 +503,15 @@ class _NotificationBadgeIcon extends StatelessWidget {
               Icon(
                 Icons.notifications_outlined,
                 color: Theme.of(context).colorScheme.primary,
-                size: 28.sp,
+                size: 28.rSp(context),
               ),
               if (hasUnread)
                 Positioned(
                   top: -2,
                   right: -2,
                   child: Container(
-                    width: 9.sp,
-                    height: 9.sp,
+                    width: 9.rSp(context),
+                    height: 9.rSp(context),
                     decoration: const BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
@@ -502,7 +536,7 @@ class _HeaderIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 28.sp),
+      child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 28.rSp(context)),
     );
   }
 }
