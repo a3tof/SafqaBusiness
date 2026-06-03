@@ -42,14 +42,17 @@ class ResponsiveFormSection extends StatelessWidget {
     final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return Container(
-      padding: padding ?? EdgeInsets.all(isTabletOrUp ? 24.0 : 16.0),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(isTabletOrUp ? 24.0 : 16.0),
-        border: Border.all(
-          color: theme.colorScheme.outline.withValues(alpha: 0.35),
-        ),
-      ),
+      padding: padding ??
+          (isTabletOrUp ? const EdgeInsets.all(24.0) : EdgeInsets.zero),
+      decoration: isTabletOrUp
+          ? BoxDecoration(
+              color: theme.cardColor,
+              borderRadius: BorderRadius.circular(24.0),
+              border: Border.all(
+                color: theme.colorScheme.outline.withValues(alpha: 0.35),
+              ),
+            )
+          : null,
       child: child,
     );
   }

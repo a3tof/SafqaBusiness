@@ -226,8 +226,12 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
 
                             SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
 
-                            ResponsiveFormSection(
-                              child: Column(
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isTabletOrUp ? 0.0 : 16.w,
+                              ),
+                              child: ResponsiveFormSection(
+                                child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // ── Title + Count ───────────────────────
@@ -374,7 +378,8 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                                 ],
                               ),
                             ),
-                          ],
+                          ),
+                        ],
                         ),
                       ),
                     ),

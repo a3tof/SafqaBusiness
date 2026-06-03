@@ -70,7 +70,7 @@ class AuthRepository {
     if (auth.isSuccess == true) {
       // Derive role from API message and persist to cache
       final isSeller = (auth.message ?? '').toLowerCase().contains('as seller');
-      final role = isSeller ? 'Seller' : 'User';
+      final role = isSeller ? 'Seller' : 'user';
       await cacheHelper.saveData(key: CacheKeys.role, value: role);
       if (auth.token != null && auth.token!.isNotEmpty) {
         await _saveSession(auth);
