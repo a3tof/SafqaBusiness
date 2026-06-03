@@ -33,10 +33,7 @@ class _ChatMessage {
     this.isFailed = false,
   });
 
-  _ChatMessage copyWith({
-    bool? isSending,
-    bool? isFailed,
-  }) {
+  _ChatMessage copyWith({bool? isSending, bool? isFailed}) {
     return _ChatMessage(
       id: id,
       text: text,
@@ -73,12 +70,14 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    final maxWidth = Breakpoints.isTabletOrUp(context) ? 700.0 : double.infinity;
+    final maxWidth = Breakpoints.isTabletOrUp(context)
+        ? 700.0
+        : double.infinity;
     final kHorizontalPadding = Breakpoints.isTabletOrUp(context) ? 24.0 : 16.0;
-    
+
     // In the seller app, dynamic title handling based on args
-    final title = widget.args.disputeId != null 
-        ? S.of(context).chatTitle 
+    final title = widget.args.disputeId != null
+        ? S.of(context).chatTitle
         : widget.args.buyerName;
 
     return Scaffold(
@@ -100,37 +99,39 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
           title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: TextStyles.bold22(context).copyWith(
-            color: Theme.of(context).colorScheme.primary,
-          ),
+          style: TextStyles.bold22(
+            context,
+          ).copyWith(color: Theme.of(context).colorScheme.primary),
         ),
       ),
       body: BlocConsumer<ChatThreadViewModel, ChatThreadState>(
         listenWhen: (previous, current) {
-          if (previous is! ChatThreadSuccess && current is ChatThreadSuccess) return true;
+          if (previous is! ChatThreadSuccess && current is ChatThreadSuccess)
+            return true;
           if (previous is ChatThreadSuccess && current is ChatThreadSuccess) {
-            return previous.messages != current.messages || 
-                   previous.isSending != current.isSending ||
-                   previous.sendErrorMessage != current.sendErrorMessage;
+            return previous.messages != current.messages ||
+                previous.isSending != current.isSending ||
+                previous.sendErrorMessage != current.sendErrorMessage;
           }
           return current is ChatThreadFailure;
         },
         listener: (context, state) {
           if (state is ChatThreadSuccess) {
             _messages.clear();
-            
+
             final reason = state.disputeReason;
             if (reason != null && reason.isNotEmpty) {
               _messages.add(
                 _ChatMessage(
                   id: 'system_init',
-                  text: 'A dispute was opened: $reason',
+                  text:
+                      'User opened a dispute: The item does not match the description/is damaged.: $reason',
                   isSystem: true,
                   createdAt: DateTime.now().subtract(const Duration(days: 1)),
                 ),
               );
             }
-            
+
             final reversed = state.messages.reversed.toList();
             for (final msg in reversed) {
               _messages.add(
@@ -143,33 +144,38 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
                   isSeen: false,
                   isSending: msg.isPending,
                   isFailed: false,
-                )
-              );
-            }
-            
-            if (state.sendErrorMessage != null) {
-              for (int i = _messages.length - 1; i >= 0; i--) {
-                if (_messages[i].isMe && _messages[i].isSending) {
-                  _messages[i] = _messages[i].copyWith(isSending: false, isFailed: true);
-                  break;
-                }
-              }
-              ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(content: Text(state.sendErrorMessage!))
+                ),
               );
             }
 
+            if (state.sendErrorMessage != null) {
+              for (int i = _messages.length - 1; i >= 0; i--) {
+                if (_messages[i].isMe && _messages[i].isSending) {
+                  _messages[i] = _messages[i].copyWith(
+                    isSending: false,
+                    isFailed: true,
+                  );
+                  break;
+                }
+              }
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.sendErrorMessage!)));
+            }
+
             setState(() {});
-            
+
             Future.delayed(const Duration(milliseconds: 100), () {
               if (_scrollController.hasClients) {
-                _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                _scrollController.jumpTo(
+                  _scrollController.position.maxScrollExtent,
+                );
               }
             });
           } else if (state is ChatThreadFailure) {
-             ScaffoldMessenger.of(context).showSnackBar(
-                 SnackBar(content: Text(state.message))
-              );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -179,8 +185,9 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
                 state.message.toLowerCase().contains('not found')
                     ? S.of(context).chatNotFound
                     : state.message,
-                style: TextStyles.medium16(context)
-                    .copyWith(color: Theme.of(context).hintColor),
+                style: TextStyles.medium16(
+                  context,
+                ).copyWith(color: Theme.of(context).hintColor),
               ),
             );
           }
@@ -201,12 +208,16 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
                               horizontal: kHorizontalPadding,
                               vertical: 16.0,
                             ),
-                            itemCount: state is ChatThreadLoading ? 6 : _messages.length,
+                            itemCount: state is ChatThreadLoading
+                                ? 6
+                                : _messages.length,
                             itemBuilder: (context, index) {
                               if (state is ChatThreadLoading) {
                                 final isMe = index % 2 == 0;
-                                final fakeText = isMe ? "This is a mocked message" : "This is another mocked message";
-                                
+                                final fakeText = isMe
+                                    ? "This is a mocked message"
+                                    : "This is another mocked message";
+
                                 if (isMe) {
                                   return UserMessageBubble(
                                     text: fakeText,
@@ -223,7 +234,7 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
 
                               final msg = _messages[index];
                               Widget child;
-                              
+
                               if (msg.isSystem) {
                                 child = SystemMessageBubble(text: msg.text);
                               } else if (msg.isMe) {
@@ -233,9 +244,13 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
                                   isSeen: msg.isSeen,
                                   isSending: msg.isSending,
                                   isFailed: msg.isFailed,
-                                  onResend: msg.isFailed ? () {
-                                    context.read<ChatThreadViewModel>().sendMessage(msg.text);
-                                  } : null,
+                                  onResend: msg.isFailed
+                                      ? () {
+                                          context
+                                              .read<ChatThreadViewModel>()
+                                              .sendMessage(msg.text);
+                                        }
+                                      : null,
                                 );
                               } else {
                                 child = OtherMessageBubble(
@@ -244,7 +259,10 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
                                 );
                               }
 
-                              final isNew = msg.createdAt != null && DateTime.now().difference(msg.createdAt!) < const Duration(milliseconds: 500);
+                              final isNew =
+                                  msg.createdAt != null &&
+                                  DateTime.now().difference(msg.createdAt!) <
+                                      const Duration(milliseconds: 500);
                               final double begin = isNew ? 0.0 : 1.0;
 
                               return TweenAnimationBuilder<double>(
@@ -253,20 +271,23 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
                                 duration: const Duration(milliseconds: 350),
                                 curve: Curves.easeOutCubic,
                                 builder: (context, value, _) {
-                                   return Transform.translate(
-                                     offset: Offset(0, 20 * (1 - value)),
-                                     child: Opacity(
-                                       opacity: value.clamp(0.0, 1.0),
-                                       child: child,
-                                     ),
-                                   );
-                                }
+                                  return Transform.translate(
+                                    offset: Offset(0, 20 * (1 - value)),
+                                    child: Opacity(
+                                      opacity: value.clamp(0.0, 1.0),
+                                      child: child,
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),
                         ),
                       ),
-                      ChatInputBar(controller: _controller, onSend: _sendMessage),
+                      ChatInputBar(
+                        controller: _controller,
+                        onSend: _sendMessage,
+                      ),
                     ],
                   ),
                 ],

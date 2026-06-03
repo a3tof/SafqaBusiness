@@ -81,10 +81,15 @@ class ChatRepository {
   Future<MessageModel> sendMessage({
     required int conversationId,
     required String content,
+    required String senderId,
   }) async {
     final response = await dioHelper.postData(
       endPoint: 'Chat/send',
-      data: {'conversationId': conversationId, 'content': content},
+      data: {
+        'conversationId': conversationId,
+        'content': content,
+        'senderId': senderId,
+      },
       requiresAuth: true,
     );
 

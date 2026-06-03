@@ -1,4 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safqaseller/core/service_locator.dart';
+import 'package:safqaseller/core/storage/cache_helper.dart';
+import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/features/chat/model/models/chat_models.dart';
 import 'package:safqaseller/features/chat/model/repositories/chat_repository.dart';
 import 'package:safqaseller/features/chat/view_model/chat_thread/chat_thread_view_model_state.dart';
@@ -87,9 +90,14 @@ class ChatThreadViewModel extends Cubit<ChatThreadState> {
     );
 
     try {
+      final senderId = currentState.currentSellerId ??
+          getIt<CacheHelper>().getData(key: CacheKeys.userId) as String? ??
+          '';
+
       final sentMessage = await chatRepository.sendMessage(
         conversationId: currentState.conversationId,
         content: trimmedContent,
+        senderId: senderId,
       );
 
       final resolvedMessages = updatedMessages
