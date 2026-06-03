@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/notifications/model/models/notification_model.dart';
 
@@ -31,10 +31,10 @@ class NotificationItem extends StatelessWidget {
       onLongPress: onLongPress,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 14.h),
+        padding: EdgeInsets.symmetric(horizontal: 14.rSp(context), vertical: 14.rSp(context)),
         decoration: BoxDecoration(
           color: cardColor,
-          borderRadius: BorderRadius.circular(14.r),
+          borderRadius: BorderRadius.circular(14.rSp(context)),
           boxShadow: [
             BoxShadow(
               color: Theme.of(context).brightness == Brightness.light
@@ -42,7 +42,7 @@ class NotificationItem extends StatelessWidget {
                   : scheme.shadow.withValues(alpha: 0.12),
               blurRadius: 10,
               spreadRadius: 0,
-              offset: Offset(0, 2.h),
+              offset: Offset(0, 2.rSp(context)),
             ),
           ],
         ),
@@ -55,7 +55,7 @@ class NotificationItem extends StatelessWidget {
               )
             else
               _NotificationIcon(type: notification.type),
-            SizedBox(width: 14.w),
+            SizedBox(width: 14.rSp(context)),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,7 +73,7 @@ class NotificationItem extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(width: 8.rSp(context)),
                       Text(
                         notification.timeAgo,
                         style: TextStyles.regular12(
@@ -82,7 +82,7 @@ class NotificationItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 6.h),
+                  SizedBox(height: 6.rSp(context)),
                   Text(
                     notification.message,
                     style: TextStyles.regular14(
@@ -96,17 +96,17 @@ class NotificationItem extends StatelessWidget {
                     Align(
                       alignment: AlignmentDirectional.centerEnd,
                       child: Padding(
-                        padding: EdgeInsets.only(top: 8.h),
+                        padding: EdgeInsets.only(top: 8.rSp(context)),
                         child: GestureDetector(
                           onTap: onActionTap,
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 14.w,
-                              vertical: 8.h,
+                              horizontal: 14.rSp(context),
+                              vertical: 8.rSp(context),
                             ),
                             decoration: BoxDecoration(
                               color: scheme.primary,
-                              borderRadius: BorderRadius.circular(10.r),
+                              borderRadius: BorderRadius.circular(10.rSp(context)),
                             ),
                             child: Text(
                               notification.actionLabel!,
@@ -148,8 +148,8 @@ class _SelectionLeading extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Container(
-      width: 48.w,
-      height: 48.h,
+      width: 48.rSp(context),
+      height: 48.rSp(context),
       decoration: BoxDecoration(
         color: selected ? scheme.primary : null,
         shape: BoxShape.circle,
@@ -161,7 +161,7 @@ class _SelectionLeading extends StatelessWidget {
               ),
       ),
       child: selected
-          ? Icon(Icons.check_rounded, color: scheme.onPrimary, size: 26.sp)
+          ? Icon(Icons.check_rounded, color: scheme.onPrimary, size: 26.rSp(context))
           : null,
     );
   }
@@ -175,8 +175,8 @@ class _NotificationIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Container(
-      width: 48.w,
-      height: 48.h,
+      width: 48.rSp(context),
+      height: 48.rSp(context),
       decoration: BoxDecoration(
         color: scheme.secondary,
         shape: BoxShape.circle,
@@ -185,7 +185,7 @@ class _NotificationIcon extends StatelessWidget {
         child: Icon(
           _iconData,
           color: scheme.primary,
-          size: 24.sp,
+          size: 24.rSp(context),
         ),
       ),
     );

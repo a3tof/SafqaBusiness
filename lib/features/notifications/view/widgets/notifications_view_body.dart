@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/chat/view/chat_thread_view.dart';
 import 'package:safqaseller/features/chat/view/chat_thread_view_args.dart';
@@ -10,6 +10,8 @@ import 'package:safqaseller/features/notifications/view_model/notifications/noti
 import 'package:safqaseller/features/notifications/view_model/notifications/notifications_view_model_state.dart';
 import 'package:safqaseller/generated/l10n.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 
 class NotificationsViewBody extends StatefulWidget {
   const NotificationsViewBody({super.key});
@@ -129,10 +131,22 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
           child: BlocBuilder<NotificationsViewModel, NotificationsState>(
             builder: (context, state) {
               if (state is NotificationsLoading) {
+                final isTabletOrUp = Breakpoints.isTabletOrUp(context);
                 return Skeletonizer(
                   enabled: true,
-                  child: _NotificationsList(
-                    notifications: List.generate(
+                  child: LayoutBuilder(
+                    builder: (context, constraints) => SingleChildScrollView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isTabletOrUp ? 16.0 : 16.rSp(context),
+                        vertical: isTabletOrUp ? 16.0 : 16.rSp(context),
+                      ),
+                      child: ResponsiveFormShell(
+                        enabled: isTabletOrUp,
+                        maxWidth: 700,
+                        child: ResponsiveFormSection(
+                          child: _NotificationsList(
+                            notifications: List.generate(
                       6,
                       (index) => NotificationModel(
                         id: index,
@@ -147,6 +161,10 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                     selectedIds: const {},
                     onToggleItem: (_) {},
                     onStartSelectionWith: (_) {},
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 );
               }
@@ -165,10 +183,10 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                           children: [
                             Icon(
                               Icons.error_outline,
-                              size: 48.sp,
+                              size: 48.rSp(context),
                               color: Theme.of(context).hintColor,
                             ),
-                            SizedBox(height: 12.h),
+                            SizedBox(height: 12.rSp(context)),
                             Text(
                               state.message,
                               style: TextStyles.regular14(
@@ -176,7 +194,7 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                               ).copyWith(color: Theme.of(context).hintColor),
                               textAlign: TextAlign.center,
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: 16.rSp(context)),
                             TextButton(
                               onPressed: _loadNotifications,
                               child: Text(
@@ -204,28 +222,42 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                   return const _EmptyNotificationsPlaceholder();
                 }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (_selectionMode)
-                      _SelectionToolbar(
-                        selectedCount: _selectedIds.length,
-                        allSelected:
-                            _selectedIds.length == state.notifications.length,
-                        onDismiss: _onToolbarDismiss,
-                        onToggleSelectAll: () =>
-                            _toggleSelectAll(state.notifications),
-                      ),
-                    Expanded(
-                      child: _NotificationsList(
-                        notifications: state.notifications,
-                        selectionMode: _selectionMode,
-                        selectedIds: _selectedIds,
-                        onToggleItem: _toggleItemSelected,
-                        onStartSelectionWith: _startSelectionWith,
+                final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+                return LayoutBuilder(
+                  builder: (context, constraints) => SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: isTabletOrUp ? 16.0 : 16.rSp(context),
+                      vertical: isTabletOrUp ? 16.0 : 16.rSp(context),
+                    ),
+                    child: ResponsiveFormShell(
+                      enabled: isTabletOrUp,
+                      maxWidth: 700,
+                      child: ResponsiveFormSection(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (_selectionMode)
+                              _SelectionToolbar(
+                                selectedCount: _selectedIds.length,
+                                allSelected:
+                                    _selectedIds.length == state.notifications.length,
+                                onDismiss: _onToolbarDismiss,
+                                onToggleSelectAll: () =>
+                                    _toggleSelectAll(state.notifications),
+                              ),
+                            _NotificationsList(
+                              notifications: state.notifications,
+                              selectionMode: _selectionMode,
+                              selectedIds: _selectedIds,
+                              onToggleItem: _toggleItemSelected,
+                              onStartSelectionWith: _startSelectionWith,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ],
+                  ),
                 );
               }
 
@@ -257,7 +289,7 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
         icon: Icon(
           _selectionMode ? Icons.close : Icons.arrow_back_ios_new,
           color: scheme.primary,
-          size: 22.sp,
+          size: 22.rSp(context),
         ),
       ),
       title: Text(
@@ -306,7 +338,7 @@ class _NotificationsViewBodyState extends State<NotificationsViewBody> {
                     icon: Icon(
                       Icons.checklist_rounded,
                       color: scheme.primary,
-                      size: 26.sp,
+                      size: 26.rSp(context),
                     ),
                   ),
               ],
@@ -337,7 +369,7 @@ class _SelectionToolbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: EdgeInsets.fromLTRB(8.w, 0, 16.w, 8.h),
+      padding: EdgeInsets.fromLTRB(8.rSp(context), 0, 16.rSp(context), 8.rSp(context)),
       child: Row(
         children: [
           IconButton(
@@ -347,7 +379,7 @@ class _SelectionToolbar extends StatelessWidget {
                   ? Icons.delete_outline_rounded
                   : Icons.close_rounded,
               color: scheme.error,
-              size: 28.sp,
+              size: 28.rSp(context),
             ),
           ),
           Text(
@@ -404,10 +436,11 @@ class _NotificationsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
       itemCount: notifications.length,
-      separatorBuilder: (_, _) => SizedBox(height: 12.h),
+      separatorBuilder: (_, _) => SizedBox(height: Breakpoints.isTabletOrUp(context) ? 12.0 : 12.rSp(context)),
       itemBuilder: (context, index) {
         final notification = notifications[index];
         final selected = selectedIds.contains(notification.id);
@@ -467,10 +500,10 @@ class _EmptyNotificationsPlaceholder extends StatelessWidget {
               children: [
                 Icon(
                   Icons.notifications_off_outlined,
-                  size: 64.sp,
+                  size: 64.rSp(context),
                   color: Theme.of(context).hintColor.withValues(alpha: 0.45),
                 ),
-                SizedBox(height: 16.h),
+                SizedBox(height: 16.rSp(context)),
                 Text(
                   S.of(context).notificationsEmpty,
                   style: TextStyles.medium16(
