@@ -224,15 +224,12 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                               height: MediaQuery.of(context).size.height * 0.47,
                             ),
 
-                            Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: isTabletOrUp ? 16.0 : 16.w,
-                              ),
+                            SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+
+                            ResponsiveFormSection(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
-
                                   // ── Title + Count ───────────────────────
                                   Row(
                                     crossAxisAlignment:

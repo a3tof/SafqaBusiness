@@ -306,26 +306,10 @@ class _EditAuctionViewState extends State<EditAuctionView> {
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.fromLTRB(
-                    isTabletOrUp
-                        ? 16.0
-                        : isTabletOrUp
-                        ? 16.0
-                        : 16.w,
-                    isTabletOrUp
-                        ? 12.0
-                        : isTabletOrUp
-                        ? 12.0
-                        : 12.h,
-                    isTabletOrUp
-                        ? 16.0
-                        : isTabletOrUp
-                        ? 16.0
-                        : 16.w,
-                    isTabletOrUp
-                        ? 24.0
-                        : isTabletOrUp
-                        ? 24.0
-                        : 24.h,
+                    isTabletOrUp ? 16.0 : 16.w,
+                    isTabletOrUp ? 12.0 : 12.h,
+                    isTabletOrUp ? 16.0 : 16.w,
+                    isTabletOrUp ? 24.0 : 24.h,
                   ),
                   child: ResponsiveFormShell(
                     enabled: isTabletOrUp,

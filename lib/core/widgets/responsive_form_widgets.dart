@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/responsive/breakpoints.dart';
 
 class ResponsiveFormShell extends StatelessWidget {
@@ -43,10 +42,10 @@ class ResponsiveFormSection extends StatelessWidget {
     final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return Container(
-      padding: padding ?? EdgeInsets.all(isTabletOrUp ? 24.0 : 24.r),
+      padding: padding ?? EdgeInsets.all(isTabletOrUp ? 24.0 : 16.0),
       decoration: BoxDecoration(
         color: theme.cardColor,
-        borderRadius: BorderRadius.circular(isTabletOrUp ? 24.0 : 24.r),
+        borderRadius: BorderRadius.circular(isTabletOrUp ? 24.0 : 16.0),
         border: Border.all(
           color: theme.colorScheme.outline.withValues(alpha: 0.35),
         ),
@@ -75,7 +74,7 @@ class ResponsiveFormRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(child: leading),
-        SizedBox(width: spacing ?? (isTabletOrUp ? 16.0 : 16.r)),
+        SizedBox(width: spacing ?? (isTabletOrUp ? 16.0 : 12.0)),
         Expanded(child: trailing),
       ],
     );
