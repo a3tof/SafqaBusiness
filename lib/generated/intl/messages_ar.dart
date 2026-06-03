@@ -576,6 +576,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "savedCards": MessageLookupByLibrary.simpleMessage("البطاقات المحفوظة"),
     "seeAll": MessageLookupByLibrary.simpleMessage("عرض الكل"),
     "sendCode": MessageLookupByLibrary.simpleMessage("إرسال الرمز"),
+    "serverError": MessageLookupByLibrary.simpleMessage(
+      "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
+    ),
     "signIn": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "signInWithApple": MessageLookupByLibrary.simpleMessage(
       "تسجيل الدخول بـ Apple",

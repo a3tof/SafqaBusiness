@@ -216,6 +216,9 @@ class SellerViewModel extends Cubit<SellerViewModelState> {
     if (msg.startsWith('Exception: ')) {
       msg = msg.replaceFirst('Exception: ', '');
     }
+    if (msg.contains('<?xml') || msg.contains('<!DOCTYPE') || msg.contains('<html')) {
+      return 'SERVER_ERROR_HTML';
+    }
     return msg;
   }
 }

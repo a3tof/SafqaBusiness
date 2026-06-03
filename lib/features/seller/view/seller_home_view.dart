@@ -82,91 +82,98 @@ class _SellerHomeBody extends StatelessWidget {
 
             if (state is SellerHomeLoaded) {
               final data = state.data;
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  SizedBox(height: 16.h),
-                  // Logo + Store Name header
-                  Center(
-                    child: Column(
-                      children: [
-                        _StoreLogo(logoBase64: data.storeLogo),
-                        SizedBox(height: 12.h),
-                        Text(
-                          data.storeName,
-                          style: TextStyles.bold22(context)
-                              .copyWith(color: Theme.of(context).colorScheme.primary),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 32.h),
-                  // Welcome content
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Welcome to your store!',
-                          style: TextStyles.semiBold20(context)
-                              .copyWith(color: Theme.of(context).colorScheme.primary),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          'Your seller account is active. Start managing your auctions and products from here.',
-                          style: TextStyles.regular14(context).copyWith(
-                            color: Theme.of(context).hintColor,
-                            height: 1.5,
+              final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+              return LayoutBuilder(
+                builder: (context, constraints) => SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.rSp(context)), vertical: (isTabletOrUp ? 24.0 : 24.rSp(context))),
+                  child: ResponsiveFormShell(
+                    enabled: isTabletOrUp,
+                    maxWidth: 700,
+                    child: ResponsiveFormSection(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          SizedBox(height: (isTabletOrUp ? 16.0 : 16.rSp(context))),
+                          // Logo + Store Name header
+                          Center(
+                            child: Column(
+                              children: [
+                                _StoreLogo(logoBase64: data.storeLogo),
+                                SizedBox(height: (isTabletOrUp ? 12.0 : 12.rSp(context))),
+                                Text(
+                                  data.storeName,
+                                  style: TextStyles.bold22(context)
+                                      .copyWith(color: Theme.of(context).colorScheme.primary),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        SizedBox(height: 24.h),
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.pushNamedAndRemoveUntil(
-                                context,
-                                HomeScreenView.routeName,
-                                (route) => false,
+                          SizedBox(height: (isTabletOrUp ? 32.0 : 32.rSp(context))),
+                          // Welcome content
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Welcome to your store!',
+                                style: TextStyles.semiBold20(context)
+                                    .copyWith(color: Theme.of(context).colorScheme.primary),
+                              ),
+                              SizedBox(height: (isTabletOrUp ? 8.0 : 8.rSp(context))),
+                              Text(
+                                'Your seller account is active. Start managing your auctions and products from here.',
+                                style: TextStyles.regular14(context).copyWith(
+                                  color: Theme.of(context).hintColor,
+                                  height: 1.5,
+                                ),
+                              ),
+                              SizedBox(height: (isTabletOrUp ? 24.0 : 24.rSp(context))),
+                              SizedBox(
+                                width: double.infinity,
+                                height: (isTabletOrUp ? 54.0 : 54.rSp(context)),
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                      context,
+                                      HomeScreenView.routeName,
+                                      (route) => false,
+                                    );
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Theme.of(context).colorScheme.primary,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(14.rSp(context)),
+                                    ),
+                                  ),
+                                  child: Text(
+                                    'Go to Home',
+                                    style: TextStyles.semiBold16(context)
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: (isTabletOrUp ? 32.0 : 32.rSp(context))),
+                          // Logout hint
+                          BlocBuilder<AuthViewModel, AuthViewModelState>(
+                            builder: (context, authState) {
+                              return Text(
+                                authState is AuthAuthenticated
+                                    ? 'Logged in as: ${authState.role}'
+                                    : '',
+                                textAlign: TextAlign.center,
+                                style: TextStyles.regular12(context)
+                                    .copyWith(color: Theme.of(context).hintColor),
                               );
                             },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 14.h),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(14.r),
-                              ),
-                            ),
-                            child: Text(
-                              'Go to Home',
-                              style: TextStyles.semiBold16(context)
-                                  .copyWith(color: Colors.white),
-                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                  Spacer(),
-                  // Logout hint
-                  Padding(
-                    padding: EdgeInsets.all(16.w),
-                    child: BlocBuilder<AuthViewModel, AuthViewModelState>(
-                      builder: (context, authState) {
-                        return Text(
-                          authState is AuthAuthenticated
-                              ? 'Logged in as: ${authState.role}'
-                              : '',
-                          textAlign: TextAlign.center,
-                          style: TextStyles.regular12(context)
-                              .copyWith(color: Theme.of(context).hintColor),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+                ),
               );
             }
 

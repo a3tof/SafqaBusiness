@@ -146,9 +146,12 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
               (route) => false,
             );
           } else if (state is SellerError) {
+            final msg = state.message == 'SERVER_ERROR_HTML' 
+                ? S.of(context).serverError 
+                : state.message;
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
+                content: Text(msg),
                 backgroundColor: Colors.red.shade600,
               ),
             );

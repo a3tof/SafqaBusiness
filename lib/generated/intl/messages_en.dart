@@ -600,6 +600,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "savedCards": MessageLookupByLibrary.simpleMessage("Saved Cards"),
     "seeAll": MessageLookupByLibrary.simpleMessage("See all"),
     "sendCode": MessageLookupByLibrary.simpleMessage("Send Code"),
+    "serverError": MessageLookupByLibrary.simpleMessage(
+      "A server error occurred. Please try again later.",
+    ),
     "signIn": MessageLookupByLibrary.simpleMessage("Sign In"),
     "signInWithApple": MessageLookupByLibrary.simpleMessage(
       "Sign in with Apple",

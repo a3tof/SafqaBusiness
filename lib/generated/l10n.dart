@@ -3472,6 +3472,16 @@ class S {
       args: [],
     );
   }
+
+  /// `A server error occurred. Please try again later.`
+  String get serverError {
+    return Intl.message(
+      'A server error occurred. Please try again later.',
+      name: 'serverError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
