@@ -87,12 +87,14 @@ class _SignupViewBodyState extends State<SignupViewBody> {
       },
       builder: (context, state) {
         final isLoading = state is RegisterLoading;
+        final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+        final horizontalPadding = isTabletOrUp ? 24.0 : kHorizontalPadding.sp;
         return SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
+            padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
             child: ResponsiveFormShell(
-              enabled: Breakpoints.isTabletOrUp(context),
+              enabled: isTabletOrUp,
               maxWidth: 700,
               child: Form(
                 key: formKey,
@@ -101,8 +103,8 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 24.sp),
-                      if (Breakpoints.isTabletOrUp(context))
+                      SizedBox(height: isTabletOrUp ? 24.0 : 24.sp),
+                      if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: CustomTextFormField(
                             enabled: !isLoading,
@@ -124,7 +126,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           hintText: S.of(context).fullName,
                           textInputType: TextInputType.name,
                         ),
-                        SizedBox(height: 16.sp),
+                        SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                         CustomTextFormField(
                           enabled: !isLoading,
                           onSaved: (value) => email = value!,
@@ -132,8 +134,8 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           textInputType: TextInputType.emailAddress,
                         ),
                       ],
-                    SizedBox(height: 16.sp),
-                      if (Breakpoints.isTabletOrUp(context))
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: CustomTextFormField(
                             enabled: !isLoading,
@@ -154,15 +156,15 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           hintText: S.of(context).phoneNumber,
                           textInputType: TextInputType.phone,
                         ),
-                        SizedBox(height: 16.sp),
+                        SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                         DatePickerField(
                           enabled: !isLoading,
                           hintText: S.of(context).birthdate,
                           onSaved: (value) => birthdate = value,
                         ),
                       ],
-                    SizedBox(height: 16.sp),
-                      if (Breakpoints.isTabletOrUp(context))
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: LocationPickerField(
                             enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
@@ -197,7 +199,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                             }
                           },
                         ),
-                        SizedBox(height: 16.sp),
+                        SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                         LocationPickerField(
                           enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
                           hintText: S.of(context).kCity,
@@ -206,7 +208,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
                         ),
                       ],
-                    SizedBox(height: 16.sp),
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                     GenderPickerField(
                       enabled: !isLoading,
                       hintText: S.of(context).gender,
@@ -214,8 +216,8 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                       femaleText: S.of(context).female,
                       onSaved: (value) => gender = value,
                     ),
-                    SizedBox(height: 16.sp),
-                      if (Breakpoints.isTabletOrUp(context))
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: PasswordField(
                             enabled: !isLoading,
@@ -244,7 +246,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           hintText: S.of(context).password,
                           onSaved: (value) => password = value!,
                         ),
-                        SizedBox(height: 16.sp),
+                        SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                         PasswordField(
                           enabled: !isLoading,
                           hintText: S.of(context).confirmPassword,
@@ -259,11 +261,11 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           },
                         ),
                       ],
-                  SizedBox(height: 16.sp),
+                  SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                   TermsAndConditions(
                     onChanged: (value) => isTermsAccepted = value,
                   ),
-                  SizedBox(height: 30.sp),
+                  SizedBox(height: isTabletOrUp ? 30.0 : 30.sp),
                   isLoading
                       ? const CustomLoadingButton()
                       : CustomButton(
@@ -314,7 +316,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           },
                           text: S.of(context).signUp,
                         ),
-                  SizedBox(height: 26.sp),
+                  SizedBox(height: isTabletOrUp ? 26.0 : 26.sp),
                   HaveAnAccountWidget(),
                     ],
                   ),

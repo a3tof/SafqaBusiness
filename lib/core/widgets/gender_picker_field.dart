@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 class GenderPickerField extends StatefulWidget {
@@ -33,28 +32,28 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
       context: context,
       backgroundColor: theme.bottomSheetTheme.backgroundColor,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.rSp(context))),
       ),
       builder: (BuildContext context) {
         return Container(
-          padding: EdgeInsets.all(20.sp),
+          padding: EdgeInsets.all(20.rSp(context)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 40.sp,
-                height: 4.sp,
+                width: 40.rSp(context),
+                height: 4.rSp(context),
                 decoration: BoxDecoration(
                   color: theme.dividerColor,
-                  borderRadius: BorderRadius.circular(2.r),
+                  borderRadius: BorderRadius.circular(2.rSp(context)),
                 ),
               ),
-              SizedBox(height: 20.sp),
+              SizedBox(height: 20.rSp(context)),
               ListTile(
                 leading: Icon(
                   Icons.male,
                   color: theme.colorScheme.primary,
-                  size: 28.sp,
+                  size: 28.rSp(context),
                 ),
                 title: Text(
                   widget.maleText,
@@ -64,7 +63,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                     ? Icon(
                         Icons.check_circle,
                         color: theme.colorScheme.primary,
-                        size: 24.sp,
+                        size: 24.rSp(context),
                       )
                     : null,
                 onTap: () {
@@ -78,12 +77,12 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                   Navigator.pop(context);
                 },
               ),
-              Divider(height: 1.sp),
+              Divider(height: 1.rSp(context)),
               ListTile(
                 leading: Icon(
                   Icons.female,
                   color: theme.colorScheme.primary,
-                  size: 28.sp,
+                  size: 28.rSp(context),
                 ),
                 title: Text(
                   widget.femaleText,
@@ -93,7 +92,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                     ? Icon(
                         Icons.check_circle,
                         color: theme.colorScheme.primary,
-                        size: 24.sp,
+                        size: 24.rSp(context),
                       )
                     : null,
                 onTap: () {
@@ -107,7 +106,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
                   Navigator.pop(context);
                 },
               ),
-              SizedBox(height: 20.sp),
+              SizedBox(height: 20.rSp(context)),
             ],
           ),
         );
@@ -141,7 +140,7 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
         suffixIcon: Icon(
           Icons.arrow_drop_down,
           color: theme.hintColor,
-          size: 24.sp,
+          size: 24.rSp(context),
         ),
         hintText: widget.hintText,
         hintStyle: TextStyles.bold13(
@@ -149,16 +148,16 @@ class _GenderPickerFieldState extends State<GenderPickerField> {
         ).copyWith(color: theme.hintColor),
         filled: true,
         fillColor: theme.inputDecorationTheme.fillColor,
-        border: buildBorder(theme),
-        enabledBorder: buildBorder(theme),
-        focusedBorder: buildBorder(theme),
+        border: buildBorder(theme, context),
+        enabledBorder: buildBorder(theme, context),
+        focusedBorder: buildBorder(theme, context),
       ),
     );
   }
 
-  OutlineInputBorder buildBorder(ThemeData theme) {
+  OutlineInputBorder buildBorder(ThemeData theme, BuildContext context) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4.r),
+      borderRadius: BorderRadius.circular(4.rSp(context)),
       borderSide: BorderSide(width: 1, color: theme.colorScheme.outline),
     );
   }

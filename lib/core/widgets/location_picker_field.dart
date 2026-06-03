@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/auth/model/models/location_model.dart';
 
@@ -55,7 +54,7 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
       backgroundColor: theme.bottomSheetTheme.backgroundColor,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.rSp(context))),
       ),
       builder: (BuildContext context) {
         return DraggableScrollableSheet(
@@ -65,28 +64,28 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
           expand: false,
           builder: (context, scrollController) {
             return Container(
-              padding: EdgeInsets.fromLTRB(20.sp, 20.sp, 20.sp, 0),
+              padding: EdgeInsets.fromLTRB(20.rSp(context), 20.rSp(context), 20.rSp(context), 0),
               child: Column(
                 children: [
                   Container(
-                    width: 40.sp,
-                    height: 4.sp,
+                    width: 40.rSp(context),
+                    height: 4.rSp(context),
                     decoration: BoxDecoration(
                       color: theme.dividerColor,
-                      borderRadius: BorderRadius.circular(2.r),
+                      borderRadius: BorderRadius.circular(2.rSp(context)),
                     ),
                   ),
-                  SizedBox(height: 20.sp),
+                  SizedBox(height: 20.rSp(context)),
                   Text(
                     widget.hintText,
                     style: TextStyles.bold18(context),
                   ),
-                  SizedBox(height: 10.sp),
+                  SizedBox(height: 10.rSp(context)),
                   Expanded(
                     child: ListView.separated(
                       controller: scrollController,
                       itemCount: widget.locations.length,
-                      separatorBuilder: (context, index) => Divider(height: 1.sp),
+                      separatorBuilder: (context, index) => Divider(height: 1.rSp(context)),
                       itemBuilder: (context, index) {
                         final location = widget.locations[index];
                         return ListTile(
@@ -98,7 +97,7 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
                               ? Icon(
                                   Icons.check_circle,
                                   color: theme.colorScheme.primary,
-                                  size: 24.sp,
+                                  size: 24.rSp(context),
                                 )
                               : null,
                           onTap: () {
@@ -154,7 +153,7 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
         suffixIcon: Icon(
           Icons.arrow_drop_down,
           color: theme.hintColor,
-          size: 24.sp,
+          size: 24.rSp(context),
         ),
         hintText: widget.hintText,
         hintStyle: TextStyles.bold13(
@@ -162,16 +161,16 @@ class _LocationPickerFieldState extends State<LocationPickerField> {
         ).copyWith(color: theme.hintColor),
         filled: true,
         fillColor: theme.inputDecorationTheme.fillColor,
-        border: buildBorder(theme),
-        enabledBorder: buildBorder(theme),
-        focusedBorder: buildBorder(theme),
+        border: buildBorder(theme, context),
+        enabledBorder: buildBorder(theme, context),
+        focusedBorder: buildBorder(theme, context),
       ),
     );
   }
 
-  OutlineInputBorder buildBorder(ThemeData theme) {
+  OutlineInputBorder buildBorder(ThemeData theme, BuildContext context) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4.r),
+      borderRadius: BorderRadius.circular(4.rSp(context)),
       borderSide: BorderSide(width: 1, color: theme.colorScheme.outline),
     );
   }

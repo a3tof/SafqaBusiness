@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/auth/view/widgets/custom_check_box.dart';
 import 'package:safqaseller/features/terms_and_conditions/view/terms_and_conditions_view.dart';
@@ -40,7 +41,7 @@ class _TermsAndConditionsState extends State<TermsAndConditions> {
           },
           isChecked: isTermsAccepted,
         ),
-        SizedBox(width: 16.sp),
+        SizedBox(width: Breakpoints.isTabletOrUp(context) ? 16.0 : 16.sp),
         Expanded(
           child: Text.rich(
             TextSpan(

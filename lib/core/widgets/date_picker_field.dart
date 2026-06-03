@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
@@ -34,6 +33,10 @@ class _DatePickerFieldState extends State<DatePickerField> {
       builder: (context, child) {
         return Theme(
           data: theme.copyWith(
+            datePickerTheme: DatePickerThemeData(
+              headerBackgroundColor: theme.colorScheme.primary,
+              headerForegroundColor: theme.colorScheme.onPrimary,
+            ),
             colorScheme: theme.colorScheme.copyWith(
               primary: theme.colorScheme.primary,
               onPrimary: theme.colorScheme.onPrimary,
@@ -82,7 +85,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
         suffixIcon: Icon(
           Icons.calendar_today,
           color: theme.hintColor,
-          size: 20.sp,
+          size: 20.rSp(context),
         ),
         hintText: widget.hintText,
         hintStyle: TextStyles.bold13(
@@ -90,16 +93,16 @@ class _DatePickerFieldState extends State<DatePickerField> {
         ).copyWith(color: theme.hintColor),
         filled: true,
         fillColor: theme.inputDecorationTheme.fillColor,
-        border: buildBorder(theme),
-        enabledBorder: buildBorder(theme),
-        focusedBorder: buildBorder(theme),
+        border: buildBorder(theme, context),
+        enabledBorder: buildBorder(theme, context),
+        focusedBorder: buildBorder(theme, context),
       ),
     );
   }
 
-  OutlineInputBorder buildBorder(ThemeData theme) {
+  OutlineInputBorder buildBorder(ThemeData theme, BuildContext context) {
     return OutlineInputBorder(
-      borderRadius: BorderRadius.circular(4.r),
+      borderRadius: BorderRadius.circular(4.rSp(context)),
       borderSide: BorderSide(width: 1, color: theme.colorScheme.outline),
     );
   }
