@@ -143,9 +143,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
 
               final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
-              return Skeletonizer(
-                enabled: isLoading,
-                child: LayoutBuilder(
+              return LayoutBuilder(
                   builder: (context, constraints) => RefreshIndicator(
                     onRefresh: _refreshHome,
                     child: SingleChildScrollView(
@@ -171,6 +169,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                               child: _GreetingRow(
                                 storeName: storeName,
                                 logoBytes: logoBytes,
+                                isLoading: isLoading,
                                 onProfileTap: _openProfile,
                                 onNotificationTap: _openNotifications,
                               ),
@@ -308,8 +307,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                   ), // End ConstrainedBox
                 ), // End SingleChildScrollView
               ), // End RefreshIndicator
-            ), // End LayoutBuilder
-          ); // End Skeletonizer
+              ); // End LayoutBuilder
             },
           ),
         ),
@@ -365,11 +363,13 @@ class _GreetingRow extends StatelessWidget {
     required this.storeName,
     required this.onProfileTap,
     required this.onNotificationTap,
+    required this.isLoading,
     this.logoBytes,
   });
 
   final String storeName;
   final Uint8List? logoBytes;
+  final bool isLoading;
   final VoidCallback onProfileTap;
   final VoidCallback onNotificationTap;
 
@@ -380,9 +380,11 @@ class _GreetingRow extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Flexible(
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
+          child: Skeletonizer(
+            enabled: isLoading,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
               GestureDetector(
                 onTap: onProfileTap,
                 child: Container(
@@ -445,7 +447,8 @@ class _GreetingRow extends StatelessWidget {
             ],
           ),
         ),
-        Row(
+      ),
+      Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             _NotificationBadgeIcon(onTap: onNotificationTap),
