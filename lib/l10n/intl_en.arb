@@ -1416,5 +1416,6 @@
     "description": "Auto-generated"
   },
   "serverError": "A server error occurred. Please try again later.",
-  "openChat": "Open Chat"
+  "openChat": "Open Chat",
+  "chatNotFound": "Chat not found"
 }

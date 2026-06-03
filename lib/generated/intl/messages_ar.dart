@@ -231,6 +231,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "لا توجد محادثات بعد",
     ),
     "chatNoMessages": MessageLookupByLibrary.simpleMessage("لا توجد رسائل بعد"),
+    "chatNotFound": MessageLookupByLibrary.simpleMessage("المحادثة غير موجودة"),
     "chatSearchHint": MessageLookupByLibrary.simpleMessage("ابحث في المحادثات"),
     "chatSend": MessageLookupByLibrary.simpleMessage("إرسال"),
     "chatSendFailed": MessageLookupByLibrary.simpleMessage("فشل إرسال الرسالة"),

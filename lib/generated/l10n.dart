@@ -3487,6 +3487,16 @@ class S {
   String get openChat {
     return Intl.message('Open Chat', name: 'openChat', desc: '', args: []);
   }
+
+  /// `Chat not found`
+  String get chatNotFound {
+    return Intl.message(
+      'Chat not found',
+      name: 'chatNotFound',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

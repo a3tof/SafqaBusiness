@@ -1416,5 +1416,6 @@
     "description": "Auto-generated"
   },
   "serverError": "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
-  "openChat": "فتح المحادثة"
+  "openChat": "فتح المحادثة",
+  "chatNotFound": "المحادثة غير موجودة"
 }

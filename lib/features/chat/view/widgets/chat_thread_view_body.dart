@@ -173,6 +173,18 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
           }
         },
         builder: (context, state) {
+          if (state is ChatThreadFailure && _messages.isEmpty) {
+            return Center(
+              child: Text(
+                state.message.toLowerCase().contains('not found')
+                    ? S.of(context).chatNotFound
+                    : state.message,
+                style: TextStyles.medium16(context)
+                    .copyWith(color: Theme.of(context).hintColor),
+              ),
+            );
+          }
+
           return Center(
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: maxWidth),

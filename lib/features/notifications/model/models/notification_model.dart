@@ -11,6 +11,7 @@ class NotificationModel {
   final bool isRead;
   final bool hasAction;
   final String? actionLabel;
+  final int? conversationId;
 
   const NotificationModel({
     required this.id,
@@ -21,6 +22,7 @@ class NotificationModel {
     this.isRead = false,
     this.hasAction = false,
     this.actionLabel,
+    this.conversationId,
   });
 
   factory NotificationModel.fromJson(Map<String, dynamic> json) {
@@ -42,6 +44,12 @@ class NotificationModel {
         json['createdAt'] ?? json['CreatedAt'] ?? json['created_at'];
     final timeAgo = _formatTimeAgo(rawCreatedAt as String?);
 
+    int? parsedConversationId;
+    final convIdRaw = json['conversationId'] ?? json['ConversationId'] ?? json['referenceId'] ?? json['ReferenceId'];
+    if (convIdRaw != null) {
+      parsedConversationId = int.tryParse(convIdRaw.toString());
+    }
+
     return NotificationModel(
       id: (json['id'] ?? json['Id'] ?? 0) as int,
       title: (json['title'] ?? json['Title'] ?? '') as String,
@@ -49,6 +57,7 @@ class NotificationModel {
       timeAgo: timeAgo,
       type: type,
       isRead: (json['isRead'] ?? json['IsRead'] ?? false) as bool,
+      conversationId: parsedConversationId,
     );
   }
 
@@ -62,6 +71,7 @@ class NotificationModel {
       isRead: isRead ?? this.isRead,
       hasAction: hasAction,
       actionLabel: actionLabel,
+      conversationId: conversationId,
     );
   }
 

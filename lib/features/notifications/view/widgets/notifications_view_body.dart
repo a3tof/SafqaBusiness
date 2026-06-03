@@ -479,11 +479,11 @@ class _NotificationsList extends StatelessWidget {
                 context,
                 ChatThreadView.routeName,
                 arguments: ChatThreadViewArgs(
-                  conversationId: -1, // will be resolved via disputeId
+                  conversationId: notification.conversationId ?? -1,
                   buyerName: notification.title.isEmpty
                       ? S.of(context).chatTitle
                       : notification.title,
-                  disputeId: notification.id,
+                  disputeId: notification.conversationId, // Hit /api/Chat/conversation/{conversationId}
                 ),
               );
             } else {

@@ -235,6 +235,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "No conversations yet",
     ),
     "chatNoMessages": MessageLookupByLibrary.simpleMessage("No messages yet"),
+    "chatNotFound": MessageLookupByLibrary.simpleMessage("Chat not found"),
     "chatSearchHint": MessageLookupByLibrary.simpleMessage(
       "Search conversations",
     ),
