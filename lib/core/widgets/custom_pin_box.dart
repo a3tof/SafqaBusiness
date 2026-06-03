@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 
 /// A custom PIN input box widget for verification codes
@@ -89,7 +88,7 @@ class _CustomPinBoxState extends State<CustomPinBox> {
   @override
   Widget build(BuildContext context) {
     // When size is explicit (from LayoutBuilder) use it as-is; otherwise scale the default.
-    final double resolvedSize = widget.size ?? _defaultBoxSize.sp;
+    final double resolvedSize = widget.size ?? _defaultBoxSize.rSp(context);
 
     return Container(
       width: resolvedSize,
@@ -99,7 +98,7 @@ class _CustomPinBoxState extends State<CustomPinBox> {
           color: _hasError ? _errorBorderColor : _normalBorderColor,
           width: _borderWidth,
         ),
-        borderRadius: BorderRadius.circular(_borderRadius.r),
+        borderRadius: BorderRadius.circular(_borderRadius.rSp(context)),
       ),
       child: TextFormField(
         controller: widget.controller,

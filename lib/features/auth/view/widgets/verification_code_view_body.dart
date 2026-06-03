@@ -221,14 +221,17 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
   }
 
   Widget _buildBody({required bool isLoading}) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+    
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: kHorizontalPadding.sp),
-        child: SingleChildScrollView(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          child: ResponsiveFormShell(
-            enabled: Breakpoints.isTabletOrUp(context),
-            maxWidth: 700,
+        padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w),
+        child: Center(
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            child: ResponsiveFormShell(
+              enabled: isTabletOrUp,
+              maxWidth: 700,
             child: Form(
               key: _formKey,
               autovalidateMode: _autoValidateMode,
@@ -236,9 +239,9 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  SizedBox(height: 16.sp),
+                  SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.sp),
+                    padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 8.0 : 8.sp),
                     child: Text(
                       S.of(context).verificationCodeDescription,
                       textAlign: TextAlign.center,
@@ -248,7 +251,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 32.sp),
+                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                   Directionality(
                     textDirection: TextDirection.ltr,
                     child: LayoutBuilder(
@@ -258,6 +261,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                                     (_digitCount - 1) * _boxSpacing) /
                                 _digitCount;
                         return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: List.generate(
                             _digitCount,
                             (index) => Padding(
@@ -266,7 +270,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                                     index < _digitCount - 1 ? _boxSpacing : 0,
                               ),
                               child: CustomPinBox(
-                                size: boxSize,
+                                size: isTabletOrUp ? null : boxSize,
                                 controller: _controllers[index],
                                 focusNode: _focusNodes[index],
                                 onChanged: (value) {
@@ -288,7 +292,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                       },
                     ),
                   ),
-                  SizedBox(height: 32.sp),
+                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                   isLoading
                       ? const CustomLoadingButton()
                       : CustomButton(
@@ -297,7 +301,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                           onPressed: _submit,
                           text: S.of(context).verify,
                         ),
-                  SizedBox(height: 24.sp),
+                  SizedBox(height: isTabletOrUp ? 24.0 : 24.sp),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -306,7 +310,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                         style: TextStyles.regular14(context)
                             .copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
                       ),
-                      SizedBox(width: 4.sp),
+                      SizedBox(width: isTabletOrUp ? 4.0 : 4.sp),
                       GestureDetector(
                         onTap: _resend,
                         child: Text(
@@ -317,10 +321,11 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 32.sp),
+                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                   ],
                 ),
               ),
+            ),
             ),
           ),
         ),
