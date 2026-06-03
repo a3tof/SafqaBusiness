@@ -132,14 +132,19 @@ class _ChatThreadViewBodyState extends State<ChatThreadViewBody> {
               );
             }
 
+            final sellerId = state.currentSellerId;
             final reversed = state.messages.reversed.toList();
             for (final msg in reversed) {
+              final isMyMessage = (msg.senderName != null && sellerId != null)
+                  ? msg.senderName == sellerId
+                  : msg.isMine;
+
               _messages.add(
                 _ChatMessage(
                   id: msg.id.toString(),
                   text: msg.content,
                   isSystem: false,
-                  isMe: msg.isMine,
+                  isMe: isMyMessage,
                   createdAt: msg.sentAt,
                   isSeen: false,
                   isSending: msg.isPending,

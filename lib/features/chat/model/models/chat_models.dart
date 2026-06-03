@@ -85,6 +85,7 @@ class MessageModel {
   final DateTime sentAt;
   final bool isMine;
   final bool isPending;
+  final String? senderName;
 
   const MessageModel({
     required this.id,
@@ -93,6 +94,7 @@ class MessageModel {
     required this.sentAt,
     required this.isMine,
     this.isPending = false,
+    this.senderName,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
@@ -140,6 +142,7 @@ class MessageModel {
             json['Date'],
       ),
       isMine: isMine,
+      senderName: (json['senderName'] ?? json['SenderName'])?.toString(),
     );
   }
 
@@ -150,6 +153,7 @@ class MessageModel {
     DateTime? sentAt,
     bool? isMine,
     bool? isPending,
+    String? senderName,
   }) {
     return MessageModel(
       id: id ?? this.id,
@@ -158,6 +162,7 @@ class MessageModel {
       sentAt: sentAt ?? this.sentAt,
       isMine: isMine ?? this.isMine,
       isPending: isPending ?? this.isPending,
+      senderName: senderName ?? this.senderName,
     );
   }
 }
