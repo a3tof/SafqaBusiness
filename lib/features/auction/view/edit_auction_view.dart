@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
@@ -222,6 +224,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final cubit = context.read<EditAuctionViewModel>();
     final categories = cubit.categories;
@@ -259,7 +262,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
                 icon: Icon(
                   Icons.arrow_back_ios_new,
                   color: Theme.of(context).colorScheme.primary,
-                  size: 20.sp,
+                  size: 20.rSp(context),
                 ),
               ),
             ),
@@ -286,7 +289,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
                 icon: Icon(
                   Icons.arrow_back_ios_new,
                   color: Theme.of(context).colorScheme.primary,
-                  size: 20.sp,
+                  size: 20.rSp(context),
                 ),
               ),
               title: Text(
@@ -302,118 +305,164 @@ class _EditAuctionViewState extends State<EditAuctionView> {
                 onRefresh: _loadInitialData,
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 24.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _SectionLabel(label: s.auctionLotDetails),
-                  SizedBox(height: 10.h),
-                  Center(
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: _pickHeadImage,
-                          borderRadius: BorderRadius.circular(12.r),
-                          child: Container(
-                            width: 156.w,
-                            padding: EdgeInsets.all(12.w),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).cardColor,
-                              borderRadius: BorderRadius.circular(12.r),
-                              border: Border.all(color: const Color(0xFFE4E4E4)),
+                  padding: EdgeInsets.fromLTRB(
+                    isTabletOrUp
+                        ? 16.0
+                        : isTabletOrUp
+                        ? 16.0
+                        : 16.w,
+                    isTabletOrUp
+                        ? 12.0
+                        : isTabletOrUp
+                        ? 12.0
+                        : 12.h,
+                    isTabletOrUp
+                        ? 16.0
+                        : isTabletOrUp
+                        ? 16.0
+                        : 16.w,
+                    isTabletOrUp
+                        ? 24.0
+                        : isTabletOrUp
+                        ? 24.0
+                        : 24.h,
+                  ),
+                  child: ResponsiveFormShell(
+                    enabled: isTabletOrUp,
+                    maxWidth: 700,
+                    child: ResponsiveFormSection(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _SectionLabel(label: s.auctionLotDetails),
+                          SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                          Center(
+                            child: Column(
+                              children: [
+                                InkWell(
+                                  onTap: _pickHeadImage,
+                                  borderRadius: BorderRadius.circular(
+                                    12.rSp(context),
+                                  ),
+                                  child: Container(
+                                    width: isTabletOrUp ? 156.0 : 156.w,
+                                    padding: EdgeInsets.all(
+                                      isTabletOrUp ? 12.0 : 12.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).cardColor,
+                                      borderRadius: BorderRadius.circular(
+                                        12.rSp(context),
+                                      ),
+                                      border: Border.all(
+                                        color: const Color(0xFFE4E4E4),
+                                      ),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        10.rSp(context),
+                                      ),
+                                      child: _AuctionPreviewImage(
+                                        imageUrl:
+                                            displayDetail.image ??
+                                            widget.args.item.imageUrl,
+                                        localImage: _headImage,
+                                        width: isTabletOrUp ? 100.0 : 100.w,
+                                        height: isTabletOrUp ? 76.0 : 76.h,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                                Text(
+                                  s.auctionTapToChangeImage,
+                                  style: TextStyles.regular12(context).copyWith(
+                                    color: Theme.of(context).hintColor,
+                                  ),
+                                ),
+                              ],
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10.r),
-                              child: _AuctionPreviewImage(
-                                imageUrl: displayDetail.image ?? widget.args.item.imageUrl,
-                                localImage: _headImage,
-                                width: 100.w,
-                                height: 76.h,
+                          ),
+                          SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                          _AuctionTextField(
+                            controller: _lotTitleController,
+                            hintText: s.auctionTitle,
+                          ),
+                          SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
+                          ...List.generate(
+                            _items.length,
+                            (index) => Padding(
+                              padding: EdgeInsets.only(
+                                bottom: isTabletOrUp ? 14.0 : 14.h,
+                              ),
+                              child: _EditItemCard(
+                                index: index + 1,
+                                data: _items[index],
+                                categories: categories,
+                                onPickImages: () => _pickItemImages(index),
+                                onCategoryChanged: (value) {
+                                  setState(() {
+                                    _items[index].categoryId = value ?? 0;
+                                    _items[index].syncAttributes(const []);
+                                  });
+                                  if (value != null) {
+                                    _loadAttributesForItem(
+                                      itemIndex: index,
+                                      categoryId: value,
+                                    );
+                                  } else {
+                                    cubit.clearItemAttributes(index);
+                                  }
+                                },
+                                imageUrl: _items[index].previewImages.isNotEmpty
+                                    ? _items[index].previewImages.first
+                                    : displayDetail.image ??
+                                          widget.args.item.imageUrl,
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 8.h),
-                        Text(
-                          s.auctionTapToChangeImage,
-                          style: TextStyles.regular12(
-                            context,
-                          ).copyWith(color: Theme.of(context).hintColor),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  _AuctionTextField(
-                    controller: _lotTitleController,
-                    hintText: s.auctionTitle,
-                  ),
-                  SizedBox(height: 16.h),
-                  ...List.generate(
-                    _items.length,
-                    (index) => Padding(
-                      padding: EdgeInsets.only(bottom: 14.h),
-                      child: _EditItemCard(
-                        index: index + 1,
-                        data: _items[index],
-                        categories: categories,
-                        onPickImages: () => _pickItemImages(index),
-                        onCategoryChanged: (value) {
-                          setState(() {
-                            _items[index].categoryId = value ?? 0;
-                            _items[index].syncAttributes(const []);
-                          });
-                          if (value != null) {
-                            _loadAttributesForItem(
-                              itemIndex: index,
-                              categoryId: value,
-                            );
-                          } else {
-                            cubit.clearItemAttributes(index);
-                          }
-                        },
-                        imageUrl: _items[index].previewImages.isNotEmpty
-                            ? _items[index].previewImages.first
-                            : displayDetail.image ?? widget.args.item.imageUrl,
+                          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                          _SectionLabel(label: s.auctionLotDescription),
+                          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                          _AuctionTextField(
+                            controller: _descriptionController,
+                            hintText: s.kDescription,
+                            minLines: 4,
+                            maxLines: 4,
+                          ),
+                          SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
+                          SizedBox(
+                            width: double.infinity,
+                            height: isTabletOrUp ? 44.0 : 44.h,
+                            child: ElevatedButton(
+                              onPressed: isSaving ? null : _saveAuction,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                    8.rSp(context),
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                isSaving ? s.kSave : s.auctionSaveEdits,
+                                style: TextStyles.semiBold14(
+                                  context,
+                                ).copyWith(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 8.h),
-                  _SectionLabel(label: s.auctionLotDescription),
-                  SizedBox(height: 8.h),
-                  _AuctionTextField(
-                    controller: _descriptionController,
-                    hintText: s.kDescription,
-                    minLines: 4,
-                    maxLines: 4,
-                  ),
-                  SizedBox(height: 18.h),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 44.h,
-                    child: ElevatedButton(
-                      onPressed: isSaving ? null : _saveAuction,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                      ),
-                      child: Text(
-                        isSaving ? s.kSave : s.auctionSaveEdits,
-                        style: TextStyles.semiBold14(
-                          context,
-                        ).copyWith(color: Colors.white),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
       },
     );
   }
@@ -475,6 +524,7 @@ class _EditItemCard extends StatefulWidget {
 class _EditItemCardState extends State<_EditItemCard> {
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
 
     return Column(
@@ -482,14 +532,16 @@ class _EditItemCardState extends State<_EditItemCard> {
       children: [
         Text(
           '${s.auctionItem} (${widget.index})',
-          style: TextStyles.semiBold16(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: TextStyles.semiBold16(
+            context,
+          ).copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
         Container(
-          padding: EdgeInsets.all(12.w),
+          padding: EdgeInsets.all(isTabletOrUp ? 12.0 : 12.w),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(12.rSp(context)),
             border: Border.all(color: const Color(0xFFE4E4E4)),
           ),
           child: Column(
@@ -501,26 +553,30 @@ class _EditItemCardState extends State<_EditItemCard> {
                   children: [
                     ...widget.data.previewImages.map(
                       (imageUrl) => Padding(
-                        padding: EdgeInsetsDirectional.only(end: 8.w),
+                        padding: EdgeInsetsDirectional.only(
+                          end: isTabletOrUp ? 8.0 : 8.w,
+                        ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(10.rSp(context)),
                           child: _AuctionPreviewImage(
                             imageUrl: imageUrl,
-                            width: 76.w,
-                            height: 58.h,
+                            width: isTabletOrUp ? 76.0 : 76.w,
+                            height: isTabletOrUp ? 58.0 : 58.h,
                           ),
                         ),
                       ),
                     ),
                     ...widget.data.pickedImages.map(
                       (image) => Padding(
-                        padding: EdgeInsetsDirectional.only(end: 8.w),
+                        padding: EdgeInsetsDirectional.only(
+                          end: isTabletOrUp ? 8.0 : 8.w,
+                        ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(10.rSp(context)),
                           child: _AuctionPreviewImage(
                             localImage: image,
-                            width: 76.w,
-                            height: 58.h,
+                            width: isTabletOrUp ? 76.0 : 76.w,
+                            height: isTabletOrUp ? 58.0 : 58.h,
                           ),
                         ),
                       ),
@@ -528,20 +584,22 @@ class _EditItemCardState extends State<_EditItemCard> {
                     if (widget.data.previewImages.isEmpty &&
                         widget.data.pickedImages.isEmpty)
                       Padding(
-                        padding: EdgeInsetsDirectional.only(end: 8.w),
+                        padding: EdgeInsetsDirectional.only(
+                          end: isTabletOrUp ? 8.0 : 8.w,
+                        ),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.r),
+                          borderRadius: BorderRadius.circular(10.rSp(context)),
                           child: _AuctionPreviewImage(
                             imageUrl: widget.imageUrl,
-                            width: 76.w,
-                            height: 58.h,
+                            width: isTabletOrUp ? 76.0 : 76.w,
+                            height: isTabletOrUp ? 58.0 : 58.h,
                           ),
                         ),
                       ),
                   ],
                 ),
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               InkWell(
                 onTap: widget.onPickImages,
                 child: Text(
@@ -551,53 +609,55 @@ class _EditItemCardState extends State<_EditItemCard> {
                   ).copyWith(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
               _AuctionTextField(
                 controller: widget.data.titleController,
                 hintText: s.auctionTitle,
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               Text(
                 s.auctionCategory,
                 style: TextStyles.regular12(
                   context,
                 ).copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               _CategoryDropdown(
                 categories: widget.categories,
-                value: widget.data.categoryId > 0 ? widget.data.categoryId : null,
+                value: widget.data.categoryId > 0
+                    ? widget.data.categoryId
+                    : null,
                 onChanged: widget.onCategoryChanged,
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               _AuctionTextField(
                 controller: widget.data.countController,
                 hintText: s.auctionCount,
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               _AuctionTextField(
                 controller: widget.data.warrantyController,
                 hintText: s.auctionWarrantyInfo,
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
               _AuctionTextField(
                 controller: widget.data.descriptionController,
                 hintText: s.kDescription,
                 minLines: 3,
                 maxLines: 3,
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
               Text(
                 s.auctionCondition,
                 style: TextStyles.regular12(
                   context,
                 ).copyWith(color: Theme.of(context).colorScheme.onSurface),
               ),
-              SizedBox(height: 8.h),
+              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               Wrap(
-                spacing: 12.w,
-                runSpacing: 6.h,
+                spacing: isTabletOrUp ? 12.0 : 12.w,
+                runSpacing: isTabletOrUp ? 6.0 : 6.h,
                 children: _AuctionCondition.values.map((condition) {
                   return InkWell(
                     onTap: () => setState(
@@ -607,8 +667,8 @@ class _EditItemCardState extends State<_EditItemCard> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Container(
-                          width: 14.w,
-                          height: 14.w,
+                          width: isTabletOrUp ? 14.0 : 14.w,
+                          height: isTabletOrUp ? 14.0 : 14.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
@@ -620,17 +680,19 @@ class _EditItemCardState extends State<_EditItemCard> {
                           child: widget.data.selectedCondition == condition
                               ? Center(
                                   child: Container(
-                                    width: 8.w,
-                                    height: 8.w,
+                                    width: isTabletOrUp ? 8.0 : 8.w,
+                                    height: isTabletOrUp ? 8.0 : 8.w,
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color: Theme.of(context).colorScheme.primary,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
                                     ),
                                   ),
                                 )
                               : null,
                         ),
-                        SizedBox(width: 6.w),
+                        SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
                         Text(
                           condition.label(context),
                           style: TextStyles.regular12(context),
@@ -641,10 +703,10 @@ class _EditItemCardState extends State<_EditItemCard> {
                 }).toList(),
               ),
               if (widget.data.attributeControllers.isNotEmpty) ...[
-                SizedBox(height: 10.h),
+                SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
                 ...widget.data.attributeEntries.map(
                   (entry) => Padding(
-                    padding: EdgeInsets.only(bottom: 8.h),
+                    padding: EdgeInsets.only(bottom: isTabletOrUp ? 8.0 : 8.h),
                     child: _AuctionTextField(
                       controller: entry.controller,
                       hintText: entry.label,
@@ -667,9 +729,12 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return Text(
       label,
-      style: TextStyles.semiBold16(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+      style: TextStyles.semiBold16(
+        context,
+      ).copyWith(color: Theme.of(context).colorScheme.onSurface),
     );
   }
 }
@@ -691,6 +756,7 @@ class _AuctionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return TextField(
       controller: controller,
       minLines: minLines,
@@ -703,13 +769,16 @@ class _AuctionTextField extends StatelessWidget {
           context,
         ).copyWith(color: const Color(0xFF8A8A8A)),
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 10.0 : 10.w,
+          vertical: isTabletOrUp ? 10.0 : 10.h,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
           borderSide: const BorderSide(color: Color(0xFFE4E4E4)),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
@@ -730,10 +799,11 @@ class _CategoryDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 10.0 : 10.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.r),
+        borderRadius: BorderRadius.circular(6.rSp(context)),
         border: Border.all(color: const Color(0xFFE4E4E4)),
       ),
       child: DropdownButtonHideUnderline(
@@ -843,7 +913,8 @@ class _EditableItemData {
     bool preserveExistingValues = false,
   }) {
     final existingValues = {
-      for (final entry in attributeControllers.entries) entry.key: entry.value.text,
+      for (final entry in attributeControllers.entries)
+        entry.key: entry.value.text,
     };
     final allowedIds = attributes.map((attribute) => attribute.id).toSet();
     attributeControllers.removeWhere((key, controller) {
@@ -858,7 +929,9 @@ class _EditableItemData {
       attributeControllers.putIfAbsent(
         attribute.id,
         () => TextEditingController(
-          text: preserveExistingValues ? (existingValues[attribute.id] ?? '') : '',
+          text: preserveExistingValues
+              ? (existingValues[attribute.id] ?? '')
+              : '',
         ),
       );
     }
@@ -943,6 +1016,7 @@ class _AuctionPreviewImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     if (localImage != null) {
       return FutureBuilder<Uint8List>(
         future: localImage!.readAsBytes(),

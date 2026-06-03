@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +22,7 @@ class LotAuctionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return BlocProvider(
       create: (_) => getIt<CreateAuctionViewModel>()..loadCategories(),
       child: const _LotAuctionViewBody(),
@@ -221,7 +224,9 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
         }
 
         if (attribute.isRequired && (value == null || value.isEmpty)) {
-          _showMessage(s.auctionProvideItemAttribute(attribute.name, index + 1));
+          _showMessage(
+            s.auctionProvideItemAttribute(attribute.name, index + 1),
+          );
           return false;
         }
 
@@ -267,6 +272,7 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return BlocConsumer<CreateAuctionViewModel, CreateAuctionViewModelState>(
       listener: (context, state) {
         final s = S.of(context);
@@ -290,135 +296,153 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
 
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: buildAppBar(context: context, title: s.auctionLotAuctionTitle),
+          appBar: buildAppBar(
+            context: context,
+            title: s.auctionLotAuctionTitle,
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 24.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _SectionLabel(label: s.auctionLotDetails),
-                  SizedBox(height: 8.h),
-                  _UploadBox(
-                    label: _headImage == null
-                        ? s.auctionHeadImage
-                        : s.auctionSelectedFile(_headImage!.name),
-                    height: 88,
-                    onTap: _pickHeadImage,
-                  ),
-                  SizedBox(height: 10.h),
-                  _FieldLabel(label: s.auctionTitle),
-                  SizedBox(height: 4.h),
-                  _AuctionTextField(controller: _lotTitleController),
-                  SizedBox(height: 8.h),
-                  Text(
-                    categories.isEmpty && state is CategoriesLoading
-                        ? s.auctionLoadingCategories
-                        : s.auctionSelectCategoryPerItem,
-                    style: TextStyles.regular11(
-                      context,
-                    ).copyWith(color: const Color(0xFF8A8A8A)),
-                  ),
-                  SizedBox(height: 16.h),
-                  ...List.generate(
-                    _items.length,
-                    (index) => Padding(
-                      padding: EdgeInsets.only(bottom: 14.h),
-                      child: _LotItemCard(
-                        index: index + 1,
-                        item: _items[index],
-                        categories: categories,
-                        attributes: cubit.attributesForItem(index),
-                        onPickImages: () => _pickItemImages(index),
-                        onRemove: _items.length > 1
-                            ? () => _removeItem(index)
-                            : null,
-                        onConditionChanged: (value) {
-                          setState(() => _items[index].condition = value);
-                        },
-                        onCategoryChanged: (value) async {
-                          setState(() {
-                            _items[index].categoryId = value;
-                            _items[index].clearDynamicValues();
-                          });
-                          if (value != null) {
-                            await cubit.loadAttributes(
+              padding: EdgeInsets.fromLTRB(
+                isTabletOrUp ? 16.0 : 16.w,
+                isTabletOrUp ? 12.0 : 12.h,
+                isTabletOrUp ? 16.0 : 16.w,
+                isTabletOrUp ? 24.0 : 24.h,
+              ),
+              child: ResponsiveFormShell(
+                enabled: isTabletOrUp,
+                maxWidth: 700,
+                child: ResponsiveFormSection(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _SectionLabel(label: s.auctionLotDetails),
+                      SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                      _UploadBox(
+                        label: _headImage == null
+                            ? s.auctionHeadImage
+                            : s.auctionSelectedFile(_headImage!.name),
+                        height: 88,
+                        onTap: _pickHeadImage,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _FieldLabel(label: s.auctionTitle),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                      _AuctionTextField(controller: _lotTitleController),
+                      SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                      Text(
+                        categories.isEmpty && state is CategoriesLoading
+                            ? s.auctionLoadingCategories
+                            : s.auctionSelectCategoryPerItem,
+                        style: TextStyles.regular11(
+                          context,
+                        ).copyWith(color: const Color(0xFF8A8A8A)),
+                      ),
+                      SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
+                      ...List.generate(
+                        _items.length,
+                        (index) => Padding(
+                          padding: EdgeInsets.only(
+                            bottom: isTabletOrUp ? 14.0 : 14.h,
+                          ),
+                          child: _LotItemCard(
+                            index: index + 1,
+                            item: _items[index],
+                            categories: categories,
+                            attributes: cubit.attributesForItem(index),
+                            onPickImages: () => _pickItemImages(index),
+                            onRemove: _items.length > 1
+                                ? () => _removeItem(index)
+                                : null,
+                            onConditionChanged: (value) {
+                              setState(() => _items[index].condition = value);
+                            },
+                            onCategoryChanged: (value) async {
+                              setState(() {
+                                _items[index].categoryId = value;
+                                _items[index].clearDynamicValues();
+                              });
+                              if (value != null) {
+                                await cubit.loadAttributes(
+                                  itemIndex: index,
+                                  categoryId: value,
+                                );
+                              } else {
+                                cubit.clearItemAttributes(index);
+                              }
+                            },
+                            onBooleanChanged: (attributeId, value) {
+                              setState(() {
+                                _items[index].booleanAttributes[attributeId] =
+                                    value;
+                              });
+                            },
+                            onPickDate: (attribute) => _pickDateValue(
                               itemIndex: index,
-                              categoryId: value,
-                            );
-                          } else {
-                            cubit.clearItemAttributes(index);
-                          }
-                        },
-                        onBooleanChanged: (attributeId, value) {
-                          setState(() {
-                            _items[index].booleanAttributes[attributeId] =
-                                value;
-                          });
-                        },
-                        onPickDate: (attribute) => _pickDateValue(
-                          itemIndex: index,
-                          attribute: attribute,
+                              attribute: attribute,
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Center(
-                    child: TextButton.icon(
-                      onPressed: _addItem,
-                      icon: Icon(
-                        Icons.add_circle_outline_rounded,
-                        size: 18.sp,
-                        color: Theme.of(context).colorScheme.primary,
+                      Center(
+                        child: TextButton.icon(
+                          onPressed: _addItem,
+                          icon: Icon(
+                            Icons.add_circle_outline_rounded,
+                            size: 18.rSp(context),
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          label: Text(
+                            s.auctionAddItem,
+                            style: TextStyles.semiBold13(context).copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
                       ),
-                      label: Text(
-                        s.auctionAddItem,
-                        style: TextStyles.semiBold13(
-                          context,
-                        ).copyWith(color: Theme.of(context).colorScheme.primary),
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _SectionLabel(label: s.auctionLotDescription),
+                      SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                      _AuctionTextField(
+                        controller: _descriptionController,
+                        minLines: 3,
+                        maxLines: 3,
                       ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  _SectionLabel(label: s.auctionLotDescription),
-                  SizedBox(height: 8.h),
-                  _AuctionTextField(
-                    controller: _descriptionController,
-                    minLines: 3,
-                    maxLines: 3,
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 4.h),
-                      child: ValueListenableBuilder<TextEditingValue>(
-                        valueListenable: _descriptionController,
-                        builder: (context, value, _) {
-                          return Text(
-                            '${value.text.length}/160',
-                            style: TextStyles.regular11(
-                              context,
-                            ).copyWith(color: const Color(0xFF888888)),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                            top: isTabletOrUp ? 4.0 : 4.h,
+                          ),
+                          child: ValueListenableBuilder<TextEditingValue>(
+                            valueListenable: _descriptionController,
+                            builder: (context, value, _) {
+                              return Text(
+                                '${value.text.length}/160',
+                                style: TextStyles.regular11(
+                                  context,
+                                ).copyWith(color: const Color(0xFF888888)),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                      _PrimaryButton(
+                        label: s.auctionSaveContinue,
+                        onTap: () {
+                          if (!_validateAndStoreDraft()) {
+                            return;
+                          }
+                          Navigator.pushNamed(
+                            context,
+                            PriceDurationView.routeName,
+                            arguments: cubit,
                           );
                         },
                       ),
-                    ),
+                    ],
                   ),
-                  SizedBox(height: 12.h),
-                  _PrimaryButton(
-                    label: s.auctionSaveContinue,
-                    onTap: () {
-                      if (!_validateAndStoreDraft()) {
-                        return;
-                      }
-                      Navigator.pushNamed(
-                        context,
-                        PriceDurationView.routeName,
-                        arguments: cubit,
-                      );
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -455,12 +479,13 @@ class _LotItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     return Container(
-      padding: EdgeInsets.all(12.w),
+      padding: EdgeInsets.all(isTabletOrUp ? 12.0 : 12.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12.rSp(context)),
         border: Border.all(color: const Color(0xFFE4E4E4)),
       ),
       child: Column(
@@ -468,7 +493,9 @@ class _LotItemCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: _SectionLabel(label: '${s.auctionItem} ($index)')),
+              Expanded(
+                child: _SectionLabel(label: '${s.auctionItem} ($index)'),
+              ),
               if (onRemove != null)
                 TextButton(
                   onPressed: onRemove,
@@ -481,7 +508,7 @@ class _LotItemCard extends StatelessWidget {
                 ),
             ],
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _UploadBox(
             label: item.images.isEmpty
                 ? s.auctionAddImages
@@ -489,51 +516,51 @@ class _LotItemCard extends StatelessWidget {
             height: 82,
             onTap: onPickImages,
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.auctionTitle),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _AuctionTextField(controller: item.titleController),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.auctionCount),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _AuctionTextField(
             controller: item.countController,
             keyboardType: TextInputType.number,
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.kDescription),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _AuctionTextField(
             controller: item.descriptionController,
             minLines: 2,
             maxLines: 2,
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.auctionWarrantyInfo),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _AuctionTextField(controller: item.warrantyController),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.auctionCategory),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _CategoryDropdown(
             categories: categories,
             value: item.categoryId,
             onChanged: onCategoryChanged,
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.auctionCondition),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _ConditionRow(
             selected: item.condition,
             onChanged: onConditionChanged,
           ),
           if (attributes.isNotEmpty) ...[
-            SizedBox(height: 10.h),
+            SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
             _FieldLabel(label: s.auctionAttributes),
-            SizedBox(height: 6.h),
+            SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
             ...attributes.map(
               (attribute) => Padding(
-                padding: EdgeInsets.only(bottom: 8.h),
+                padding: EdgeInsets.only(bottom: isTabletOrUp ? 8.0 : 8.h),
                 child: _AttributeField(
                   attribute: attribute,
                   item: item,
@@ -556,9 +583,12 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return Text(
       label,
-      style: TextStyles.semiBold16(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+      style: TextStyles.semiBold16(
+        context,
+      ).copyWith(color: Theme.of(context).colorScheme.onSurface),
     );
   }
 }
@@ -570,6 +600,7 @@ class _FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return Text(
       label,
       style: TextStyles.regular11(
@@ -592,6 +623,7 @@ class _UploadBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -599,7 +631,7 @@ class _UploadBox extends StatelessWidget {
         height: height.h,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10.rSp(context)),
           border: Border.all(color: const Color(0xFFE0E0E0)),
         ),
         child: Center(
@@ -630,6 +662,7 @@ class _AuctionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return TextField(
       controller: controller,
       minLines: minLines,
@@ -638,13 +671,16 @@ class _AuctionTextField extends StatelessWidget {
       style: TextStyles.regular13(context),
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 10.0 : 10.w,
+          vertical: isTabletOrUp ? 10.0 : 10.h,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
@@ -660,10 +696,11 @@ class _ConditionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     return Wrap(
-      spacing: 10.w,
-      runSpacing: 6.h,
+      spacing: isTabletOrUp ? 10.0 : 10.w,
+      runSpacing: isTabletOrUp ? 6.0 : 6.h,
       children: _Condition.values.map((condition) {
         return InkWell(
           onTap: () => onChanged(condition),
@@ -671,8 +708,8 @@ class _ConditionRow extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 14.w,
-                height: 14.w,
+                width: isTabletOrUp ? 14.0 : 14.w,
+                height: isTabletOrUp ? 14.0 : 14.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
@@ -684,8 +721,8 @@ class _ConditionRow extends StatelessWidget {
                 child: selected == condition
                     ? Center(
                         child: Container(
-                          width: 8.w,
-                          height: 8.w,
+                          width: isTabletOrUp ? 8.0 : 8.w,
+                          height: isTabletOrUp ? 8.0 : 8.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Theme.of(context).colorScheme.primary,
@@ -694,7 +731,7 @@ class _ConditionRow extends StatelessWidget {
                       )
                     : null,
               ),
-              SizedBox(width: 6.w),
+              SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
               Text(
                 condition.localizedLabel(s),
                 style: TextStyles.regular12(context),
@@ -715,15 +752,16 @@ class _PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return SizedBox(
       width: double.infinity,
-      height: 42.h,
+      height: isTabletOrUp ? 42.0 : 42.h,
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(8.rSp(context)),
           ),
         ),
         child: Text(
@@ -776,10 +814,11 @@ class _CategoryDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 10.0 : 10.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.r),
+        borderRadius: BorderRadius.circular(6.rSp(context)),
         border: Border.all(color: const Color(0xFFE4E4E4)),
       ),
       child: DropdownButtonHideUnderline(
@@ -827,6 +866,7 @@ class _AttributeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final label = attribute.unitLabel.isEmpty
         ? attribute.name
@@ -837,11 +877,13 @@ class _AttributeField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _FieldLabel(label: attribute.isRequired ? '$label *' : label),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            padding: EdgeInsets.symmetric(
+              horizontal: isTabletOrUp ? 10.0 : 10.w,
+            ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6.r),
+              borderRadius: BorderRadius.circular(6.rSp(context)),
               border: Border.all(color: const Color(0xFFE4E4E4)),
             ),
             child: DropdownButtonHideUnderline(
@@ -855,7 +897,10 @@ class _AttributeField extends StatelessWidget {
                   ).copyWith(color: const Color(0xFF8A8A8A)),
                 ),
                 items: [
-                  DropdownMenuItem<bool>(value: true, child: Text(s.auctionTrue)),
+                  DropdownMenuItem<bool>(
+                    value: true,
+                    child: Text(s.auctionTrue),
+                  ),
                   DropdownMenuItem<bool>(
                     value: false,
                     child: Text(s.auctionFalse),
@@ -875,7 +920,7 @@ class _AttributeField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _FieldLabel(label: attribute.isRequired ? '$label *' : label),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _UploadBox(
             label: currentValue?.isNotEmpty == true
                 ? currentValue!
@@ -897,7 +942,7 @@ class _AttributeField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _FieldLabel(label: attribute.isRequired ? '$label *' : label),
-        SizedBox(height: 4.h),
+        SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
         _AuctionTextField(
           controller: controller,
           keyboardType: attribute.isNumber

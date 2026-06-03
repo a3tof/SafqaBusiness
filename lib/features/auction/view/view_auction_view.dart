@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -85,6 +87,7 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final scheme = Theme.of(context).colorScheme;
 
@@ -94,7 +97,9 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
           _showMessage(s.auctionDeleteSuccess);
           Navigator.pop(context);
         } else if (state is AuctionDetailFailure) {
-          _showMessage(state.message.isEmpty ? s.auctionLoadError : state.message);
+          _showMessage(
+            state.message.isEmpty ? s.auctionLoadError : state.message,
+          );
         }
       },
       builder: (context, state) {
@@ -113,21 +118,36 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
         if (state is AuctionDetailFailure && detail == null) {
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar: _buildAppBar(context, null, isDeleting: false, isLoading: false, currentItemIndex: 0, totalItems: 0),
+            appBar: _buildAppBar(
+              context,
+              null,
+              isDeleting: false,
+              isLoading: false,
+              currentItemIndex: 0,
+              totalItems: 0,
+            ),
             body: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isTabletOrUp ? 24.0 : 24.w,
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.error_outline, size: 48.sp, color: scheme.error),
-                    SizedBox(height: 12.h),
+                    Icon(
+                      Icons.error_outline,
+                      size: 48.rSp(context),
+                      color: scheme.error,
+                    ),
+                    SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
                     Text(
-                      state.message.isEmpty ? s.auctionLoadError : state.message,
+                      state.message.isEmpty
+                          ? s.auctionLoadError
+                          : state.message,
                       style: TextStyles.semiBold16(context),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                     ElevatedButton(
                       onPressed: () => cubit.loadAuction(widget.args.auctionId),
                       child: Text(s.retry),
@@ -149,7 +169,10 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
         }
 
         final currentItem = displayDetail.items.isNotEmpty
-            ? displayDetail.items[_currentItemIndex.clamp(0, displayDetail.items.length - 1)]
+            ? displayDetail.items[_currentItemIndex.clamp(
+                0,
+                displayDetail.items.length - 1,
+              )]
             : null;
 
         // Images for current item view
@@ -177,73 +200,101 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
               currentItemIndex: _currentItemIndex,
               totalItems: displayDetail.items.length,
             ),
-            body: Column(
-              children: [
-                Expanded(
-                  child: RefreshIndicator(
-                    color: scheme.primary,
-                    onRefresh: () => cubit.loadAuction(widget.args.auctionId),
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // ── Image carousel (full-bleed hero) ───────────────
-                          _ImageCarousel(
-                            images: displayImages,
-                            currentIndex: _currentImageIndex,
-                            pageController: _pageController,
-                            onPageChanged: (i) =>
-                                setState(() => _currentImageIndex = i),
-                            height: MediaQuery.of(context).size.height * 0.47,
-                          ),
+            body: ResponsiveFormShell(
+              enabled: isTabletOrUp,
+              maxWidth: 700,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: RefreshIndicator(
+                      color: scheme.primary,
+                      onRefresh: () => cubit.loadAuction(widget.args.auctionId),
+                      child: SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // ── Image carousel (full-bleed hero) ───────────────
+                            _ImageCarousel(
+                              images: displayImages,
+                              currentIndex: _currentImageIndex,
+                              pageController: _pageController,
+                              onPageChanged: (i) =>
+                                  setState(() => _currentImageIndex = i),
+                              height: MediaQuery.of(context).size.height * 0.47,
+                            ),
 
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              padding: EdgeInsets.symmetric(
+                                horizontal: isTabletOrUp ? 16.0 : 16.w,
+                              ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SizedBox(height: 12.h),
+                                  SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
 
                                   // ── Title + Count ───────────────────────
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Expanded(
                                         child: Text(
                                           currentItem?.title.isNotEmpty == true
                                               ? currentItem!.title
                                               : displayDetail.title,
-                                          style: TextStyles.bold22(context).copyWith(
-                                            color: Theme.of(context).colorScheme.onSurface,
-                                          ),
+                                          style: TextStyles.bold22(context)
+                                              .copyWith(
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.onSurface,
+                                              ),
                                         ),
                                       ),
-                                      if (currentItem != null && currentItem.count > 0) ...[
-                                        SizedBox(width: 8.w),
+                                      if (currentItem != null &&
+                                          currentItem.count > 0) ...[
+                                        SizedBox(
+                                          width: isTabletOrUp ? 8.0 : 8.w,
+                                        ),
                                         Container(
                                           padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 4.h,
+                                            horizontal: isTabletOrUp
+                                                ? 10.0
+                                                : 10.w,
+                                            vertical: isTabletOrUp ? 4.0 : 4.h,
                                           ),
                                           decoration: BoxDecoration(
-                                            color: scheme.primary.withValues(alpha: 0.12),
-                                            borderRadius: BorderRadius.circular(4.r),
+                                            color: scheme.primary.withValues(
+                                              alpha: 0.12,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              4.rSp(context),
+                                            ),
                                           ),
                                           child: RichText(
                                             text: TextSpan(
                                               children: [
                                                 TextSpan(
                                                   text: '${s.auctionCount}: ',
-                                                  style: TextStyles.regular14(context).copyWith(
-                                                    color: Theme.of(context).colorScheme.onSurface,
-                                                  ),
+                                                  style:
+                                                      TextStyles.regular14(
+                                                        context,
+                                                      ).copyWith(
+                                                        color: Theme.of(
+                                                          context,
+                                                        ).colorScheme.onSurface,
+                                                      ),
                                                 ),
                                                 TextSpan(
                                                   text: '${currentItem.count}',
-                                                  style: TextStyles.bold18(context).copyWith(
-                                                    color: Theme.of(context).colorScheme.onSurface,
-                                                  ),
+                                                  style:
+                                                      TextStyles.bold18(
+                                                        context,
+                                                      ).copyWith(
+                                                        color: Theme.of(
+                                                          context,
+                                                        ).colorScheme.onSurface,
+                                                      ),
                                                 ),
                                               ],
                                             ),
@@ -252,7 +303,7 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                                       ],
                                     ],
                                   ),
-                                  SizedBox(height: 10.h),
+                                  SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
 
                                   // ── Attribute chips ─────────────────────
                                   if (currentItem != null &&
@@ -260,7 +311,9 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                                     _AttributeChipsRow(
                                       attributes: currentItem.attributes,
                                     ),
-                                    SizedBox(height: 12.h),
+                                    SizedBox(
+                                      height: isTabletOrUp ? 12.0 : 12.h,
+                                    ),
                                   ],
 
                                   // ── Date range card ─────────────────────
@@ -268,41 +321,58 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                                     startDate: displayDetail.startDate,
                                     endDate: displayDetail.endDate,
                                   ),
-                                  SizedBox(height: 16.h),
+                                  SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
 
                                   // ── Description ─────────────────────────
                                   if (currentItem != null &&
-                                      currentItem.description.trim().isNotEmpty) ...[
+                                      currentItem.description
+                                          .trim()
+                                          .isNotEmpty) ...[
                                     _InfoSection(
                                       title: s.auctionLotDescription,
                                       content: currentItem.description,
                                     ),
-                                    SizedBox(height: 12.h),
-                                  ] else if (displayDetail.description.trim().isNotEmpty) ...[
+                                    SizedBox(
+                                      height: isTabletOrUp ? 12.0 : 12.h,
+                                    ),
+                                  ] else if (displayDetail.description
+                                      .trim()
+                                      .isNotEmpty) ...[
                                     _InfoSection(
                                       title: s.auctionLotDescription,
                                       content: displayDetail.description,
                                     ),
-                                    SizedBox(height: 12.h),
+                                    SizedBox(
+                                      height: isTabletOrUp ? 12.0 : 12.h,
+                                    ),
                                   ],
 
                                   // ── Warranty INFO ───────────────────────
                                   if (currentItem != null &&
-                                      currentItem.warrantyInfo.trim().isNotEmpty) ...[
+                                      currentItem.warrantyInfo
+                                          .trim()
+                                          .isNotEmpty) ...[
                                     _InfoSection(
                                       title: s.auctionWarrantyInfo,
                                       content: currentItem.warrantyInfo,
                                     ),
-                                    SizedBox(height: 12.h),
+                                    SizedBox(
+                                      height: isTabletOrUp ? 12.0 : 12.h,
+                                    ),
                                   ],
 
                                   // ── Condition ───────────────────────────
                                   if (currentItem != null) ...[
                                     _InfoSection(
                                       title: s.auctionCondition,
-                                      content: _conditionLabel(context, currentItem.condition),
+                                      content: _conditionLabel(
+                                        context,
+                                        currentItem.condition,
+                                      ),
                                     ),
-                                    SizedBox(height: 16.h),
+                                    SizedBox(
+                                      height: isTabletOrUp ? 16.0 : 16.h,
+                                    ),
                                   ],
                                 ],
                               ),
@@ -332,6 +402,7 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                 ],
               ),
             ),
+          ),
         );
       },
     );
@@ -355,7 +426,8 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
 
     // Only show Edit/Delete for upcoming auctions (startDate in future)
     final now = DateTime.now();
-    final isUpcoming = detail?.startDate != null && detail!.startDate!.isAfter(now);
+    final isUpcoming =
+        detail?.startDate != null && detail!.startDate!.isAfter(now);
     final canEdit = isUpcoming && !isLoading;
 
     return AppBar(
@@ -368,7 +440,7 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
         icon: Icon(
           Icons.arrow_back_ios_new,
           color: scheme.primary,
-          size: 18.sp,
+          size: 18.rSp(context),
         ),
       ),
       title: Text(
@@ -404,7 +476,11 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                 );
               }
             },
-            icon: Icon(Icons.edit_outlined, color: scheme.primary, size: 22.sp),
+            icon: Icon(
+              Icons.edit_outlined,
+              color: scheme.primary,
+              size: 22.rSp(context),
+            ),
             tooltip: s.kEdit,
           ),
           IconButton(
@@ -412,7 +488,7 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
             icon: Icon(
               Icons.delete_outline,
               color: isDeleting ? scheme.outline : Colors.red,
-              size: 22.sp,
+              size: 22.rSp(context),
             ),
             tooltip: s.auctionDeleteButton,
           ),
@@ -423,7 +499,8 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
 
   String _conditionLabel(BuildContext context, int value) {
     final s = S.of(context);
-    switch (value) {  // ignore: missing_return
+    switch (value) {
+      // ignore: missing_return
       case 0:
       case 1:
         return s.auctionNew;
@@ -478,6 +555,7 @@ class _ImageCarousel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final h = height ?? MediaQuery.of(context).size.height * 0.42;
     final displayImages = images.isNotEmpty ? images : <String>[];
     final total = displayImages.length;
@@ -488,7 +566,11 @@ class _ImageCarousel extends StatelessWidget {
           height: h,
           width: double.infinity,
           child: total == 0
-              ? _AuctionImage(imageSource: null, width: double.infinity, height: h)
+              ? _AuctionImage(
+                  imageSource: null,
+                  width: double.infinity,
+                  height: h,
+                )
               : PageView.builder(
                   controller: pageController,
                   onPageChanged: onPageChanged,
@@ -502,7 +584,9 @@ class _ImageCarousel extends StatelessWidget {
         ),
         // Subtle top gradient so the floating AppBar items stay readable
         Positioned(
-          top: 0, left: 0, right: 0,
+          top: 0,
+          left: 0,
+          right: 0,
           child: Container(
             height: 100,
             decoration: const BoxDecoration(
@@ -516,24 +600,33 @@ class _ImageCarousel extends StatelessWidget {
         ),
         if (total > 0)
           Positioned(
-            bottom: 14.h,
+            bottom: isTabletOrUp ? 14.0 : 14.h,
             left: 0,
             right: 0,
             child: Center(
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 5.h),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isTabletOrUp ? 12.0 : 12.w,
+                  vertical: isTabletOrUp ? 5.0 : 5.h,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.black54,
-                  borderRadius: BorderRadius.circular(20.r),
+                  borderRadius: BorderRadius.circular(20.rSp(context)),
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.image_outlined, color: Colors.white, size: 16.sp),
-                    SizedBox(width: 4.w),
+                    Icon(
+                      Icons.image_outlined,
+                      color: Colors.white,
+                      size: 16.rSp(context),
+                    ),
+                    SizedBox(width: isTabletOrUp ? 4.0 : 4.w),
                     Text(
                       '${currentIndex + 1} / $total',
-                      style: TextStyles.regular12(context).copyWith(color: Colors.white),
+                      style: TextStyles.regular12(
+                        context,
+                      ).copyWith(color: Colors.white),
                     ),
                   ],
                 ),
@@ -553,9 +646,10 @@ class _AttributeChipsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Wrap(
-      spacing: 6.w,
-      runSpacing: 6.h,
+      spacing: isTabletOrUp ? 6.0 : 6.w,
+      runSpacing: isTabletOrUp ? 6.0 : 6.h,
       children: attributes
           .where((attr) => attr.value.isNotEmpty)
           .map((attr) => _AttributeChip(value: attr.value))
@@ -570,26 +664,35 @@ class _AttributeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final scheme = Theme.of(context).colorScheme;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isTabletOrUp ? 10.0 : 10.w,
+        vertical: isTabletOrUp ? 6.0 : 6.h,
+      ),
       decoration: BoxDecoration(
         color: scheme.primary.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(8.r),
-        border: Border.all(color: scheme.primary.withValues(alpha: 0.35), width: 1),
+        borderRadius: BorderRadius.circular(8.rSp(context)),
+        border: Border.all(
+          color: scheme.primary.withValues(alpha: 0.35),
+          width: 1,
+        ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             _iconForAttribute(value),
-            size: 14.sp,
+            size: 14.rSp(context),
             color: scheme.primary,
           ),
-          SizedBox(width: 5.w),
+          SizedBox(width: isTabletOrUp ? 5.0 : 5.w),
           Text(
             value,
-            style: TextStyles.regular13(context).copyWith(color: scheme.primary),
+            style: TextStyles.regular13(
+              context,
+            ).copyWith(color: scheme.primary),
           ),
         ],
       ),
@@ -601,7 +704,10 @@ class _AttributeChip extends StatelessWidget {
     final v = val.trim().toLowerCase();
 
     // Strip thousand separators to test for a plain number
-    final digits = v.replaceAll(',', '').replaceAll('.', '').replaceAll(' ', '');
+    final digits = v
+        .replaceAll(',', '')
+        .replaceAll('.', '')
+        .replaceAll(' ', '');
     final asInt = int.tryParse(digits);
 
     // Year (4-digit number 1900–2099)
@@ -615,8 +721,11 @@ class _AttributeChip extends StatelessWidget {
     }
 
     // Transmission
-    if (v.contains('automatic') || v.contains('auto') ||
-        v.contains('manual') || v.contains('أوتوماتيك') || v.contains('يدوي')) {
+    if (v.contains('automatic') ||
+        v.contains('auto') ||
+        v.contains('manual') ||
+        v.contains('أوتوماتيك') ||
+        v.contains('يدوي')) {
       return Icons.settings_outlined;
     }
 
@@ -631,8 +740,12 @@ class _AttributeChip extends StatelessWidget {
     }
 
     // Fuel type
-    if (v.contains('petrol') || v.contains('diesel') || v.contains('gas') ||
-        v.contains('benzin') || v.contains('بنزين') || v.contains('ديزل')) {
+    if (v.contains('petrol') ||
+        v.contains('diesel') ||
+        v.contains('gas') ||
+        v.contains('benzin') ||
+        v.contains('بنزين') ||
+        v.contains('ديزل')) {
       return Icons.local_gas_station_outlined;
     }
 
@@ -641,20 +754,40 @@ class _AttributeChip extends StatelessWidget {
 
     // Colour names (EN + AR)
     const colorWords = [
-      'red', 'blue', 'green', 'yellow', 'black', 'white', 'silver',
-      'gray', 'grey', 'orange', 'purple', 'brown', 'pink', 'gold',
-      'أحمر', 'أزرق', 'أخضر', 'أصفر', 'أسود', 'أبيض', 'فضي', 'رمادي',
+      'red',
+      'blue',
+      'green',
+      'yellow',
+      'black',
+      'white',
+      'silver',
+      'gray',
+      'grey',
+      'orange',
+      'purple',
+      'brown',
+      'pink',
+      'gold',
+      'أحمر',
+      'أزرق',
+      'أخضر',
+      'أصفر',
+      'أسود',
+      'أبيض',
+      'فضي',
+      'رمادي',
     ];
     if (colorWords.any((c) => v.contains(c))) return Icons.palette_outlined;
 
     // Condition
-    if (v.contains('new') || v.contains('جديد')) return Icons.fiber_new_outlined;
-    if (v.contains('used') || v.contains('مستعمل')) return Icons.history_outlined;
+    if (v.contains('new') || v.contains('جديد'))
+      return Icons.fiber_new_outlined;
+    if (v.contains('used') || v.contains('مستعمل'))
+      return Icons.history_outlined;
 
     return Icons.label_outline;
   }
 }
-
 
 // ── Date range card ───────────────────────────────────────────────────────────
 
@@ -665,24 +798,31 @@ class _DateRangeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final locale = Localizations.localeOf(context).toString();
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isTabletOrUp ? 12.0 : 12.w,
+        vertical: isTabletOrUp ? 10.0 : 10.h,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(6.r),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5), width: 0.5),
+        borderRadius: BorderRadius.circular(6.rSp(context)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+          width: 0.5,
+        ),
       ),
       child: Row(
         children: [
           Icon(
             Icons.date_range_rounded,
             color: Theme.of(context).colorScheme.primary,
-            size: 28.sp,
+            size: 28.rSp(context),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
           Expanded(
             child: Row(
               children: [
@@ -692,10 +832,11 @@ class _DateRangeCard extends StatelessWidget {
                     children: [
                       Text(
                         s.auctionStartsIn,
-                        style: TextStyles.regular12(context)
-                            .copyWith(color: const Color(0xFF34BB39)),
+                        style: TextStyles.regular12(
+                          context,
+                        ).copyWith(color: const Color(0xFF34BB39)),
                       ),
-                      SizedBox(height: 2.h),
+                      SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
                       Text(
                         _fmt(startDate, locale),
                         style: TextStyles.medium14(context).copyWith(
@@ -711,10 +852,11 @@ class _DateRangeCard extends StatelessWidget {
                     children: [
                       Text(
                         s.auctionEndsIn,
-                        style: TextStyles.regular12(context)
-                            .copyWith(color: Colors.red),
+                        style: TextStyles.regular12(
+                          context,
+                        ).copyWith(color: Colors.red),
                       ),
-                      SizedBox(height: 2.h),
+                      SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
                       Text(
                         _fmt(endDate, locale),
                         style: TextStyles.medium14(context).copyWith(
@@ -747,38 +889,48 @@ class _InfoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
-        border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5), width: 0.5),
+        borderRadius: BorderRadius.circular(10.rSp(context)),
+        border: Border.all(
+          color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.5),
+          width: 0.5,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: isTabletOrUp ? 12.0 : 12.w,
+              vertical: isTabletOrUp ? 10.0 : 10.h,
+            ),
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.r),
-                topRight: Radius.circular(10.r),
+                topLeft: Radius.circular(10.rSp(context)),
+                topRight: Radius.circular(10.rSp(context)),
               ),
             ),
             child: Text(
               title,
-              style: TextStyles.semiBold16(context).copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+              style: TextStyles.semiBold16(
+                context,
+              ).copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+            padding: EdgeInsets.symmetric(
+              horizontal: isTabletOrUp ? 12.0 : 12.w,
+              vertical: isTabletOrUp ? 10.0 : 10.h,
+            ),
             child: Text(
               content,
-              style: TextStyles.regular14(context).copyWith(
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
+              style: TextStyles.regular14(
+                context,
+              ).copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
           ),
         ],
@@ -804,13 +956,19 @@ class _ItemNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final scheme = Theme.of(context).colorScheme;
     final hasPrev = currentIndex > 0;
     final hasNext = currentIndex < total - 1;
 
     return Container(
-      padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 12.h),
+      padding: EdgeInsets.fromLTRB(
+        isTabletOrUp ? 16.0 : 16.w,
+        isTabletOrUp ? 10.0 : 10.h,
+        isTabletOrUp ? 16.0 : 16.w,
+        isTabletOrUp ? 12.0 : 12.h,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         boxShadow: [
@@ -835,9 +993,11 @@ class _ItemNavBar extends StatelessWidget {
                     ? scheme.primary.withValues(alpha: 0.08)
                     : Colors.transparent,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(10.rSp(context)),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 12.h),
+                padding: EdgeInsets.symmetric(
+                  vertical: isTabletOrUp ? 12.0 : 12.h,
+                ),
               ),
               child: Text(
                 s.auctionPreviousItem,
@@ -847,7 +1007,7 @@ class _ItemNavBar extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: 12.w),
+          SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
           Expanded(
             child: ElevatedButton(
               onPressed: hasNext ? onNext : null,
@@ -858,9 +1018,11 @@ class _ItemNavBar extends StatelessWidget {
                 foregroundColor: Colors.white,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                  borderRadius: BorderRadius.circular(10.rSp(context)),
                 ),
-                padding: EdgeInsets.symmetric(vertical: 12.h),
+                padding: EdgeInsets.symmetric(
+                  vertical: isTabletOrUp ? 12.0 : 12.h,
+                ),
               ),
               child: Text(
                 s.auctionNextItem,
@@ -891,11 +1053,14 @@ class _AuctionImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     final src = imageSource?.trim();
     if (src == null || src.isEmpty) return _placeholder();
 
     final uri = Uri.tryParse(src);
-    if (uri != null && (uri.scheme == 'http' || uri.scheme == 'https') && uri.hasAuthority) {
+    if (uri != null &&
+        (uri.scheme == 'http' || uri.scheme == 'https') &&
+        uri.hasAuthority) {
       return Image.network(
         src,
         width: width,
@@ -929,9 +1094,9 @@ class _AuctionImage extends StatelessWidget {
   }
 
   Widget _placeholder() => Image.asset(
-        Assets.imagesFrame1,
-        width: width,
-        height: height,
-        fit: BoxFit.cover,
-      );
+    Assets.imagesFrame1,
+    width: width,
+    height: height,
+    fit: BoxFit.cover,
+  );
 }

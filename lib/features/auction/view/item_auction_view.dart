@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,6 +22,7 @@ class ItemAuctionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return BlocProvider(
       create: (_) => getIt<CreateAuctionViewModel>()..loadCategories(),
       child: const _ItemAuctionViewBody(),
@@ -235,6 +238,7 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return BlocConsumer<CreateAuctionViewModel, CreateAuctionViewModelState>(
       listener: (context, state) {
         final s = S.of(context);
@@ -255,112 +259,128 @@ class _ItemAuctionViewBodyState extends State<_ItemAuctionViewBody> {
 
         return Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: buildAppBar(context: context, title: s.auctionItemAuctionTitle),
+          appBar: buildAppBar(
+            context: context,
+            title: s.auctionItemAuctionTitle,
+          ),
           body: SafeArea(
             child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 24.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _UploadBox(
-                    label: _headImage == null
-                        ? s.auctionHeadImage
-                        : s.auctionSelectedFile(_headImage!.name),
-                    onTap: _pickHeadImage,
-                  ),
-                  SizedBox(height: 10.h),
-                  _FieldLabel(label: s.auctionTitle),
-                  SizedBox(height: 4.h),
-                  _AuctionTextField(controller: _titleController),
-                  SizedBox(height: 10.h),
-                  _FieldLabel(label: s.auctionCategory),
-                  SizedBox(height: 4.h),
-                  _CategoryDropdown(
-                    categories: categories,
-                    value: _categoryId,
-                    onChanged: (value) async {
-                      setState(() {
-                        _categoryId = value;
-                        _syncAttributes(const []);
-                      });
-                      if (value != null) {
-                        await cubit.loadAttributes(
-                          itemIndex: 0,
-                          categoryId: value,
-                        );
-                      } else {
-                        cubit.clearItemAttributes(0);
-                      }
-                    },
-                  ),
-                  SizedBox(height: 10.h),
-                  _FieldLabel(label: s.auctionCount),
-                  SizedBox(height: 4.h),
-                  _AuctionTextField(
-                    controller: _countController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  SizedBox(height: 10.h),
-                  _FieldLabel(label: s.auctionWarrantyInfo),
-                  SizedBox(height: 4.h),
-                  _AuctionTextField(controller: _warrantyController),
-                  SizedBox(height: 10.h),
-                  _SectionLabel(label: s.kDescription),
-                  SizedBox(height: 6.h),
-                  _AuctionTextField(
-                    controller: _descriptionController,
-                    minLines: 4,
-                    maxLines: 4,
-                  ),
-                  if (attributes.isNotEmpty) ...[
-                    SizedBox(height: 10.h),
-                    _SectionLabel(label: s.auctionAttributes),
-                    SizedBox(height: 6.h),
-                    ...attributes.map(
-                      (attribute) => Padding(
-                        padding: EdgeInsets.only(bottom: 8.h),
-                        child: _AttributeField(
-                          attribute: attribute,
-                          controller: _attributeControllers.putIfAbsent(
-                            attribute.id,
-                            () => TextEditingController(),
-                          ),
-                          booleanValue: _booleanAttributes[attribute.id],
-                          dateValue: _dateTimeAttributes[attribute.id],
-                          onBooleanChanged: (value) {
-                            setState(() {
-                              _booleanAttributes[attribute.id] = value;
-                            });
-                          },
-                          onPickDate: () => _pickDateValue(attribute),
-                        ),
+              padding: EdgeInsets.fromLTRB(
+                isTabletOrUp ? 16.0 : 16.w,
+                isTabletOrUp ? 12.0 : 12.h,
+                isTabletOrUp ? 16.0 : 16.w,
+                isTabletOrUp ? 24.0 : 24.h,
+              ),
+              child: ResponsiveFormShell(
+                enabled: isTabletOrUp,
+                maxWidth: 700,
+                child: ResponsiveFormSection(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _UploadBox(
+                        label: _headImage == null
+                            ? s.auctionHeadImage
+                            : s.auctionSelectedFile(_headImage!.name),
+                        onTap: _pickHeadImage,
                       ),
-                    ),
-                  ],
-                  SizedBox(height: 10.h),
-                  _SectionLabel(label: s.auctionCondition),
-                  SizedBox(height: 4.h),
-                  _ConditionRow(
-                    selected: _selectedCondition,
-                    onChanged: (value) {
-                      setState(() => _selectedCondition = value);
-                    },
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _FieldLabel(label: s.auctionTitle),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                      _AuctionTextField(controller: _titleController),
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _FieldLabel(label: s.auctionCategory),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                      _CategoryDropdown(
+                        categories: categories,
+                        value: _categoryId,
+                        onChanged: (value) async {
+                          setState(() {
+                            _categoryId = value;
+                            _syncAttributes(const []);
+                          });
+                          if (value != null) {
+                            await cubit.loadAttributes(
+                              itemIndex: 0,
+                              categoryId: value,
+                            );
+                          } else {
+                            cubit.clearItemAttributes(0);
+                          }
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _FieldLabel(label: s.auctionCount),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                      _AuctionTextField(
+                        controller: _countController,
+                        keyboardType: TextInputType.number,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _FieldLabel(label: s.auctionWarrantyInfo),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                      _AuctionTextField(controller: _warrantyController),
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _SectionLabel(label: s.kDescription),
+                      SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
+                      _AuctionTextField(
+                        controller: _descriptionController,
+                        minLines: 4,
+                        maxLines: 4,
+                      ),
+                      if (attributes.isNotEmpty) ...[
+                        SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                        _SectionLabel(label: s.auctionAttributes),
+                        SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
+                        ...attributes.map(
+                          (attribute) => Padding(
+                            padding: EdgeInsets.only(
+                              bottom: isTabletOrUp ? 8.0 : 8.h,
+                            ),
+                            child: _AttributeField(
+                              attribute: attribute,
+                              controller: _attributeControllers.putIfAbsent(
+                                attribute.id,
+                                () => TextEditingController(),
+                              ),
+                              booleanValue: _booleanAttributes[attribute.id],
+                              dateValue: _dateTimeAttributes[attribute.id],
+                              onBooleanChanged: (value) {
+                                setState(() {
+                                  _booleanAttributes[attribute.id] = value;
+                                });
+                              },
+                              onPickDate: () => _pickDateValue(attribute),
+                            ),
+                          ),
+                        ),
+                      ],
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      _SectionLabel(label: s.auctionCondition),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                      _ConditionRow(
+                        selected: _selectedCondition,
+                        onChanged: (value) {
+                          setState(() => _selectedCondition = value);
+                        },
+                      ),
+                      SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
+                      _PrimaryButton(
+                        label: s.auctionSaveContinue,
+                        onTap: () {
+                          if (!_validateAndStoreDraft()) {
+                            return;
+                          }
+                          Navigator.pushNamed(
+                            context,
+                            PriceDurationView.routeName,
+                            arguments: cubit,
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  SizedBox(height: 18.h),
-                  _PrimaryButton(
-                    label: s.auctionSaveContinue,
-                    onTap: () {
-                      if (!_validateAndStoreDraft()) {
-                        return;
-                      }
-                      Navigator.pushNamed(
-                        context,
-                        PriceDurationView.routeName,
-                        arguments: cubit,
-                      );
-                    },
-                  ),
-                ],
+                ),
               ),
             ),
           ),
@@ -377,9 +397,12 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return Text(
       label,
-      style: TextStyles.semiBold16(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+      style: TextStyles.semiBold16(
+        context,
+      ).copyWith(color: Theme.of(context).colorScheme.onSurface),
     );
   }
 }
@@ -391,6 +414,7 @@ class _FieldLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return Text(
       label,
       style: TextStyles.regular11(
@@ -408,14 +432,15 @@ class _UploadBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return InkWell(
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 92.h,
+        height: isTabletOrUp ? 92.0 : 92.h,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10.rSp(context)),
           border: Border.all(color: const Color(0xFFE0E0E0)),
         ),
         child: Center(
@@ -446,6 +471,7 @@ class _AuctionTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return TextField(
       controller: controller,
       minLines: minLines,
@@ -454,13 +480,16 @@ class _AuctionTextField extends StatelessWidget {
       style: TextStyles.regular13(context),
       decoration: InputDecoration(
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 10.0 : 10.w,
+          vertical: isTabletOrUp ? 10.0 : 10.h,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.outline),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(6.r),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
@@ -476,10 +505,11 @@ class _ConditionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     return Wrap(
-      spacing: 10.w,
-      runSpacing: 6.h,
+      spacing: isTabletOrUp ? 10.0 : 10.w,
+      runSpacing: isTabletOrUp ? 6.0 : 6.h,
       children: _Condition.values.map((condition) {
         return InkWell(
           onTap: () => onChanged(condition),
@@ -487,8 +517,8 @@ class _ConditionRow extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 14.w,
-                height: 14.w,
+                width: isTabletOrUp ? 14.0 : 14.w,
+                height: isTabletOrUp ? 14.0 : 14.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
@@ -500,8 +530,8 @@ class _ConditionRow extends StatelessWidget {
                 child: selected == condition
                     ? Center(
                         child: Container(
-                          width: 8.w,
-                          height: 8.w,
+                          width: isTabletOrUp ? 8.0 : 8.w,
+                          height: isTabletOrUp ? 8.0 : 8.w,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Theme.of(context).colorScheme.primary,
@@ -510,7 +540,7 @@ class _ConditionRow extends StatelessWidget {
                       )
                     : null,
               ),
-              SizedBox(width: 6.w),
+              SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
               Text(
                 condition.localizedLabel(s),
                 style: TextStyles.regular12(context),
@@ -531,15 +561,16 @@ class _PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return SizedBox(
       width: double.infinity,
-      height: 42.h,
+      height: isTabletOrUp ? 42.0 : 42.h,
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(8.rSp(context)),
           ),
         ),
         child: Text(
@@ -592,10 +623,11 @@ class _CategoryDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w),
+      padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 10.0 : 10.w),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(6.r),
+        borderRadius: BorderRadius.circular(6.rSp(context)),
         border: Border.all(color: const Color(0xFFE4E4E4)),
       ),
       child: DropdownButtonHideUnderline(
@@ -647,6 +679,7 @@ class _AttributeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final label = attribute.unitLabel.isEmpty
         ? attribute.name
@@ -657,11 +690,13 @@ class _AttributeField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _FieldLabel(label: attribute.isRequired ? '$label *' : label),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            padding: EdgeInsets.symmetric(
+              horizontal: isTabletOrUp ? 10.0 : 10.w,
+            ),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6.r),
+              borderRadius: BorderRadius.circular(6.rSp(context)),
               border: Border.all(color: const Color(0xFFE4E4E4)),
             ),
             child: DropdownButtonHideUnderline(
@@ -675,7 +710,10 @@ class _AttributeField extends StatelessWidget {
                   ).copyWith(color: const Color(0xFF8A8A8A)),
                 ),
                 items: [
-                  DropdownMenuItem<bool>(value: true, child: Text(s.auctionTrue)),
+                  DropdownMenuItem<bool>(
+                    value: true,
+                    child: Text(s.auctionTrue),
+                  ),
                   DropdownMenuItem<bool>(
                     value: false,
                     child: Text(s.auctionFalse),
@@ -694,7 +732,7 @@ class _AttributeField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _FieldLabel(label: attribute.isRequired ? '$label *' : label),
-          SizedBox(height: 4.h),
+          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _UploadBox(
             label: dateValue?.isNotEmpty == true
                 ? dateValue!
@@ -711,7 +749,7 @@ class _AttributeField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _FieldLabel(label: attribute.isRequired ? '$label *' : label),
-        SizedBox(height: 4.h),
+        SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
         _AuctionTextField(
           controller: controller,
           keyboardType: attribute.isNumber

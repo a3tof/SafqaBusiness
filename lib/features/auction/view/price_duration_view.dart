@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -175,6 +177,7 @@ class _PriceDurationViewState extends State<PriceDurationView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return BlocConsumer<CreateAuctionViewModel, CreateAuctionViewModelState>(
       listener: (context, state) {
         if (state is CreateAuctionFailure) {
@@ -197,128 +200,151 @@ class _PriceDurationViewState extends State<PriceDurationView> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: buildAppBar(context: context, title: s.auctionPriceDuration),
           body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 16.h),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                  _SectionLabel(label: s.historyStartingPrice),
-                  SizedBox(height: 6.h),
-                  _InputField(
-                    controller: _startingPriceController,
-                    keyboardType: const TextInputType.numberWithOptions(
-                      decimal: true,
-                    ),
-                  ),
-                  SizedBox(height: 16.h),
-                  _SectionLabel(label: s.auctionBidIncrement),
-                  SizedBox(height: 6.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _ChoiceChipBox(
-                          label: '100',
-                          selected: _selectedBid == '100',
-                          onTap: () {
-                            setState(() => _selectedBid = '100');
-                          },
+            child: ResponsiveFormShell(
+              enabled: isTabletOrUp,
+              maxWidth: 700,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.fromLTRB(
+                        isTabletOrUp ? 16.0 : 16.w,
+                        isTabletOrUp ? 12.0 : 12.h,
+                        isTabletOrUp ? 16.0 : 16.w,
+                        isTabletOrUp ? 16.0 : 16.h,
+                      ),
+                      child: ResponsiveFormSection(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _SectionLabel(label: s.historyStartingPrice),
+                            SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
+                            _InputField(
+                              controller: _startingPriceController,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
+                            ),
+                            SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
+                            _SectionLabel(label: s.auctionBidIncrement),
+                            SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _ChoiceChipBox(
+                                    label: '100',
+                                    selected: _selectedBid == '100',
+                                    onTap: () {
+                                      setState(() => _selectedBid = '100');
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
+                                Expanded(
+                                  child: _ChoiceChipBox(
+                                    label: '300',
+                                    selected: _selectedBid == '300',
+                                    onTap: () {
+                                      setState(() => _selectedBid = '300');
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _ChoiceChipBox(
+                                    label: '500',
+                                    selected: _selectedBid == '500',
+                                    onTap: () {
+                                      setState(() => _selectedBid = '500');
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
+                                Expanded(
+                                  child: _ChoiceChipBox(
+                                    label: s.auctionSpecify,
+                                    selected: _selectedBid == s.auctionSpecify,
+                                    onTap: () {
+                                      setState(
+                                        () => _selectedBid = s.auctionSpecify,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            if (_selectedBid == s.auctionSpecify) ...[
+                              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                              _InputField(
+                                controller: _customBidController,
+                                hintText: s.auctionBidIncrement,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ],
+                            SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
+                            _SectionLabel(label: s.auctionDate),
+                            SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
+                            _DateField(
+                              controller: _startDateController,
+                              hintText: s.auctionStartDate,
+                              onTap: () => _pickDateTime(isStart: true),
+                            ),
+                            SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                            _DateField(
+                              controller: _endDateController,
+                              hintText: s.auctionEndDate,
+                              onTap: () => _pickDateTime(isStart: false),
+                            ),
+                            SizedBox(height: isTabletOrUp ? 18.0 : 18.h),
+                            Center(
+                              child: Column(
+                                children: [
+                                  Text(
+                                    s.auctionDuration,
+                                    style: TextStyles.regular12(context)
+                                        .copyWith(
+                                          color: Theme.of(context).hintColor,
+                                        ),
+                                  ),
+                                  SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                                  Text(
+                                    _durationLabel(s),
+                                    style: TextStyles.semiBold14(context)
+                                        .copyWith(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
+                                        ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: _ChoiceChipBox(
-                          label: '300',
-                          selected: _selectedBid == '300',
-                          onTap: () {
-                            setState(() => _selectedBid = '300');
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 8.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _ChoiceChipBox(
-                          label: '500',
-                          selected: _selectedBid == '500',
-                          onTap: () {
-                            setState(() => _selectedBid = '500');
-                          },
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: _ChoiceChipBox(
-                          label: s.auctionSpecify,
-                          selected: _selectedBid == s.auctionSpecify,
-                          onTap: () {
-                            setState(() => _selectedBid = s.auctionSpecify);
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  if (_selectedBid == s.auctionSpecify) ...[
-                    SizedBox(height: 8.h),
-                    _InputField(
-                      controller: _customBidController,
-                      hintText: s.auctionBidIncrement,
-                      keyboardType: TextInputType.number,
-                    ),
-                  ],
-                  SizedBox(height: 18.h),
-                  _SectionLabel(label: s.auctionDate),
-                  SizedBox(height: 6.h),
-                  _DateField(
-                    controller: _startDateController,
-                    hintText: s.auctionStartDate,
-                    onTap: () => _pickDateTime(isStart: true),
-                  ),
-                  SizedBox(height: 8.h),
-                  _DateField(
-                    controller: _endDateController,
-                    hintText: s.auctionEndDate,
-                    onTap: () => _pickDateTime(isStart: false),
-                  ),
-                  SizedBox(height: 18.h),
-                  Center(
-                    child: Column(
-                      children: [
-                        Text(
-                          s.auctionDuration,
-                          style: TextStyles.regular12(
-                            context,
-                          ).copyWith(color: Theme.of(context).hintColor),
-                        ),
-                        SizedBox(height: 4.h),
-                        Text(
-                          _durationLabel(s),
-                          style: TextStyles.semiBold14(
-                            context,
-                          ).copyWith(color: Theme.of(context).colorScheme.primary),
-                        ),
-                      ],
                     ),
                   ),
-                      ],
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                      isTabletOrUp ? 16.0 : 16.w,
+                      isTabletOrUp ? 8.0 : 8.h,
+                      isTabletOrUp ? 16.0 : 16.w,
+                      isTabletOrUp ? 24.0 : 24.h,
+                    ),
+                    child: _PrimaryButton(
+                      label: isSubmitting
+                          ? s.auctionPublishing
+                          : s.auctionBoostPublish,
+                      onTap: isSubmitting ? null : _submitAuction,
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
-                  child: _PrimaryButton(
-                    label: isSubmitting
-                        ? s.auctionPublishing
-                        : s.auctionBoostPublish,
-                    onTap: isSubmitting ? null : _submitAuction,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );
@@ -340,6 +366,7 @@ class _DateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return TextField(
       controller: controller,
       readOnly: true,
@@ -355,16 +382,19 @@ class _DateField extends StatelessWidget {
         suffixIcon: Icon(
           Icons.calendar_today_outlined,
           color: Theme.of(context).colorScheme.primary,
-          size: 20.sp,
+          size: 20.rSp(context),
         ),
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 12.0 : 12.w,
+          vertical: isTabletOrUp ? 12.0 : 12.h,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(4.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(4.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
@@ -379,9 +409,12 @@ class _SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     return Text(
       label,
-      style: TextStyles.regular12(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+      style: TextStyles.regular12(
+        context,
+      ).copyWith(color: Theme.of(context).colorScheme.onSurface),
     );
   }
 }
@@ -395,6 +428,7 @@ class _InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
@@ -404,13 +438,16 @@ class _InputField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         isDense: true,
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 9.h),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 12.0 : 12.w,
+          vertical: isTabletOrUp ? 9.0 : 9.h,
+        ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(4.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).dividerColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(4.r),
+          borderRadius: BorderRadius.circular(4.rSp(context)),
           borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
         ),
       ),
@@ -431,23 +468,30 @@ class _ChoiceChipBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return InkWell(
       onTap: onTap,
       child: Container(
         alignment: Alignment.center,
-        height: 32.h,
-        padding: EdgeInsets.symmetric(horizontal: 8.w),
+        height: isTabletOrUp ? 32.0 : 32.h,
+        padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 8.0 : 8.w),
         decoration: BoxDecoration(
-          color: selected ? Theme.of(context).colorScheme.secondary : Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(4.r),
+          color: selected
+              ? Theme.of(context).colorScheme.secondary
+              : Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(4.rSp(context)),
           border: Border.all(
-            color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).dividerColor,
+            color: selected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).dividerColor,
           ),
         ),
         child: Text(
           label,
           style: TextStyles.regular11(context).copyWith(
-            color: selected ? Theme.of(context).colorScheme.primary : Theme.of(context).hintColor,
+            color: selected
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).hintColor,
           ),
         ),
       ),
@@ -463,20 +507,23 @@ class _PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return SizedBox(
       width: double.infinity,
-      height: 42.h,
+      height: isTabletOrUp ? 42.0 : 42.h,
       child: ElevatedButton(
         onPressed: onTap,
         style: ElevatedButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(8.rSp(context)),
           ),
         ),
         child: Text(
           label,
-          style: TextStyles.semiBold14(context).copyWith(color: Theme.of(context).colorScheme.onPrimary),
+          style: TextStyles.semiBold14(
+            context,
+          ).copyWith(color: Theme.of(context).colorScheme.onPrimary),
         ),
       ),
     );

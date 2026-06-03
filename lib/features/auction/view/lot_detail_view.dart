@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -82,6 +84,7 @@ class _LotDetailViewState extends State<LotDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
     final item = widget.args.item;
     final canEdit = item.status == AuctionStatus.upcoming;
@@ -119,13 +122,15 @@ class _LotDetailViewState extends State<LotDetailView> {
                 icon: Icon(
                   Icons.arrow_back_ios_new,
                   color: Theme.of(context).colorScheme.primary,
-                  size: 20.sp,
+                  size: 20.rSp(context),
                 ),
               ),
             ),
             body: Center(
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.w),
+                padding: EdgeInsets.symmetric(
+                  horizontal: isTabletOrUp ? 24.0 : 24.w,
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -134,7 +139,7 @@ class _LotDetailViewState extends State<LotDetailView> {
                       style: TextStyles.semiBold16(context),
                       textAlign: TextAlign.center,
                     ),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
                     ElevatedButton(
                       onPressed: () =>
                           cubit.loadAuction(widget.args.item.auctionId),
@@ -155,196 +160,233 @@ class _LotDetailViewState extends State<LotDetailView> {
         return Skeletonizer(
           enabled: isLoading,
           child: Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            surfaceTintColor: Colors.white,
-            leading: IconButton(
-              onPressed: () => Navigator.pop(context),
-              icon: Icon(
-                Icons.arrow_back_ios_new,
-                color: Theme.of(context).colorScheme.primary,
-                size: 20.sp,
-              ),
-            ),
-            titleSpacing: 0,
-            title: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _formatLotNumber(context, item.lotNumber),
-                    style: TextStyles.semiBold14(
-                      context,
-                    ).copyWith(color: Theme.of(context).colorScheme.primary),
-                    overflow: TextOverflow.ellipsis,
-                  ),
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              surfaceTintColor: Colors.white,
+              leading: IconButton(
+                onPressed: () => Navigator.pop(context),
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 20.rSp(context),
                 ),
-                if (canEdit) ...[
-                  GestureDetector(
-                    onTap: () async {
-                      final result = await Navigator.pushNamed(
-                        context,
-                        EditAuctionView.routeName,
-                        arguments: widget.args,
-                      );
-                      if (result == true && context.mounted) {
-                        await context.read<AuctionDetailViewModel>().loadAuction(
-                          widget.args.item.auctionId,
-                        );
-                      }
-                    },
+              ),
+              titleSpacing: 0,
+              title: Row(
+                children: [
+                  Expanded(
                     child: Text(
-                      s.kEdit,
-                      style: TextStyles.regular12(
+                      _formatLotNumber(context, item.lotNumber),
+                      style: TextStyles.semiBold14(
                         context,
                       ).copyWith(color: Theme.of(context).colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  SizedBox(width: 12.w),
-                  GestureDetector(
-                    onTap: isDeleting ? null : _confirmDelete,
-                    child: Text(
-                      s.auctionDeleteButton,
-                      style: TextStyles.regular12(
-                        context,
-                      ).copyWith(color: Colors.red),
+                  if (canEdit) ...[
+                    GestureDetector(
+                      onTap: () async {
+                        final result = await Navigator.pushNamed(
+                          context,
+                          EditAuctionView.routeName,
+                          arguments: widget.args,
+                        );
+                        if (result == true && context.mounted) {
+                          await context
+                              .read<AuctionDetailViewModel>()
+                              .loadAuction(widget.args.item.auctionId);
+                        }
+                      },
+                      child: Text(
+                        s.kEdit,
+                        style: TextStyles.regular12(context).copyWith(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8.w),
+                    SizedBox(width: isTabletOrUp ? 12.0 : 12.w),
+                    GestureDetector(
+                      onTap: isDeleting ? null : _confirmDelete,
+                      child: Text(
+                        s.auctionDeleteButton,
+                        style: TextStyles.regular12(
+                          context,
+                        ).copyWith(color: Colors.red),
+                      ),
+                    ),
+                    SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
+                  ],
                 ],
-              ],
+              ),
             ),
-          ),
-          body: SafeArea(
-            child: Column(
-              children: [
-                Expanded(
-                  child: RefreshIndicator(
-                    onRefresh: () => context.read<AuctionDetailViewModel>().loadAuction(
-                      widget.args.item.auctionId,
-                    ),
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 16.h),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            displayDetail.title,
-                            style: TextStyles.semiBold15(
-                              context,
-                            ).copyWith(color: Theme.of(context).colorScheme.onSurface),
+            body: SafeArea(
+              child: ResponsiveFormShell(
+                enabled: isTabletOrUp,
+                maxWidth: 700,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () => context
+                            .read<AuctionDetailViewModel>()
+                            .loadAuction(widget.args.item.auctionId),
+                        child: SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: EdgeInsets.fromLTRB(
+                            isTabletOrUp ? 16.0 : 16.w,
+                            isTabletOrUp ? 8.0 : 8.h,
+                            isTabletOrUp ? 16.0 : 16.w,
+                            isTabletOrUp ? 16.0 : 16.h,
                           ),
-                          SizedBox(height: 8.h),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _DateInfo(
-                                  title: s.auctionStartsIn,
-                                  value: _formatDate(context, displayDetail.startDate),
+                          child: ResponsiveFormSection(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  displayDetail.title,
+                                  style: TextStyles.semiBold15(context)
+                                      .copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                      ),
                                 ),
+                                SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _DateInfo(
+                                        title: s.auctionStartsIn,
+                                        value: _formatDate(
+                                          context,
+                                          displayDetail.startDate,
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(width: isTabletOrUp ? 10.0 : 10.w),
+                                    Expanded(
+                                      child: _DateInfo(
+                                        title: s.auctionEndsIn,
+                                        value: _formatDate(
+                                          context,
+                                          displayDetail.endDate,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                                Text(
+                                  s.auctionLotDescription,
+                                  style: TextStyles.semiBold16(context)
+                                      .copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                      ),
+                                ),
+                                SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
+                                Text(
+                                  displayDetail.description,
+                                  style: TextStyles.regular12(
+                                    context,
+                                  ).copyWith(color: const Color(0xFF666666)),
+                                ),
+                                SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+                                ...List.generate(
+                                  displayDetail.items.length,
+                                  (index) => Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: isTabletOrUp ? 12.0 : 12.h,
+                                    ),
+                                    child: _AuctionItemTile(
+                                      index: index + 1,
+                                      item: displayDetail.items[index],
+                                      auctionImage:
+                                          displayDetail.image ?? item.imageUrl,
+                                      auctionId: item.auctionId,
+                                      auctionTitle: displayDetail.title,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.fromLTRB(
+                        isTabletOrUp ? 16.0 : 16.w,
+                        isTabletOrUp ? 10.0 : 10.h,
+                        isTabletOrUp ? 16.0 : 16.w,
+                        isTabletOrUp ? 16.0 : 16.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).cardColor,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color(0x14000000),
+                            blurRadius: 10,
+                            offset: Offset(0, -2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  s.auctionTimeLeft,
+                                  style: TextStyles.regular11(
+                                    context,
+                                  ).copyWith(color: const Color(0xFF9A9A9A)),
+                                ),
+                                SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
+                                Text(
+                                  item.timeLeft ?? '--',
+                                  style: TextStyles.semiBold13(context)
+                                      .copyWith(
+                                        color: Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                _priceLabel(context, item.status),
+                                style: TextStyles.regular11(
+                                  context,
+                                ).copyWith(color: const Color(0xFF9A9A9A)),
                               ),
-                              SizedBox(width: 10.w),
-                              Expanded(
-                                child: _DateInfo(
-                                  title: s.auctionEndsIn,
-                                  value: _formatDate(context, displayDetail.endDate),
+                              SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
+                              Text(
+                                _formatPrice(displayPrice),
+                                style: TextStyles.bold16(context).copyWith(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSurface,
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 12.h),
-                          Text(
-                            s.auctionLotDescription,
-                            style: TextStyles.semiBold16(
-                              context,
-                            ).copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                          SizedBox(height: 6.h),
-                          Text(
-                            displayDetail.description,
-                            style: TextStyles.regular12(
-                              context,
-                            ).copyWith(color: const Color(0xFF666666)),
-                          ),
-                          SizedBox(height: 12.h),
-                          ...List.generate(
-                            displayDetail.items.length,
-                            (index) => Padding(
-                              padding: EdgeInsets.only(bottom: 12.h),
-                              child: _AuctionItemTile(
-                                index: index + 1,
-                                item: displayDetail.items[index],
-                                auctionImage: displayDetail.image ?? item.imageUrl,
-                                auctionId: item.auctionId,
-                                auctionTitle: displayDetail.title,
-                              ),
-                            ),
-                          ),
                         ],
                       ),
                     ),
-                  ),
+                  ],
                 ),
-                Container(
-                  padding: EdgeInsets.fromLTRB(16.w, 10.h, 16.w, 16.h),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color(0x14000000),
-                        blurRadius: 10,
-                        offset: Offset(0, -2),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              s.auctionTimeLeft,
-                              style: TextStyles.regular11(
-                                context,
-                              ).copyWith(color: const Color(0xFF9A9A9A)),
-                            ),
-                            SizedBox(height: 2.h),
-                            Text(
-                              item.timeLeft ?? '--',
-                              style: TextStyles.semiBold13(
-                                context,
-                              ).copyWith(color: Theme.of(context).colorScheme.onSurface),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            _priceLabel(context, item.status),
-                            style: TextStyles.regular11(
-                              context,
-                            ).copyWith(color: const Color(0xFF9A9A9A)),
-                          ),
-                          SizedBox(height: 2.h),
-                          Text(
-                            _formatPrice(displayPrice),
-                            style: TextStyles.bold16(
-                              context,
-                            ).copyWith(color: Theme.of(context).colorScheme.onSurface),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ));
+        );
       },
     );
   }
@@ -414,11 +456,15 @@ class _DateInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: isTabletOrUp ? 10.0 : 10.w,
+        vertical: isTabletOrUp ? 8.0 : 8.h,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(8.rSp(context)),
         border: Border.all(color: Theme.of(context).colorScheme.outline),
       ),
       child: Column(
@@ -430,7 +476,7 @@ class _DateInfo extends StatelessWidget {
               context,
             ).copyWith(color: Theme.of(context).hintColor),
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
           Text(
             value,
             style: TextStyles.semiBold13(
@@ -460,15 +506,18 @@ class _AuctionItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final imageUrl = item.images.isNotEmpty ? item.images.first : auctionImage;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           '${S.of(context).auctionItem} ($index)',
-          style: TextStyles.regular12(context).copyWith(color: Theme.of(context).colorScheme.onSurface),
+          style: TextStyles.regular12(
+            context,
+          ).copyWith(color: Theme.of(context).colorScheme.onSurface),
         ),
-        SizedBox(height: 6.h),
+        SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
         GestureDetector(
           onTap: () => Navigator.pushNamed(
             context,
@@ -480,42 +529,42 @@ class _AuctionItemTile extends StatelessWidget {
             ),
           ),
           child: Container(
-            padding: EdgeInsets.all(8.w),
+            padding: EdgeInsets.all(isTabletOrUp ? 8.0 : 8.w),
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
-              borderRadius: BorderRadius.circular(10.r),
+              borderRadius: BorderRadius.circular(10.rSp(context)),
               border: Border.all(color: const Color(0xFFE6E6E6)),
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(8.r),
+                  borderRadius: BorderRadius.circular(8.rSp(context)),
                   child: _AuctionPreviewImage(
                     imageUrl: imageUrl,
-                    width: 70.w,
-                    height: 64.h,
+                    width: isTabletOrUp ? 70.0 : 70.w,
+                    height: isTabletOrUp ? 64.0 : 64.h,
                   ),
                 ),
-                SizedBox(width: 10.w),
+                SizedBox(width: isTabletOrUp ? 10.0 : 10.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         item.title,
-                        style: TextStyles.semiBold13(
-                          context,
-                        ).copyWith(color: Theme.of(context).colorScheme.onSurface),
+                        style: TextStyles.semiBold13(context).copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
-                      SizedBox(height: 2.h),
+                      SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
                       Text(
                         _conditionLabel(context, item.condition),
                         style: TextStyles.regular11(
                           context,
                         ).copyWith(color: const Color(0xFF919191)),
                       ),
-                      SizedBox(height: 4.h),
+                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
                       Text(
                         '${S.of(context).auctionCount}: ${item.count}',
                         style: TextStyles.regular11(
@@ -523,7 +572,7 @@ class _AuctionItemTile extends StatelessWidget {
                         ).copyWith(color: const Color(0xFF919191)),
                       ),
                       if (item.warrantyInfo.trim().isNotEmpty) ...[
-                        SizedBox(height: 4.h),
+                        SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
                         Text(
                           item.warrantyInfo,
                           style: TextStyles.regular11(
@@ -534,7 +583,7 @@ class _AuctionItemTile extends StatelessWidget {
                         ),
                       ],
                       if (item.description.trim().isNotEmpty) ...[
-                        SizedBox(height: 4.h),
+                        SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
                         Text(
                           item.description,
                           style: TextStyles.regular11(
@@ -582,6 +631,7 @@ class _AuctionPreviewImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Breakpoints.isTabletOrUp(context);
     final value = imageUrl?.trim();
     if (value == null || value.isEmpty) {
       return _placeholder();
