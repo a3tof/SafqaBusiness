@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:intl/intl.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
@@ -17,13 +18,14 @@ class HistoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final statusStyle = _statusStyle(context, item.status);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return Container(
-      constraints: BoxConstraints(minHeight: 130.h),
-      padding: EdgeInsets.all(4.w),
+      constraints: BoxConstraints(minHeight: isTabletOrUp ? 130.0 : 130.h),
+      padding: EdgeInsets.all(isTabletOrUp ? 4.0 : 4.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(8.r),
+        borderRadius: BorderRadius.circular(8.rSp(context)),
         border: Border.all(color: const Color(0xFFCCCCCC), width: 0.5),
         boxShadow: [
           BoxShadow(
@@ -39,13 +41,13 @@ class HistoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8.r),
+            borderRadius: BorderRadius.circular(8.rSp(context)),
             child: _HistoryImage(imageUrl: item.imageUrl),
           ),
-          SizedBox(width: 8.w),
+          SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 2.w),
+              padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 6.0 : 6.h, horizontal: isTabletOrUp ? 2.0 : 2.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -64,12 +66,12 @@ class HistoryCard extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 10.w,
-                          vertical: 4.h,
+                          horizontal: isTabletOrUp ? 10.0 : 10.w,
+                          vertical: isTabletOrUp ? 4.0 : 4.h,
                         ),
                         decoration: BoxDecoration(
                           color: statusStyle.backgroundColor,
-                          borderRadius: BorderRadius.circular(20.r),
+                          borderRadius: BorderRadius.circular(20.rSp(context)),
                         ),
                         child: Text(
                           statusStyle.label,
@@ -80,7 +82,7 @@ class HistoryCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 6.h),
+                  SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
                   Text(
                     item.title,
                     style: TextStyles.medium16(
@@ -89,34 +91,34 @@ class HistoryCard extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 6.h),
+                  SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
                   Row(
                     children: [
                       Icon(
                         Icons.gavel_rounded,
-                        size: 15.sp,
+                        size: 15.rSp(context),
                         color: const Color(0xFF7A7A7A),
                       ),
-                      SizedBox(width: 4.w),
+                      SizedBox(width: isTabletOrUp ? 4.0 : 4.w),
                       Text(
                         item.bidsCount.toString(),
                         style: TextStyles.regular12(
                           context,
                         ).copyWith(color: const Color(0xFF7A7A7A)),
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
                       Container(
                         width: 1,
-                        height: 12.h,
+                        height: isTabletOrUp ? 12.0 : 12.h,
                         color: const Color(0xFFD9D9D9),
                       ),
-                      SizedBox(width: 8.w),
+                      SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
                       Icon(
                         _metaIcon(item),
-                        size: 15.sp,
+                        size: 15.rSp(context),
                         color: const Color(0xFF7A7A7A),
                       ),
-                      SizedBox(width: 4.w),
+                      SizedBox(width: isTabletOrUp ? 4.0 : 4.w),
                       Expanded(
                         child: Text(
                           _metaValue(context, item),
@@ -129,14 +131,14 @@ class HistoryCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 6.h),
+                  SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
                   Text(
                     _priceLabel(context, item.status),
                     style: TextStyles.regular11(
                       context,
                     ).copyWith(color: const Color(0xFF888888)),
                   ),
-                  SizedBox(height: 2.h),
+                  SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
                   Text(
                     _formatPrice(item.price),
                     style: TextStyles.semiBold14(
@@ -250,28 +252,29 @@ class _HistoryImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final value = imageUrl?.trim();
     if (value == null || value.isEmpty) {
-      return _buildPlaceholder();
+      return _buildPlaceholder(isTabletOrUp);
     }
 
     if (_looksLikeNetworkUrl(value)) {
       return Image.network(
         value,
-        width: 135.w,
-        height: 126.h,
+        width: isTabletOrUp ? 135.0 : 135.w,
+        height: isTabletOrUp ? 126.0 : 126.h,
         fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+        errorBuilder: (context, error, stackTrace) => _buildPlaceholder(isTabletOrUp),
         loadingBuilder: (context, child, progress) {
           if (progress == null) return child;
           return Container(
-            width: 135.w,
-            height: 126.h,
+            width: isTabletOrUp ? 135.0 : 135.w,
+            height: isTabletOrUp ? 126.0 : 126.h,
             color: const Color(0xFFF4F4F4),
             alignment: Alignment.center,
             child: SizedBox(
-              width: 18.w,
-              height: 18.w,
+              width: isTabletOrUp ? 18.0 : 18.w,
+              height: isTabletOrUp ? 18.0 : 18.w,
               child: const CircularProgressIndicator(strokeWidth: 2),
             ),
           );
@@ -281,15 +284,15 @@ class _HistoryImage extends StatelessWidget {
 
     final imageBytes = _decodeBase64Image(value);
     if (imageBytes == null) {
-      return _buildPlaceholder();
+      return _buildPlaceholder(isTabletOrUp);
     }
 
     return Image.memory(
       imageBytes,
-      width: 135.w,
-      height: 126.h,
+      width: isTabletOrUp ? 135.0 : 135.w,
+      height: isTabletOrUp ? 126.0 : 126.h,
       fit: BoxFit.cover,
-      errorBuilder: (context, error, stackTrace) => _buildPlaceholder(),
+      errorBuilder: (context, error, stackTrace) => _buildPlaceholder(isTabletOrUp),
     );
   }
 
@@ -311,11 +314,11 @@ class _HistoryImage extends StatelessWidget {
     }
   }
 
-  Widget _buildPlaceholder() {
+  Widget _buildPlaceholder(bool isTabletOrUp) {
     return Image.asset(
       Assets.imagesFrame1,
-      width: 135.w,
-      height: 126.h,
+      width: isTabletOrUp ? 135.0 : 135.w,
+      height: isTabletOrUp ? 126.0 : 126.h,
       fit: BoxFit.cover,
     );
   }

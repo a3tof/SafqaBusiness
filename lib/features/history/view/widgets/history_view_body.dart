@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:safqaseller/core/responsive/breakpoints.dart';
+import 'package:safqaseller/core/widgets/responsive_form_widgets.dart';
 import 'package:safqaseller/features/auction/view/lot_detail_route_args.dart';
 import 'package:safqaseller/features/auction/view/lot_detail_view.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
@@ -92,6 +94,8 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+    
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
@@ -104,7 +108,7 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
           icon: Icon(
             Icons.arrow_back_ios_new,
             color: Theme.of(context).colorScheme.primary,
-            size: 22.sp,
+            size: 22.rSp(context),
           ),
         ),
         title: _isSearching
@@ -140,7 +144,7 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
             icon: Icon(
               _isSearching ? Icons.close_rounded : Icons.search_rounded,
               color: Theme.of(context).colorScheme.primary,
-              size: 26.sp,
+              size: 26.rSp(context),
             ),
           ),
         ],
@@ -172,7 +176,7 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
                     constraints: BoxConstraints(minHeight: constraints.maxHeight),
                     child: Center(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 24.w),
+                        padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : 24.w),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -183,7 +187,7 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
                                 context,
                               ).copyWith(color: const Color(0xFF666666)),
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                             ElevatedButton(
                               onPressed: () =>
                                   context.read<HistoryViewModel>().loadPage(1),
@@ -207,17 +211,24 @@ class _HistoryViewBodyState extends State<HistoryViewBody> {
           final filteredItems = _filterItems(success.items);
           final isSearchActive = _searchController.text.trim().isNotEmpty;
 
-          return _HistoryList(
-            totalCount: isSearchActive
-                ? filteredItems.length
-                : success.totalCount,
-            items: filteredItems,
-            currentPage: success.currentPage,
-            totalPages: success.totalPages,
-            isSearchActive: isSearchActive,
-            onRefresh: () => context.read<HistoryViewModel>().refresh(),
-            onPageSelected: (page) =>
-                context.read<HistoryViewModel>().goToPage(page),
+          return ResponsiveFormShell(
+            enabled: isTabletOrUp,
+            maxWidth: 700,
+            child: ResponsiveFormSection(
+              padding: EdgeInsets.zero,
+              child: _HistoryList(
+                totalCount: isSearchActive
+                    ? filteredItems.length
+                    : success.totalCount,
+                items: filteredItems,
+                currentPage: success.currentPage,
+                totalPages: success.totalPages,
+                isSearchActive: isSearchActive,
+                onRefresh: () => context.read<HistoryViewModel>().refresh(),
+                onPageSelected: (page) =>
+                    context.read<HistoryViewModel>().goToPage(page),
+              ),
+            ),
           );
         },
       ),
@@ -248,15 +259,16 @@ class _HistoryList extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasItems = items.isNotEmpty;
     final s = S.of(context);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return RefreshIndicator(
       onRefresh: onRefresh,
       child: ListView(
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 20.h),
+        padding: EdgeInsets.fromLTRB(isTabletOrUp ? 16.0 : 16.w, isTabletOrUp ? 8.0 : 8.h, isTabletOrUp ? 16.0 : 16.w, isTabletOrUp ? 20.0 : 20.h),
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 12.h),
+            padding: EdgeInsets.only(bottom: isTabletOrUp ? 12.0 : 12.h),
             child: _HistoryHeader(totalCount: totalCount),
           ),
           if (!hasItems)
@@ -268,10 +280,10 @@ class _HistoryList extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.history_rounded,
-                      size: 60.sp,
+                      size: 60.rSp(context),
                       color: const Color(0xFF666666),
                     ),
-                    SizedBox(height: 16.h),
+                    SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                     Text(
                       isSearchActive ? s.historyNoMatchingItems : s.historyNoItems,
                       style: TextStyles.regular14(
@@ -285,7 +297,7 @@ class _HistoryList extends StatelessWidget {
           else
             ...items.map(
               (item) => Padding(
-                padding: EdgeInsets.only(bottom: 10.h),
+                padding: EdgeInsets.only(bottom: isTabletOrUp ? 10.0 : 10.h),
                 child: GestureDetector(
                   onTap: () async {
                     await Navigator.pushNamed(
@@ -301,7 +313,7 @@ class _HistoryList extends StatelessWidget {
             ),
           if (hasItems && totalPages > 1 && !isSearchActive)
             Padding(
-              padding: EdgeInsets.only(top: 8.h),
+              padding: EdgeInsets.only(top: isTabletOrUp ? 8.0 : 8.h),
               child: _HistoryPagination(
                 currentPage: currentPage,
                 totalPages: totalPages,
@@ -328,6 +340,7 @@ class _HistoryPagination extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pages = _visiblePages();
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -337,10 +350,10 @@ class _HistoryPagination extends StatelessWidget {
           isEnabled: currentPage > 1,
           onTap: () => onPageSelected(currentPage - 1),
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
         ...pages.map(
           (page) => Padding(
-            padding: EdgeInsets.symmetric(horizontal: 3.w),
+            padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 3.0 : 3.w),
             child: _PaginationButton(
               page: page,
               isSelected: page == currentPage,
@@ -348,7 +361,7 @@ class _HistoryPagination extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 6.w),
+        SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
         _PaginationArrowButton(
           icon: Icons.chevron_right,
           isEnabled: currentPage < totalPages,
@@ -388,18 +401,19 @@ class _PaginationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return InkWell(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(10.rSp(context)),
       onTap: onTap,
       child: Container(
-        width: 38.w,
-        height: 38.w,
+        width: isTabletOrUp ? 38.0 : 38.w,
+        height: isTabletOrUp ? 38.0 : 38.w,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           color: isSelected
               ? Theme.of(context).colorScheme.primary
               : Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10.rSp(context)),
           border: Border.all(
             color: isSelected
                 ? Theme.of(context).colorScheme.primary
@@ -432,15 +446,16 @@ class _PaginationArrowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return InkWell(
-      borderRadius: BorderRadius.circular(10.r),
+      borderRadius: BorderRadius.circular(10.rSp(context)),
       onTap: isEnabled ? onTap : null,
       child: Container(
-        width: 38.w,
-        height: 38.w,
+        width: isTabletOrUp ? 38.0 : 38.w,
+        height: isTabletOrUp ? 38.0 : 38.w,
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
-          borderRadius: BorderRadius.circular(10.r),
+          borderRadius: BorderRadius.circular(10.rSp(context)),
           border: Border.all(color: Theme.of(context).colorScheme.outline),
         ),
         child: Icon(
@@ -448,7 +463,7 @@ class _PaginationArrowButton extends StatelessWidget {
           color: isEnabled
               ? Theme.of(context).colorScheme.primary
               : Color(0xFFBDBDBD),
-          size: 22.sp,
+          size: 22.rSp(context),
         ),
       ),
     );
@@ -463,13 +478,14 @@ class _HistoryHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final s = S.of(context);
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     return Row(
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+          padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 12.0 : 12.w, vertical: isTabletOrUp ? 6.0 : 6.h),
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
-            borderRadius: BorderRadius.circular(20.r),
+            borderRadius: BorderRadius.circular(20.rSp(context)),
           ),
           child: Text(
             '$totalCount ${s.historyAuctions}',
