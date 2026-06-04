@@ -45,7 +45,11 @@ class OtherMessageBubble extends StatelessWidget {
                   '${createdAt!.hour.toString().padLeft(2, '0')}:${createdAt!.minute.toString().padLeft(2, '0')}',
                   style: TextStyles.regular12(context).copyWith(
                     color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-                    fontSize: 10.sp,
+                    fontSize: responsiveValue<double>(
+                      context,
+                      mobile: 10.sp,
+                      tablet: 10.0,
+                    ),
                   ),
                 ),
               ],
