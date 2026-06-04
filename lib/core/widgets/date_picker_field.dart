@@ -51,7 +51,7 @@ class _DatePickerFieldState extends State<DatePickerField> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        controller.text = DateFormat('yyyy-MM-dd').format(picked);
+        controller.text = DateFormat('yyyy-MM-dd', 'en').format(picked);
         if (widget.onSaved != null) {
           widget.onSaved!(controller.text);
         }
