@@ -3,7 +3,7 @@ import 'package:safqaseller/core/responsive/breakpoints.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
 import 'package:safqaseller/features/wallet/model/models/wallet_models.dart';
-
+import 'package:safqaseller/generated/l10n.dart';
 /// Single card row in the Saved Cards list.
 /// Design: card icon + "Master Card" + masked number + 3-dot menu.
 class CardListItem extends StatelessWidget {
@@ -97,7 +97,7 @@ class CardListItem extends StatelessWidget {
             PopupMenuItem(
               value: 'delete',
               child: Text(
-                'Delete',
+                S.of(context).notificationsDelete,
                 style: TextStyles.regular14(context)
                     .copyWith(color: Colors.red),
               ),

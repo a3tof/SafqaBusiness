@@ -40,7 +40,7 @@ class SavedCardsViewBody extends StatelessWidget {
               color: Theme.of(context).colorScheme.primary, size: 22.rSp(context)),
         ),
         title: Text(
-          'Saved Cards',
+          S.of(context).savedCards,
           style: TextStyle(
             fontFamily: 'AlegreyaSC',
             fontSize: 28.rSp(context),
