@@ -78,10 +78,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
           );
         } else if (state is RegisterError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       },
@@ -134,7 +131,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           textInputType: TextInputType.emailAddress,
                         ),
                       ],
-                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                       if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: CustomTextFormField(
@@ -163,60 +160,104 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           onSaved: (value) => birthdate = value,
                         ),
                       ],
-                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                       if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: LocationPickerField(
-                            enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
+                            enabled:
+                                !isLoading &&
+                                context
+                                    .read<RegisterViewModel>()
+                                    .countries
+                                    .isNotEmpty,
                             hintText: S.of(context).kCountry,
-                            locations: context.read<RegisterViewModel>().countries,
-                            selectedLocation: context.read<RegisterViewModel>().selectedCountry,
+                            locations: context
+                                .read<RegisterViewModel>()
+                                .countries,
+                            selectedLocation: context
+                                .read<RegisterViewModel>()
+                                .selectedCountry,
                             onChanged: (location) {
-                              context.read<RegisterViewModel>().selectedCountry = location;
+                              context
+                                      .read<RegisterViewModel>()
+                                      .selectedCountry =
+                                  location;
                               if (location != null) {
-                                context.read<RegisterViewModel>().loadCities(location.id);
+                                context.read<RegisterViewModel>().loadCities(
+                                  location.id,
+                                );
                               }
                             },
                           ),
                           trailing: LocationPickerField(
-                            enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
+                            enabled:
+                                !isLoading &&
+                                context
+                                    .read<RegisterViewModel>()
+                                    .cities
+                                    .isNotEmpty,
                             hintText: S.of(context).kCity,
                             locations: context.read<RegisterViewModel>().cities,
-                            selectedLocation: context.read<RegisterViewModel>().selectedCity,
-                            onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
+                            selectedLocation: context
+                                .read<RegisterViewModel>()
+                                .selectedCity,
+                            onChanged: (location) =>
+                                context.read<RegisterViewModel>().selectedCity =
+                                    location,
                           ),
                         )
                       else ...[
                         LocationPickerField(
-                          enabled: !isLoading && context.read<RegisterViewModel>().countries.isNotEmpty,
+                          enabled:
+                              !isLoading &&
+                              context
+                                  .read<RegisterViewModel>()
+                                  .countries
+                                  .isNotEmpty,
                           hintText: S.of(context).kCountry,
-                          locations: context.read<RegisterViewModel>().countries,
-                          selectedLocation: context.read<RegisterViewModel>().selectedCountry,
+                          locations: context
+                              .read<RegisterViewModel>()
+                              .countries,
+                          selectedLocation: context
+                              .read<RegisterViewModel>()
+                              .selectedCountry,
                           onChanged: (location) {
-                            context.read<RegisterViewModel>().selectedCountry = location;
+                            context.read<RegisterViewModel>().selectedCountry =
+                                location;
                             if (location != null) {
-                              context.read<RegisterViewModel>().loadCities(location.id);
+                              context.read<RegisterViewModel>().loadCities(
+                                location.id,
+                              );
                             }
                           },
                         ),
                         SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                         LocationPickerField(
-                          enabled: !isLoading && context.read<RegisterViewModel>().cities.isNotEmpty,
+                          enabled:
+                              !isLoading &&
+                              context
+                                  .read<RegisterViewModel>()
+                                  .cities
+                                  .isNotEmpty,
                           hintText: S.of(context).kCity,
                           locations: context.read<RegisterViewModel>().cities,
-                          selectedLocation: context.read<RegisterViewModel>().selectedCity,
-                          onChanged: (location) => context.read<RegisterViewModel>().selectedCity = location,
+                          selectedLocation: context
+                              .read<RegisterViewModel>()
+                              .selectedCity,
+                          onChanged: (location) =>
+                              context.read<RegisterViewModel>().selectedCity =
+                                  location,
                         ),
                       ],
-                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
-                    GenderPickerField(
-                      enabled: !isLoading,
-                      hintText: S.of(context).gender,
-                      maleText: S.of(context).male,
-                      femaleText: S.of(context).female,
-                      onSaved: (value) => gender = value,
-                    ),
-                    SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      GenderPickerField(
+                        enabled: !isLoading,
+                        hintText: S.of(context).gender,
+                        maleText: S.of(context).male,
+                        femaleText: S.of(context).female,
+                        onSaved: (value) => gender = value,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
                       if (isTabletOrUp)
                         ResponsiveFormRow(
                           leading: PasswordField(
@@ -261,70 +302,86 @@ class _SignupViewBodyState extends State<SignupViewBody> {
                           },
                         ),
                       ],
-                  SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
-                  TermsAndConditions(
-                    onChanged: (value) => isTermsAccepted = value,
-                  ),
-                  SizedBox(height: isTabletOrUp ? 30.0 : 30.sp),
-                  isLoading
-                      ? const CustomLoadingButton()
-                      : CustomButton(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white,
-                          onPressed: () {
-                            if (formKey.currentState!.validate()) {
-                              formKey.currentState!.save();
+                      SizedBox(height: isTabletOrUp ? 16.0 : 16.sp),
+                      TermsAndConditions(
+                        onChanged: (value) => isTermsAccepted = value,
+                      ),
+                      SizedBox(height: isTabletOrUp ? 30.0 : 30.sp),
+                      isLoading
+                          ? const CustomLoadingButton()
+                          : CustomButton(
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.primary,
+                              textColor: Colors.white,
+                              onPressed: () {
+                                if (formKey.currentState!.validate()) {
+                                  formKey.currentState!.save();
 
-                              if (!isTermsAccepted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Please accept terms and conditions',
-                                    ),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
+                                  if (!isTermsAccepted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          'Please accept terms and conditions',
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
 
-                              if (birthdate == null || gender == null || context.read<RegisterViewModel>().selectedCity == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(S.of(context).kPleaseFillAllFiel),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
+                                  if (birthdate == null ||
+                                      gender == null ||
+                                      context
+                                              .read<RegisterViewModel>()
+                                              .selectedCity ==
+                                          null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(
+                                          S.of(context).kPleaseFillAllFiel,
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
 
-                              // Convert gender string to int (0 = male, 1 = female)
-                              final genderInt = gender == 'male' ? 0 : 1;
+                                  // Convert gender string to int (0 = male, 1 = female)
+                                  final genderInt = gender == 'male' ? 0 : 1;
 
-                              context.read<RegisterViewModel>().userRegister(
-                                    fullName: userName,
-                                    email: email,
-                                    password: password,
-                                    birthDate: birthdate!,
-                                    gender: genderInt,
-                                    cityId: context.read<RegisterViewModel>().selectedCity!.id,
-                                    phoneNumber: phoneNumber,
+                                  context
+                                      .read<RegisterViewModel>()
+                                      .userRegister(
+                                        fullName: userName,
+                                        email: email,
+                                        password: password,
+                                        birthDate: birthdate!,
+                                        gender: genderInt,
+                                        cityId: context
+                                            .read<RegisterViewModel>()
+                                            .selectedCity!
+                                            .id,
+                                        phoneNumber: phoneNumber,
+                                      );
+                                } else {
+                                  setState(
+                                    () => autoValidateMode =
+                                        AutovalidateMode.always,
                                   );
-                            } else {
-                              setState(() => autoValidateMode =
-                                  AutovalidateMode.always);
-                            }
-                          },
-                          text: S.of(context).signUp,
-                        ),
-                  SizedBox(height: isTabletOrUp ? 26.0 : 26.sp),
-                  HaveAnAccountWidget(),
+                                }
+                              },
+                              text: S.of(context).signUp,
+                            ),
+                      SizedBox(height: isTabletOrUp ? 26.0 : 26.sp),
+                      HaveAnAccountWidget(),
                     ],
                   ),
                 ),
               ),
             ),
-        ),
-      );
+          ),
+        );
       },
     );
   }

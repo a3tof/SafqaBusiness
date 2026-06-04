@@ -52,10 +52,7 @@ class _CreatePasswordViewBodyState extends State<CreatePasswordViewBody> {
           );
         } else if (state is ForgotPasswordError) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.message),
-              backgroundColor: Colors.red,
-            ),
+            SnackBar(content: Text(state.message), backgroundColor: Colors.red),
           );
         }
       },
@@ -76,23 +73,47 @@ class _CreatePasswordViewBodyState extends State<CreatePasswordViewBody> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         SizedBox(height: 16.sp),
-                      Text(
-                        S.of(context).createPasswordDescription,
-                        style: TextStyles.regular14(context).copyWith(
-                          color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                          height: 1.5,
+                        Text(
+                          S.of(context).createPasswordDescription,
+                          style: TextStyles.regular14(context).copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
+                            height: 1.5,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 32.sp),
-                      if (Breakpoints.isTabletOrUp(context))
-                        ResponsiveFormRow(
-                          leading: PasswordField(
+                        SizedBox(height: 32.sp),
+                        if (Breakpoints.isTabletOrUp(context))
+                          ResponsiveFormRow(
+                            leading: PasswordField(
+                              enabled: !isLoading,
+                              controller: _passwordController,
+                              hintText: S.of(context).newPassword,
+                              onSaved: (value) => _newPassword = value ?? '',
+                            ),
+                            trailing: PasswordField(
+                              enabled: !isLoading,
+                              hintText: S.of(context).confirmPassword,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return S.of(context).fieldRequired;
+                                }
+                                if (value != _passwordController.text) {
+                                  return S.of(context).passwordsDoNotMatch;
+                                }
+                                return null;
+                              },
+                            ),
+                          )
+                        else ...[
+                          PasswordField(
                             enabled: !isLoading,
                             controller: _passwordController,
                             hintText: S.of(context).newPassword,
                             onSaved: (value) => _newPassword = value ?? '',
                           ),
-                          trailing: PasswordField(
+                          SizedBox(height: 16.sp),
+                          PasswordField(
                             enabled: !isLoading,
                             hintText: S.of(context).confirmPassword,
                             validator: (value) {
@@ -105,49 +126,29 @@ class _CreatePasswordViewBodyState extends State<CreatePasswordViewBody> {
                               return null;
                             },
                           ),
-                        )
-                      else ...[
-                        PasswordField(
-                          enabled: !isLoading,
-                          controller: _passwordController,
-                          hintText: S.of(context).newPassword,
-                          onSaved: (value) => _newPassword = value ?? '',
-                        ),
-                        SizedBox(height: 16.sp),
-                        PasswordField(
-                          enabled: !isLoading,
-                          hintText: S.of(context).confirmPassword,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return S.of(context).fieldRequired;
-                            }
-                            if (value != _passwordController.text) {
-                              return S.of(context).passwordsDoNotMatch;
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
-                      SizedBox(height: 32.sp),
-                      isLoading
-                          ? const CustomLoadingButton()
-                          : CustomButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  _formKey.currentState!.save();
-                                  context
-                                      .read<ForgotPasswordViewModel>()
-                                      .resetPassword(
-                                        email: widget.args.email,
-                                        token: widget.args.token,
-                                        newPassword: _newPassword,
-                                      );
-                                }
-                              },
-                              text: S.of(context).createPassword,
-                              textColor: Colors.white,
-                              backgroundColor: Theme.of(context).colorScheme.primary,
-                            ),
+                        ],
+                        SizedBox(height: 32.sp),
+                        isLoading
+                            ? const CustomLoadingButton()
+                            : CustomButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    _formKey.currentState!.save();
+                                    context
+                                        .read<ForgotPasswordViewModel>()
+                                        .resetPassword(
+                                          email: widget.args.email,
+                                          token: widget.args.token,
+                                          newPassword: _newPassword,
+                                        );
+                                  }
+                                },
+                                text: S.of(context).createPassword,
+                                textColor: Colors.white,
+                                backgroundColor: Theme.of(
+                                  context,
+                                ).colorScheme.primary,
+                              ),
                       ],
                     ),
                   ),

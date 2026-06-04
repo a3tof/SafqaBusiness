@@ -39,10 +39,14 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
   static const int _digitCount = 6;
   static const double _boxSpacing = 8.0;
 
-  final List<TextEditingController> _controllers =
-      List.generate(_digitCount, (_) => TextEditingController());
-  final List<FocusNode> _focusNodes =
-      List.generate(_digitCount, (_) => FocusNode());
+  final List<TextEditingController> _controllers = List.generate(
+    _digitCount,
+    (_) => TextEditingController(),
+  );
+  final List<FocusNode> _focusNodes = List.generate(
+    _digitCount,
+    (_) => FocusNode(),
+  );
 
   String get _otp => _controllers.map((c) => c.text).join();
 
@@ -83,15 +87,15 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
 
     if (widget.args.flow == VerificationFlow.registration) {
       context.read<ConfirmEmailViewModel>().confirmEmail(
-            email: widget.args.email,
-            otp: _otp,
-            password: widget.args.password,
-          );
+        email: widget.args.email,
+        otp: _otp,
+        password: widget.args.password,
+      );
     } else {
       context.read<ForgotPasswordViewModel>().verifyOtp(
-            email: widget.args.email,
-            code: _otp,
-          );
+        email: widget.args.email,
+        code: _otp,
+      );
     }
   }
 
@@ -222,15 +226,17 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
 
   Widget _buildBody({required bool isLoading}) {
     final isTabletOrUp = Breakpoints.isTabletOrUp(context);
-    
+
     return SafeArea(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w),
+        padding: EdgeInsets.symmetric(
+          horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w,
+        ),
         child: SingleChildScrollView(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            child: ResponsiveFormShell(
-              enabled: isTabletOrUp,
-              maxWidth: 700,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          child: ResponsiveFormShell(
+            enabled: isTabletOrUp,
+            maxWidth: 700,
             child: Form(
               key: _formKey,
               autovalidateMode: _autoValidateMode,
@@ -238,89 +244,101 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 8.0 : 8.sp),
-                    child: Text(
-                      S.of(context).verificationCodeDescription,
-                      textAlign: TextAlign.center,
-                      style: TextStyles.regular14(context).copyWith(
-                        color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        height: 1.5,
+                    SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isTabletOrUp ? 8.0 : 8.sp,
+                      ),
+                      child: Text(
+                        S.of(context).verificationCodeDescription,
+                        textAlign: TextAlign.center,
+                        style: TextStyles.regular14(context).copyWith(
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.onSurface.withValues(alpha: 0.7),
+                          height: 1.5,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
-                  Directionality(
-                    textDirection: TextDirection.ltr,
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        final double boxSize =
-                            (constraints.maxWidth -
-                                    (_digitCount - 1) * _boxSpacing) /
-                                _digitCount;
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: List.generate(
-                            _digitCount,
-                            (index) => Padding(
-                              padding: EdgeInsets.only(
-                                right:
-                                    index < _digitCount - 1 ? _boxSpacing : 0,
-                              ),
-                              child: CustomPinBox(
-                                size: isTabletOrUp ? null : boxSize,
-                                controller: _controllers[index],
-                                focusNode: _focusNodes[index],
-                                onChanged: (value) {
-                                  if (value.isNotEmpty &&
-                                      index < _digitCount - 1) {
-                                    _focusNodes[index + 1].requestFocus();
-                                  } else if (value.isEmpty && index > 0) {
-                                    _focusNodes[index - 1].requestFocus();
-                                  }
-                                },
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) return '';
-                                  return null;
-                                },
+                    SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
+                    Directionality(
+                      textDirection: TextDirection.ltr,
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          final double boxSize =
+                              (constraints.maxWidth -
+                                  (_digitCount - 1) * _boxSpacing) /
+                              _digitCount;
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              _digitCount,
+                              (index) => Padding(
+                                padding: EdgeInsets.only(
+                                  right: index < _digitCount - 1
+                                      ? _boxSpacing
+                                      : 0,
+                                ),
+                                child: CustomPinBox(
+                                  size: isTabletOrUp ? null : boxSize,
+                                  controller: _controllers[index],
+                                  focusNode: _focusNodes[index],
+                                  onChanged: (value) {
+                                    if (value.isNotEmpty &&
+                                        index < _digitCount - 1) {
+                                      _focusNodes[index + 1].requestFocus();
+                                    } else if (value.isEmpty && index > 0) {
+                                      _focusNodes[index - 1].requestFocus();
+                                    }
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty)
+                                      return '';
+                                    return null;
+                                  },
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
-                  isLoading
-                      ? const CustomLoadingButton()
-                      : CustomButton(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          textColor: Colors.white,
-                          onPressed: _submit,
-                          text: S.of(context).verify,
+                    SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
+                    isLoading
+                        ? const CustomLoadingButton()
+                        : CustomButton(
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.primary,
+                            textColor: Colors.white,
+                            onPressed: _submit,
+                            text: S.of(context).verify,
+                          ),
+                    SizedBox(height: isTabletOrUp ? 24.0 : 24.sp),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          S.of(context).dontReceiveCode,
+                          style: TextStyles.regular14(context).copyWith(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurface.withValues(alpha: 0.7),
+                          ),
                         ),
-                  SizedBox(height: isTabletOrUp ? 24.0 : 24.sp),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        S.of(context).dontReceiveCode,
-                        style: TextStyles.regular14(context)
-                            .copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7)),
-                      ),
-                      SizedBox(width: isTabletOrUp ? 4.0 : 4.sp),
-                      GestureDetector(
-                        onTap: _resend,
-                        child: Text(
-                          S.of(context).resend,
-                          style: TextStyles.semiBold14(context)
-                              .copyWith(color: Theme.of(context).colorScheme.primary),
+                        SizedBox(width: isTabletOrUp ? 4.0 : 4.sp),
+                        GestureDetector(
+                          onTap: _resend,
+                          child: Text(
+                            S.of(context).resend,
+                            style: TextStyles.semiBold14(context).copyWith(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
+                      ],
+                    ),
+                    SizedBox(height: isTabletOrUp ? 32.0 : 32.sp),
                   ],
                 ),
               ),
