@@ -94,7 +94,6 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
     return BlocConsumer<AuctionDetailViewModel, AuctionDetailViewModelState>(
       listener: (context, state) {
         if (state is AuctionDetailDeleteSuccess) {
-          _showMessage(s.auctionDeleteSuccess);
           Navigator.pop(context);
         } else if (state is AuctionDetailFailure) {
           _showMessage(
