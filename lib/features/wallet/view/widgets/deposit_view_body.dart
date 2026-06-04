@@ -102,12 +102,6 @@ class _DepositViewBodyState extends State<DepositViewBody> {
     return BlocListener<DepositViewModel, DepositState>(
       listener: (context, state) {
         if (state is DepositSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(S.of(context).kDepositSuccessful),
-              backgroundColor: Color(0xFF7DD97B),
-            ),
-          );
           Navigator.pop(context, true);
         } else if (state is DepositError) {
           ScaffoldMessenger.of(context).showSnackBar(

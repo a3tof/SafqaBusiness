@@ -102,12 +102,6 @@ class _WithdrawalViewBodyState extends State<WithdrawalViewBody> {
     return BlocListener<WithdrawalViewModel, WithdrawalState>(
       listener: (context, state) {
         if (state is WithdrawalSuccess) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(S.of(context).kWithdrawalSuccessfu),
-              backgroundColor: const Color(0xFF7DD97B),
-            ),
-          );
           Navigator.pop(context, true);
         } else if (state is WithdrawalError) {
           ScaffoldMessenger.of(context).showSnackBar(
