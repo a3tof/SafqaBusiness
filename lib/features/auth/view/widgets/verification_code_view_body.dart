@@ -233,6 +233,7 @@ class _VerificationCodeViewBodyState extends State<VerificationCodeViewBody> {
           horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w,
         ),
         child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 32.0 : 0),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: ResponsiveFormShell(
             enabled: isTabletOrUp,

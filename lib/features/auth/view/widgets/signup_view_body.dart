@@ -87,6 +87,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
         final isTabletOrUp = Breakpoints.isTabletOrUp(context);
         final horizontalPadding = isTabletOrUp ? 24.0 : kHorizontalPadding.sp;
         return SingleChildScrollView(
+          padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 32.0 : 0),
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
