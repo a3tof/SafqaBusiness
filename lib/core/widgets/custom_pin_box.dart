@@ -111,6 +111,7 @@ class _CustomPinBoxState extends State<CustomPinBox> {
         decoration: const InputDecoration(
           counterText: '',
           border: InputBorder.none,
+          filled: false,
           contentPadding: EdgeInsets.zero,
           errorStyle: TextStyle(height: 0, fontSize: 0),
         ),
