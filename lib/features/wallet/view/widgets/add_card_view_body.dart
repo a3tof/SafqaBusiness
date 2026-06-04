@@ -72,7 +72,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
   String? _validateCardNumber(String? value) {
     final digits = value?.replaceAll(' ', '') ?? '';
     if (digits.isEmpty) return S.of(context).fieldRequired;
-    if (digits.length != 16) return 'Card number must be 16 digits';
+    if (digits.length != 16) return S.of(context).addCardNumberError;
     return null;
   }
 
@@ -80,12 +80,12 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
     final expiry = value?.trim() ?? '';
     if (expiry.isEmpty) return S.of(context).fieldRequired;
     if (!RegExp(r'^\d{2}/\d{2}$').hasMatch(expiry)) {
-      return 'Expiry date must be in MM/YY format';
+      return S.of(context).addCardExpiryFormatError;
     }
 
     final month = int.tryParse(expiry.substring(0, 2));
     if (month == null || month < 1 || month > 12) {
-      return 'Enter a valid month';
+      return S.of(context).addCardExpiryMonthError;
     }
 
     return null;
@@ -94,7 +94,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
   String? _validateCvv(String? value) {
     final cvv = value?.trim() ?? '';
     if (cvv.isEmpty) return S.of(context).fieldRequired;
-    if (cvv.length != 3) return 'CVV must be 3 digits';
+    if (cvv.length != 3) return S.of(context).addCardCvvError;
     return null;
   }
 
@@ -164,7 +164,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Enter your card information',
+                                  S.of(context).addCardEnterInfo,
                                   style: TextStyles.medium20(context).copyWith(
                                     color: Theme.of(
                                       context,
@@ -174,7 +174,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                 SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                                 _CardField(
                                   controller: _cardNumberCtrl,
-                                  hint: 'Card Number',
+                                  hint: S.of(context).addCardNumberHint,
                                   keyboardType: TextInputType.number,
                                   maxLength: 19,
                                   inputFormatters: _cardNumberFormatters,
@@ -186,7 +186,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                     Expanded(
                                       child: _CardField(
                                         controller: _expiryCtrl,
-                                        hint: 'Expiry Date',
+                                        hint: S.of(context).addCardExpiryHint,
                                         keyboardType: TextInputType.datetime,
                                         maxLength: 5,
                                         inputFormatters: _expiryDateFormatters,
@@ -197,7 +197,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                     Expanded(
                                       child: _CardField(
                                         controller: _cvvCtrl,
-                                        hint: 'CVV',
+                                        hint: S.of(context).addCardCvvHint,
                                         keyboardType: TextInputType.number,
                                         maxLength: 3,
                                         inputFormatters: _cvvFormatters,
@@ -210,7 +210,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                 SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                                 _CardField(
                                   controller: _holderCtrl,
-                                  hint: 'Cardholder Name',
+                                  hint: S.of(context).addCardHolderHint,
                                   validator: (v) =>
                                       v == null || v.trim().isEmpty
                                       ? S.of(context).fieldRequired
@@ -219,7 +219,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                                 SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
                                 _CardField(
                                   controller: _labelCtrl,
-                                  hint: 'Card Label (Optional)',
+                                  hint: S.of(context).addCardLabelHint,
                                 ),
                                 SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
                                 SizedBox(
