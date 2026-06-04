@@ -1417,5 +1417,15 @@
   },
   "serverError": "حدث خطأ في الخادم. يرجى المحاولة مرة أخرى لاحقًا.",
   "openChat": "فتح المحادثة",
-  "chatNotFound": "المحادثة غير موجودة"
+  "chatNotFound": "المحادثة غير موجودة",
+  "addCardEnterInfo": "أدخل معلومات بطاقتك",
+  "addCardNumberHint": "رقم البطاقة",
+  "addCardExpiryHint": "تاريخ الانتهاء",
+  "addCardCvvHint": "رمز التحقق (CVV)",
+  "addCardHolderHint": "اسم حامل البطاقة",
+  "addCardLabelHint": "تسمية البطاقة (اختياري)",
+  "addCardNumberError": "رقم البطاقة يجب أن يتكون من 16 رقماً",
+  "addCardExpiryFormatError": "تاريخ الانتهاء يجب أن يكون بصيغة MM/YY",
+  "addCardExpiryMonthError": "أدخل شهراً صحيحاً",
+  "addCardCvvError": "رمز التحقق (CVV) يجب أن يتكون من 3 أرقام"
 }

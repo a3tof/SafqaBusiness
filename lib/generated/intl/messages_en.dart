@@ -65,6 +65,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addCardCvvError": MessageLookupByLibrary.simpleMessage(
+      "CVV must be 3 digits",
+    ),
+    "addCardCvvHint": MessageLookupByLibrary.simpleMessage("CVV"),
+    "addCardEnterInfo": MessageLookupByLibrary.simpleMessage(
+      "Enter your card information",
+    ),
+    "addCardExpiryFormatError": MessageLookupByLibrary.simpleMessage(
+      "Expiry date must be in MM/YY format",
+    ),
+    "addCardExpiryHint": MessageLookupByLibrary.simpleMessage("Expiry Date"),
+    "addCardExpiryMonthError": MessageLookupByLibrary.simpleMessage(
+      "Enter a valid month",
+    ),
+    "addCardHolderHint": MessageLookupByLibrary.simpleMessage(
+      "Cardholder Name",
+    ),
+    "addCardLabelHint": MessageLookupByLibrary.simpleMessage(
+      "Card Label (Optional)",
+    ),
+    "addCardNumberError": MessageLookupByLibrary.simpleMessage(
+      "Card number must be 16 digits",
+    ),
+    "addCardNumberHint": MessageLookupByLibrary.simpleMessage("Card Number"),
     "addNewCard": MessageLookupByLibrary.simpleMessage("Add new card"),
     "auctionAddImages": MessageLookupByLibrary.simpleMessage("Add Images +"),
     "auctionAddItem": MessageLookupByLibrary.simpleMessage("Add Item"),

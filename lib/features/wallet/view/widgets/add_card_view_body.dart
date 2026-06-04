@@ -139,7 +139,7 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontFamily: 'AlegreyaSC',
+                    fontFamily: Localizations.localeOf(context).languageCode == 'ar' ? 'Cairo' : 'AlegreyaSC',
                     fontSize: 28.rSp(context),
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).colorScheme.primary,
@@ -163,112 +163,121 @@ class _AddCardViewBodyState extends State<AddCardViewBody> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                            Text(
-                              'Enter your card information',
-                              style: TextStyles.medium20(context).copyWith(
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
-                            ),
-                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
-                            _CardField(
-                              controller: _cardNumberCtrl,
-                              hint: 'Card Number',
-                              keyboardType: TextInputType.number,
-                              maxLength: 19,
-                              inputFormatters: _cardNumberFormatters,
-                              validator: _validateCardNumber,
-                            ),
-                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _CardField(
-                                    controller: _expiryCtrl,
-                                    hint: 'Expiry Date',
-                                    keyboardType: TextInputType.datetime,
-                                    maxLength: 5,
-                                    inputFormatters: _expiryDateFormatters,
-                                    validator: _validateExpiryDate,
+                                Text(
+                                  'Enter your card information',
+                                  style: TextStyles.medium20(context).copyWith(
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.onSurface,
                                   ),
                                 ),
-                                SizedBox(width: (isTabletOrUp ? 9.0 : 9.w)),
-                                Expanded(
-                                  child: _CardField(
-                                    controller: _cvvCtrl,
-                                    hint: 'CVV',
-                                    keyboardType: TextInputType.number,
-                                    maxLength: 3,
-                                    inputFormatters: _cvvFormatters,
-                                    obscureText: true,
-                                    validator: _validateCvv,
+                                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
+                                _CardField(
+                                  controller: _cardNumberCtrl,
+                                  hint: 'Card Number',
+                                  keyboardType: TextInputType.number,
+                                  maxLength: 19,
+                                  inputFormatters: _cardNumberFormatters,
+                                  validator: _validateCardNumber,
+                                ),
+                                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: _CardField(
+                                        controller: _expiryCtrl,
+                                        hint: 'Expiry Date',
+                                        keyboardType: TextInputType.datetime,
+                                        maxLength: 5,
+                                        inputFormatters: _expiryDateFormatters,
+                                        validator: _validateExpiryDate,
+                                      ),
+                                    ),
+                                    SizedBox(width: (isTabletOrUp ? 9.0 : 9.w)),
+                                    Expanded(
+                                      child: _CardField(
+                                        controller: _cvvCtrl,
+                                        hint: 'CVV',
+                                        keyboardType: TextInputType.number,
+                                        maxLength: 3,
+                                        inputFormatters: _cvvFormatters,
+                                        obscureText: true,
+                                        validator: _validateCvv,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
+                                _CardField(
+                                  controller: _holderCtrl,
+                                  hint: 'Cardholder Name',
+                                  validator: (v) =>
+                                      v == null || v.trim().isEmpty
+                                      ? S.of(context).fieldRequired
+                                      : null,
+                                ),
+                                SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
+                                _CardField(
+                                  controller: _labelCtrl,
+                                  hint: 'Card Label (Optional)',
+                                ),
+                                SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: (isTabletOrUp ? 54.0 : 54.h),
+                                  child: ElevatedButton(
+                                    onPressed: isLoading ? null : _submit,
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          10.rSp(context),
+                                        ),
+                                      ),
+                                    ),
+                                    child: isLoading
+                                        ? SizedBox(
+                                            width: (isTabletOrUp ? 20.0 : 20.w),
+                                            height: (isTabletOrUp
+                                                ? 20.0
+                                                : 20.w),
+                                            child: CircularProgressIndicator(
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.onPrimary,
+                                              strokeWidth: 2,
+                                            ),
+                                          )
+                                        : Text(
+                                            S.of(context).kAddCard,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style:
+                                                TextStyles.semiBold16(
+                                                  context,
+                                                ).copyWith(
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.onPrimary,
+                                                ),
+                                          ),
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
-                            _CardField(
-                              controller: _holderCtrl,
-                              hint: 'Cardholder Name',
-                              validator: (v) => v == null || v.trim().isEmpty
-                                  ? S.of(context).fieldRequired
-                                  : null,
-                            ),
-                            SizedBox(height: (isTabletOrUp ? 16.0 : 16.h)),
-                            _CardField(
-                              controller: _labelCtrl,
-                              hint: 'Card Label (Optional)',
-                            ),
-                            SizedBox(height: (isTabletOrUp ? 24.0 : 24.h)),
-                            SizedBox(
-                              width: double.infinity,
-                              height: (isTabletOrUp ? 54.0 : 54.h),
-                              child: ElevatedButton(
-                                onPressed: isLoading ? null : _submit,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Theme.of(
-                                    context,
-                                  ).colorScheme.primary,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.rSp(context)),
-                                  ),
-                                ),
-                                child: isLoading
-                                    ? SizedBox(
-                                        width: (isTabletOrUp ? 20.0 : 20.w),
-                                        height: (isTabletOrUp ? 20.0 : 20.w),
-                                        child: CircularProgressIndicator(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onPrimary,
-                                          strokeWidth: 2,
-                                        ),
-                                      )
-                                    : Text(
-                                        S.of(context).kAddCard,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyles.semiBold16(context)
-                                            .copyWith(
-                                              color: Theme.of(
-                                                context,
-                                              ).colorScheme.onPrimary,
-                                            ),
-                                      ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      );
-    },
+          );
+        },
       ),
     );
   }
@@ -314,22 +323,43 @@ class _CardField extends StatelessWidget {
         hintText: hint,
         hintStyle: TextStyles.semiBold13(
           context,
-        ).copyWith(color: theme.hintColor),
+        ).copyWith(
+          color: theme.brightness == Brightness.dark ? Colors.white54 : theme.hintColor,
+        ),
         filled: true,
-        fillColor: theme.cardColor,
+        fillColor: theme.brightness == Brightness.dark ? theme.colorScheme.surface : theme.cardColor,
         errorMaxLines: 3,
         constraints: BoxConstraints(minHeight: (isTabletOrUp ? 48.0 : 48.h)),
-        contentPadding: EdgeInsets.symmetric(horizontal: (isTabletOrUp ? 16.0 : 16.w), vertical: (isTabletOrUp ? 14.0 : 14.h)),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: (isTabletOrUp ? 16.0 : 16.w),
+          vertical: (isTabletOrUp ? 14.0 : 14.h),
+        ),
         border: _buildBorder(theme, context),
         enabledBorder: _buildBorder(theme, context),
-        focusedBorder: _buildBorder(theme, context, color: theme.colorScheme.primary),
-        errorBorder: _buildBorder(theme, context, color: theme.colorScheme.error),
-        focusedErrorBorder: _buildBorder(theme, context, color: theme.colorScheme.error),
+        focusedBorder: _buildBorder(
+          theme,
+          context,
+          color: theme.colorScheme.primary,
+        ),
+        errorBorder: _buildBorder(
+          theme,
+          context,
+          color: theme.colorScheme.error,
+        ),
+        focusedErrorBorder: _buildBorder(
+          theme,
+          context,
+          color: theme.colorScheme.error,
+        ),
       ),
     );
   }
 
-  OutlineInputBorder _buildBorder(ThemeData theme, BuildContext context, {Color? color}) {
+  OutlineInputBorder _buildBorder(
+    ThemeData theme,
+    BuildContext context, {
+    Color? color,
+  }) {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(4.rSp(context)),
       borderSide: BorderSide(

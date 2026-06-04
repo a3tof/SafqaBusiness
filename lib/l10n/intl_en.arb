@@ -1417,5 +1417,15 @@
   },
   "serverError": "A server error occurred. Please try again later.",
   "openChat": "Open Chat",
-  "chatNotFound": "Chat not found"
+  "chatNotFound": "Chat not found",
+  "addCardEnterInfo": "Enter your card information",
+  "addCardNumberHint": "Card Number",
+  "addCardExpiryHint": "Expiry Date",
+  "addCardCvvHint": "CVV",
+  "addCardHolderHint": "Cardholder Name",
+  "addCardLabelHint": "Card Label (Optional)",
+  "addCardNumberError": "Card number must be 16 digits",
+  "addCardExpiryFormatError": "Expiry date must be in MM/YY format",
+  "addCardExpiryMonthError": "Enter a valid month",
+  "addCardCvvError": "CVV must be 3 digits"
 }

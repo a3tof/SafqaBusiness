@@ -3497,6 +3497,101 @@ class S {
       args: [],
     );
   }
+
+  /// `Enter your card information`
+  String get addCardEnterInfo {
+    return Intl.message(
+      'Enter your card information',
+      name: 'addCardEnterInfo',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card Number`
+  String get addCardNumberHint {
+    return Intl.message(
+      'Card Number',
+      name: 'addCardNumberHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expiry Date`
+  String get addCardExpiryHint {
+    return Intl.message(
+      'Expiry Date',
+      name: 'addCardExpiryHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CVV`
+  String get addCardCvvHint {
+    return Intl.message('CVV', name: 'addCardCvvHint', desc: '', args: []);
+  }
+
+  /// `Cardholder Name`
+  String get addCardHolderHint {
+    return Intl.message(
+      'Cardholder Name',
+      name: 'addCardHolderHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card Label (Optional)`
+  String get addCardLabelHint {
+    return Intl.message(
+      'Card Label (Optional)',
+      name: 'addCardLabelHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Card number must be 16 digits`
+  String get addCardNumberError {
+    return Intl.message(
+      'Card number must be 16 digits',
+      name: 'addCardNumberError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Expiry date must be in MM/YY format`
+  String get addCardExpiryFormatError {
+    return Intl.message(
+      'Expiry date must be in MM/YY format',
+      name: 'addCardExpiryFormatError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a valid month`
+  String get addCardExpiryMonthError {
+    return Intl.message(
+      'Enter a valid month',
+      name: 'addCardExpiryMonthError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CVV must be 3 digits`
+  String get addCardCvvError {
+    return Intl.message(
+      'CVV must be 3 digits',
+      name: 'addCardCvvError',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

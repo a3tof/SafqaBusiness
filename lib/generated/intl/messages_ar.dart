@@ -63,6 +63,30 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "addCardCvvError": MessageLookupByLibrary.simpleMessage(
+      "رمز التحقق (CVV) يجب أن يتكون من 3 أرقام",
+    ),
+    "addCardCvvHint": MessageLookupByLibrary.simpleMessage("رمز التحقق (CVV)"),
+    "addCardEnterInfo": MessageLookupByLibrary.simpleMessage(
+      "أدخل معلومات بطاقتك",
+    ),
+    "addCardExpiryFormatError": MessageLookupByLibrary.simpleMessage(
+      "تاريخ الانتهاء يجب أن يكون بصيغة MM/YY",
+    ),
+    "addCardExpiryHint": MessageLookupByLibrary.simpleMessage("تاريخ الانتهاء"),
+    "addCardExpiryMonthError": MessageLookupByLibrary.simpleMessage(
+      "أدخل شهراً صحيحاً",
+    ),
+    "addCardHolderHint": MessageLookupByLibrary.simpleMessage(
+      "اسم حامل البطاقة",
+    ),
+    "addCardLabelHint": MessageLookupByLibrary.simpleMessage(
+      "تسمية البطاقة (اختياري)",
+    ),
+    "addCardNumberError": MessageLookupByLibrary.simpleMessage(
+      "رقم البطاقة يجب أن يتكون من 16 رقماً",
+    ),
+    "addCardNumberHint": MessageLookupByLibrary.simpleMessage("رقم البطاقة"),
     "addNewCard": MessageLookupByLibrary.simpleMessage("إضافة بطاقة جديدة"),
     "auctionAddImages": MessageLookupByLibrary.simpleMessage("إضافة صور +"),
     "auctionAddItem": MessageLookupByLibrary.simpleMessage("إضافة عنصر"),
