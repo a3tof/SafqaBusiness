@@ -195,7 +195,6 @@ class _WalletViewBodyState extends State<WalletViewBody> {
                                           color: Theme.of(
                                             context,
                                           ).colorScheme.primary,
-                                          decoration: TextDecoration.underline,
                                         ),
                                   ),
                                 ),
