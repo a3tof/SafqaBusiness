@@ -59,7 +59,8 @@ class _ForgotPasswordViewBodyState extends State<ForgotPasswordViewBody> {
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 24.0 : kHorizontalPadding.w),
             child: SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: EdgeInsets.symmetric(vertical: isTabletOrUp ? 32.0 : 0),
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
               child: ResponsiveFormShell(
                 enabled: isTabletOrUp,
                 maxWidth: 700,
