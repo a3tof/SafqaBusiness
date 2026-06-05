@@ -2471,6 +2471,26 @@ class S {
     );
   }
 
+  /// `Lot Title`
+  String get auctionLotTitleField {
+    return Intl.message(
+      'Lot Title',
+      name: 'auctionLotTitleField',
+      desc: 'Lot title field hint',
+      args: [],
+    );
+  }
+
+  /// `Lot Category`
+  String get auctionLotCategoryField {
+    return Intl.message(
+      'Lot Category',
+      name: 'auctionLotCategoryField',
+      desc: 'Lot category field hint',
+      args: [],
+    );
+  }
+
   /// `Title`
   String get auctionTitle {
     return Intl.message(

@@ -181,6 +181,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "auctionLotDescription": MessageLookupByLibrary.simpleMessage("وصف المزاد"),
     "auctionLotDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المزاد"),
+    "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("عنوان اللوت"),
+    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage("فئة اللوت"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("جديد"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("العنصر التالي"),
     "auctionNoCategoriesFound": MessageLookupByLibrary.simpleMessage(

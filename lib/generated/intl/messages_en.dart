@@ -183,6 +183,8 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "auctionLotDescription": MessageLookupByLibrary.simpleMessage("Auction Description"),
     "auctionLotDetails": MessageLookupByLibrary.simpleMessage("Lot Details"),
+    "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("Lot Title"),
+    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage("Lot Category"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("New"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("Next item"),
     "auctionNoCategoriesFound": MessageLookupByLibrary.simpleMessage(

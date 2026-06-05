@@ -924,6 +924,14 @@
   "@auctionLotDetails": {
     "description": "Lot details section title"
   },
+  "auctionLotTitleField": "عنوان اللوت",
+  "@auctionLotTitleField": {
+    "description": "Lot title field hint"
+  },
+  "auctionLotCategoryField": "فئة اللوت",
+  "@auctionLotCategoryField": {
+    "description": "Lot category field hint"
+  },
   "auctionTitle": "العنوان",
   "@auctionTitle": {
     "description": "Auction title field hint"

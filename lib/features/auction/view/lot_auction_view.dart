@@ -43,6 +43,28 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
   final TextEditingController _descriptionController = TextEditingController();
   final List<_LotItemFormData> _items = [_LotItemFormData()];
   XFile? _headImage;
+  int? _lotCategoryId;
+
+  Future<void> _onLotCategoryChanged(int? newCategoryId) async {
+    setState(() {
+      _lotCategoryId = newCategoryId;
+      for (final item in _items) {
+        item.categoryId = newCategoryId;
+        item.clearDynamicValues();
+      }
+    });
+    
+    final cubit = context.read<CreateAuctionViewModel>();
+    if (newCategoryId != null) {
+      for (int i = 0; i < _items.length; i++) {
+        await cubit.loadAttributes(itemIndex: i, categoryId: newCategoryId);
+      }
+    } else {
+      for (int i = 0; i < _items.length; i++) {
+        cubit.clearItemAttributes(i);
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -325,17 +347,16 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
                         onTap: _pickHeadImage,
                       ),
                       SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
-                      _FieldLabel(label: s.auctionTitle),
-                      SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
-                      _AuctionTextField(controller: _lotTitleController),
+                      _AuctionTextField(
+                        controller: _lotTitleController,
+                        hintText: s.auctionLotTitleField,
+                      ),
                       SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
-                      Text(
-                        categories.isEmpty && state is CategoriesLoading
-                            ? s.auctionLoadingCategories
-                            : s.auctionSelectCategoryPerItem,
-                        style: TextStyles.regular11(
-                          context,
-                        ).copyWith(color: const Color(0xFF8A8A8A)),
+                      _CategoryDropdown(
+                        categories: categories,
+                        value: _lotCategoryId,
+                        onChanged: _onLotCategoryChanged,
+                        hintText: s.auctionLotCategoryField,
                       ),
                       SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                       ...List.generate(
@@ -355,20 +376,6 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
                                 : null,
                             onConditionChanged: (value) {
                               setState(() => _items[index].condition = value);
-                            },
-                            onCategoryChanged: (value) async {
-                              setState(() {
-                                _items[index].categoryId = value;
-                                _items[index].clearDynamicValues();
-                              });
-                              if (value != null) {
-                                await cubit.loadAttributes(
-                                  itemIndex: index,
-                                  categoryId: value,
-                                );
-                              } else {
-                                cubit.clearItemAttributes(index);
-                              }
                             },
                             onBooleanChanged: (attributeId, value) {
                               setState(() {
@@ -460,7 +467,6 @@ class _LotItemCard extends StatelessWidget {
     required this.attributes,
     required this.onPickImages,
     required this.onConditionChanged,
-    required this.onCategoryChanged,
     required this.onBooleanChanged,
     required this.onPickDate,
     this.onRemove,
@@ -470,10 +476,9 @@ class _LotItemCard extends StatelessWidget {
   final _LotItemFormData item;
   final List<CategoryModel> categories;
   final List<CategoryAttributeModel> attributes;
-  final VoidCallback onPickImages;
   final VoidCallback? onRemove;
+  final VoidCallback onPickImages;
   final ValueChanged<_Condition> onConditionChanged;
-  final ValueChanged<int?> onCategoryChanged;
   final void Function(int attributeId, bool? value) onBooleanChanged;
   final ValueChanged<CategoryAttributeModel> onPickDate;
 
@@ -539,14 +544,6 @@ class _LotItemCard extends StatelessWidget {
           _FieldLabel(label: s.auctionWarrantyInfo),
           SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _AuctionTextField(controller: item.warrantyController),
-          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
-          _FieldLabel(label: s.auctionCategory),
-          SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
-          _CategoryDropdown(
-            categories: categories,
-            value: item.categoryId,
-            onChanged: onCategoryChanged,
-          ),
           SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
           _FieldLabel(label: s.auctionCondition),
           SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
@@ -653,12 +650,14 @@ class _AuctionTextField extends StatelessWidget {
     this.minLines = 1,
     this.maxLines = 1,
     this.keyboardType,
+    this.hintText,
   });
 
   final TextEditingController? controller;
   final int minLines;
   final int maxLines;
   final TextInputType? keyboardType;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -671,6 +670,10 @@ class _AuctionTextField extends StatelessWidget {
       style: TextStyles.regular13(context),
       decoration: InputDecoration(
         isDense: true,
+        hintText: hintText,
+        hintStyle: TextStyles.regular13(context).copyWith(
+          color: Theme.of(context).hintColor,
+        ),
         contentPadding: EdgeInsets.symmetric(
           horizontal: isTabletOrUp ? 10.0 : 10.w,
           vertical: isTabletOrUp ? 10.0 : 10.h,
@@ -806,11 +809,13 @@ class _CategoryDropdown extends StatelessWidget {
     required this.categories,
     required this.value,
     required this.onChanged,
+    this.hintText,
   });
 
   final List<CategoryModel> categories;
   final int? value;
   final ValueChanged<int?> onChanged;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -826,12 +831,12 @@ class _CategoryDropdown extends StatelessWidget {
           value: value,
           isExpanded: true,
           hint: Text(
-            categories.isEmpty
+            hintText ?? (categories.isEmpty
                 ? S.of(context).auctionNoCategoriesFound
-                : S.of(context).auctionSelectCategoryHint,
+                : S.of(context).auctionSelectCategoryHint),
             style: TextStyles.regular13(
               context,
-            ).copyWith(color: const Color(0xFF8A8A8A)),
+            ).copyWith(color: Theme.of(context).hintColor),
           ),
           items: categories
               .map(
