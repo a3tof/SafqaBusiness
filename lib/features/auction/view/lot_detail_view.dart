@@ -176,7 +176,7 @@ class _LotDetailViewState extends State<LotDetailView> {
                 children: [
                   Expanded(
                     child: Text(
-                      _formatLotNumber(context, item.lotNumber),
+                      displayDetail.title,
                       style: TextStyles.semiBold14(
                         context,
                       ).copyWith(color: Theme.of(context).colorScheme.primary),
@@ -413,13 +413,6 @@ class _LotDetailViewState extends State<LotDetailView> {
       ),
     ],
   );
-
-  String _formatLotNumber(BuildContext context, String raw) {
-    final lotLabel = S.of(context).historyLotLabel;
-    if (raw.toLowerCase().startsWith('lot#')) return raw;
-    if (raw.startsWith('#')) return '$lotLabel$raw';
-    return '$lotLabel#$raw';
-  }
 
   String _formatDate(BuildContext context, DateTime? date) {
     if (date == null) return '--';
