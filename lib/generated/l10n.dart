@@ -2544,7 +2544,7 @@ class S {
   /// `Lot Description`
   String get auctionLotDescription {
     return Intl.message(
-      'Lot Description',
+      'Auction Description',
       name: 'auctionLotDescription',
       desc: 'Lot description section title',
       args: [],

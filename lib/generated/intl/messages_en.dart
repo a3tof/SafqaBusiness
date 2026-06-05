@@ -181,9 +181,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage(
       "Lot Auction",
     ),
-    "auctionLotDescription": MessageLookupByLibrary.simpleMessage(
-      "Lot Description",
-    ),
+    "auctionLotDescription": MessageLookupByLibrary.simpleMessage("Auction Description"),
     "auctionLotDetails": MessageLookupByLibrary.simpleMessage("Lot Details"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("New"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("Next item"),
