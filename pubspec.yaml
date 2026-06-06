@@ -70,6 +70,7 @@ flutter:
     - assets/images/
     - assets/images/vuesax/bold/
     - assets/images/vuesax/outline/
+    - shorebird.yaml
 
   fonts:
     - family: Cairo
