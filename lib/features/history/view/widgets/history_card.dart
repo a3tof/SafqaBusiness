@@ -258,10 +258,9 @@ class HistoryCard extends StatelessWidget {
   }
 
   String _formatLotNumber(BuildContext context, String raw) {
-    final lotLabel = S.of(context).historyLotLabel;
-    if (raw.toLowerCase().startsWith('lot#')) return raw;
-    if (raw.startsWith('#')) return '$lotLabel$raw';
-    return '$lotLabel#$raw';
+    String cleaned = raw.replaceAll(RegExp(r'^lot\s*#?', caseSensitive: false), '');
+    if (cleaned.startsWith('#')) return cleaned;
+    return '#$cleaned';
   }
 }
 
