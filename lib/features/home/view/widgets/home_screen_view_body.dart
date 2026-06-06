@@ -81,7 +81,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
   }
 
   Future<void> _refreshHome() async {
-    await context.read<HomeViewModel>().loadHomeData();
+    await context.read<HomeViewModel>().loadHomeData(force: true);
   }
 
   Future<void> _openProfile() async {

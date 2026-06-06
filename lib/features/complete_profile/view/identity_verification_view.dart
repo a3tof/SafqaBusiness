@@ -15,6 +15,7 @@ import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/complete_profile/view/store_information_view.dart';
 import 'package:safqaseller/features/home/view/home_screen_view.dart';
+import 'package:safqaseller/features/home/view_model/home_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model_state.dart';
@@ -92,6 +93,7 @@ class _IdentityVerificationViewState extends State<IdentityVerificationView> {
               // Personal flow: mark profile complete and update role before navigating
               await getIt<ProfileViewModel>().completeProfile();
               await getIt<AuthViewModel>().setRole('Seller');
+              getIt<HomeViewModel>().loadHomeData(force: true);
 
               if (!context.mounted) return;
 

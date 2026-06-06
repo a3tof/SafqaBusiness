@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/core/storage/cache_keys.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model_state.dart';
+import 'package:safqaseller/features/home/view_model/home_view_model.dart';
 
 class AuthViewModel extends Cubit<AuthViewModelState> {
   final CacheHelper cacheHelper;
@@ -50,6 +52,7 @@ class AuthViewModel extends Cubit<AuthViewModelState> {
       await cacheHelper.saveData(key: CacheKeys.role, value: 'User');
     }
 
+    getIt<HomeViewModel>().loadHomeData(force: true);
     emit(AuthAuthenticated(token: token, role: role));
   }
 
@@ -65,6 +68,7 @@ class AuthViewModel extends Cubit<AuthViewModelState> {
     await cacheHelper.removeData(key: CacheKeys.activePlan);
     await cacheHelper.removeData(key: CacheKeys.activePlanUserId);
     await cacheHelper.saveData(key: CacheKeys.isLoggedIn, value: false);
+    getIt<HomeViewModel>().reset();
     emit(AuthUnauthenticated());
   }
 }

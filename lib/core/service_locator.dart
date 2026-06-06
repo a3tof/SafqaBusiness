@@ -114,7 +114,7 @@ Future<void> setupServiceLocator() async {
     () => SellerViewModel(sellerRepository: getIt(), cacheHelper: getIt()),
   );
   getIt.registerLazySingleton(() => NotificationsViewModel(getIt(), getIt()));
-  getIt.registerFactory(() => HomeViewModel(getIt()));
+  getIt.registerLazySingleton(() => HomeViewModel(getIt()));
   getIt.registerFactory(() => HistoryViewModel(getIt()));
   getIt.registerFactory(() => ChatListViewModel(getIt()));
   getIt.registerFactory(() => ChatThreadViewModel(getIt()));

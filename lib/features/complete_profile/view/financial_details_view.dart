@@ -10,6 +10,7 @@ import 'package:safqaseller/core/widgets/custom_app_bar.dart';
 import 'package:safqaseller/core/widgets/custom_button.dart';
 import 'package:safqaseller/features/auth/view_model/auth/auth_view_model.dart';
 import 'package:safqaseller/features/complete_profile/view/legal_documents_view.dart';
+import 'package:safqaseller/features/home/view_model/home_view_model.dart';
 import 'package:safqaseller/features/profile/view_model/profile_view_model.dart';
 import 'package:safqaseller/features/seller/view/seller_home_view.dart';
 import 'package:safqaseller/features/seller/view_model/seller_view_model.dart';
@@ -130,6 +131,7 @@ class _FinancialDetailsViewState extends State<FinancialDetailsView> {
             // All steps complete: update role to Seller
             getIt<AuthViewModel>().setRole('Seller');
             getIt<ProfileViewModel>().completeProfile();
+            getIt<HomeViewModel>().loadHomeData(force: true);
 
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

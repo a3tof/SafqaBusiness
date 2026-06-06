@@ -15,8 +15,8 @@ class HomeScreenView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => getIt<HomeViewModel>()..loadHomeData(),
+    return BlocProvider.value(
+      value: getIt<HomeViewModel>()..loadHomeData(),
       child: HomeScreenViewBody(
         showCompleteProfile: showCompleteProfile,
       ),

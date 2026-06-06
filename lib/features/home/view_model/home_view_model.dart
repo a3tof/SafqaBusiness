@@ -15,7 +15,14 @@ class HomeViewModel extends Cubit<HomeViewModelState> {
     super.emit(state);
   }
 
-  Future<void> loadHomeData() async {
+  void reset() {
+    emit(HomeInitial());
+  }
+
+  Future<void> loadHomeData({bool force = false}) async {
+    if (!force && state is HomeSuccess) {
+      return;
+    }
     emit(HomeLoading());
     try {
       final data = await _repository.getSellerHome();

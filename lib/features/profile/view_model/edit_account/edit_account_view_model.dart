@@ -1,8 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:safqaseller/core/service_locator.dart';
+import 'package:safqaseller/features/home/view_model/home_view_model.dart';
 import 'package:safqaseller/features/profile/model/models/edit_profile_request.dart';
 import 'package:safqaseller/features/profile/model/repositories/profile_repository.dart';
 import 'package:safqaseller/features/profile/view_model/edit_account/edit_account_view_model_state.dart';
-
 class EditAccountViewModel extends Cubit<EditAccountState> {
   final ProfileRepository _repository;
 
@@ -12,6 +13,7 @@ class EditAccountViewModel extends Cubit<EditAccountState> {
     emit(EditAccountLoading());
     try {
       await _repository.editProfile(request);
+      getIt<HomeViewModel>().loadHomeData(force: true);
       emit(EditAccountSuccess());
     } catch (error) {
       emit(EditAccountFailure(_cleanError(error)));
