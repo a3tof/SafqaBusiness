@@ -127,7 +127,13 @@ class _PriceDurationViewState extends State<PriceDurationView> {
 
     final days = difference.inDays;
     final hours = difference.inHours.remainder(24);
-    return '${days}d : ${hours}h';
+    final minutes = difference.inMinutes.remainder(60);
+
+    if (days > 0) {
+      return '${days}d : ${hours}h';
+    } else {
+      return '${hours}h : ${minutes}m';
+    }
   }
 
   Future<void> _submitAuction() async {
