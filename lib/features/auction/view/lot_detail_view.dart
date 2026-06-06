@@ -345,14 +345,37 @@ class _LotDetailViewState extends State<LotDetailView> {
                                   ).copyWith(color: const Color(0xFF9A9A9A)),
                                 ),
                                 SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
-                                Text(
-                                  item.timeLeft ?? '--',
-                                  style: TextStyles.semiBold13(context)
-                                      .copyWith(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.onSurface,
+                                Builder(
+                                  builder: (context) {
+                                    String displayTime = '--';
+                                    final endDate = displayDetail.endDate ?? item.endDate;
+                                    if (endDate != null) {
+                                      final diff = endDate.difference(DateTime.now());
+                                      if (diff.isNegative) {
+                                        displayTime = '0m : 0s';
+                                      } else {
+                                        final days = diff.inDays;
+                                        final hours = diff.inHours.remainder(24);
+                                        final minutes = diff.inMinutes.remainder(60);
+                                        final seconds = diff.inSeconds.remainder(60);
+                                        if (days > 0) {
+                                          displayTime = '${days}d : ${hours}h';
+                                        } else if (hours > 0) {
+                                          displayTime = '${hours}h : ${minutes}m';
+                                        } else {
+                                          displayTime = '${minutes}m : ${seconds}s';
+                                        }
+                                      }
+                                    } else {
+                                      displayTime = item.timeLeft ?? '--';
+                                    }
+                                    return Text(
+                                      displayTime,
+                                      style: TextStyles.semiBold13(context).copyWith(
+                                        color: Theme.of(context).colorScheme.onSurface,
                                       ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),

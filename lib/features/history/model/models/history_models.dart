@@ -82,18 +82,26 @@ class HistoryItem {
       json['Duration'],
     ]);
 
-    // If timeLeft is not provided but we have DisplayDate and it's active/upcoming, calculate it
-    if (parsedTimeLeft == null && parsedEndDate != null) {
+    // Always calculate time left if we have DisplayDate and it's active/upcoming
+    if (parsedEndDate != null) {
       if (status == AuctionStatus.active ||
           status == AuctionStatus.endingSoon ||
           status == AuctionStatus.upcoming) {
         final diff = parsedEndDate.difference(DateTime.now());
         if (diff.isNegative) {
-          parsedTimeLeft = '0d : 0h';
+          parsedTimeLeft = '0m : 0s';
         } else {
           final days = diff.inDays;
           final hours = diff.inHours.remainder(24);
-          parsedTimeLeft = '${days}d : ${hours}h';
+          final minutes = diff.inMinutes.remainder(60);
+          final seconds = diff.inSeconds.remainder(60);
+          if (days > 0) {
+            parsedTimeLeft = '${days}d : ${hours}h';
+          } else if (hours > 0) {
+            parsedTimeLeft = '${hours}h : ${minutes}m';
+          } else {
+            parsedTimeLeft = '${minutes}m : ${seconds}s';
+          }
         }
       }
     }

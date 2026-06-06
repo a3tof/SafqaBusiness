@@ -215,7 +215,27 @@ class HistoryCard extends StatelessWidget {
       final locale = Localizations.localeOf(context).toString();
       return DateFormat.yMMMd(locale).format(item.endDate!);
     }
-    return item.timeLeft ?? item.mileage ?? '--';
+    
+    String displayTime = item.timeLeft ?? item.mileage ?? '--';
+    if (displayTime == '0d : 0h' && item.endDate != null) {
+      final diff = item.endDate!.difference(DateTime.now());
+      if (diff.isNegative) {
+        displayTime = '0m : 0s';
+      } else {
+        final days = diff.inDays;
+        final hours = diff.inHours.remainder(24);
+        final minutes = diff.inMinutes.remainder(60);
+        final seconds = diff.inSeconds.remainder(60);
+        if (days > 0) {
+          displayTime = '${days}d : ${hours}h';
+        } else if (hours > 0) {
+          displayTime = '${hours}h : ${minutes}m';
+        } else {
+          displayTime = '${minutes}m : ${seconds}s';
+        }
+      }
+    }
+    return displayTime;
   }
 
   String _priceLabel(BuildContext context, AuctionStatus status) {
