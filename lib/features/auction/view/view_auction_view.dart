@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 import 'dart:convert';
 import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:safqaseller/core/responsive/breakpoints.dart';
@@ -231,154 +232,165 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
                               ),
                               child: ResponsiveFormSection(
                                 child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // ── Title + Count ───────────────────────
-                                  Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          currentItem?.title.isNotEmpty == true
-                                              ? currentItem!.title
-                                              : displayDetail.title,
-                                          style: TextStyles.bold22(context)
-                                              .copyWith(
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.onSurface,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // ── Title + Count ───────────────────────
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            currentItem?.title.isNotEmpty ==
+                                                    true
+                                                ? currentItem!.title
+                                                : displayDetail.title,
+                                            style: TextStyles.bold22(context)
+                                                .copyWith(
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.onSurface,
+                                                ),
+                                          ),
+                                        ),
+                                        if (currentItem != null &&
+                                            currentItem.count > 0) ...[
+                                          SizedBox(
+                                            width: isTabletOrUp ? 8.0 : 8.w,
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: isTabletOrUp
+                                                  ? 10.0
+                                                  : 10.w,
+                                              vertical: isTabletOrUp
+                                                  ? 4.0
+                                                  : 4.h,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: scheme.primary.withValues(
+                                                alpha: 0.12,
                                               ),
-                                        ),
-                                      ),
-                                      if (currentItem != null &&
-                                          currentItem.count > 0) ...[
-                                        SizedBox(
-                                          width: isTabletOrUp ? 8.0 : 8.w,
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: isTabletOrUp
-                                                ? 10.0
-                                                : 10.w,
-                                            vertical: isTabletOrUp ? 4.0 : 4.h,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            color: scheme.primary.withValues(
-                                              alpha: 0.12,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    4.rSp(context),
+                                                  ),
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                              4.rSp(context),
-                                            ),
-                                          ),
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: '${s.auctionCount}: ',
-                                                  style:
-                                                      TextStyles.regular14(
-                                                        context,
-                                                      ).copyWith(
-                                                        color: Theme.of(
+                                            child: RichText(
+                                              text: TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: '${s.auctionCount}: ',
+                                                    style:
+                                                        TextStyles.regular14(
                                                           context,
-                                                        ).colorScheme.onSurface,
-                                                      ),
-                                                ),
-                                                TextSpan(
-                                                  text: '${currentItem.count}',
-                                                  style:
-                                                      TextStyles.bold18(
-                                                        context,
-                                                      ).copyWith(
-                                                        color: Theme.of(
+                                                        ).copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface,
+                                                        ),
+                                                  ),
+                                                  TextSpan(
+                                                    text:
+                                                        '${currentItem.count}',
+                                                    style:
+                                                        TextStyles.bold18(
                                                           context,
-                                                        ).colorScheme.onSurface,
-                                                      ),
-                                                ),
-                                              ],
+                                                        ).copyWith(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onSurface,
+                                                        ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ],
-                                    ],
-                                  ),
-                                  SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
-
-                                  // ── Attribute chips ─────────────────────
-                                  if (currentItem != null &&
-                                      currentItem.attributes.isNotEmpty) ...[
-                                    _AttributeChipsRow(
-                                      attributes: currentItem.attributes,
                                     ),
                                     SizedBox(
-                                      height: isTabletOrUp ? 12.0 : 12.h,
+                                      height: isTabletOrUp ? 10.0 : 10.h,
                                     ),
-                                  ],
 
-                                  // ── Date range card ─────────────────────
-                                  _DateRangeCard(
-                                    startDate: displayDetail.startDate,
-                                    endDate: displayDetail.endDate,
-                                  ),
-                                  SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
-
-                                  // ── Description ─────────────────────────
-                                  if (currentItem != null &&
-                                      currentItem.description
-                                          .trim()
-                                          .isNotEmpty) ...[
-                                    _InfoSection(
-                                      title: s.auctionLotDescription,
-                                      content: currentItem.description,
-                                    ),
-                                    SizedBox(
-                                      height: isTabletOrUp ? 12.0 : 12.h,
-                                    ),
-                                  ] else if (displayDetail.description
-                                      .trim()
-                                      .isNotEmpty) ...[
-                                    _InfoSection(
-                                      title: s.auctionLotDescription,
-                                      content: displayDetail.description,
-                                    ),
-                                    SizedBox(
-                                      height: isTabletOrUp ? 12.0 : 12.h,
-                                    ),
-                                  ],
-
-                                  // ── Warranty INFO ───────────────────────
-                                  if (currentItem != null &&
-                                      currentItem.warrantyInfo
-                                          .trim()
-                                          .isNotEmpty) ...[
-                                    _InfoSection(
-                                      title: s.auctionWarrantyInfo,
-                                      content: currentItem.warrantyInfo,
-                                    ),
-                                    SizedBox(
-                                      height: isTabletOrUp ? 12.0 : 12.h,
-                                    ),
-                                  ],
-
-                                  // ── Condition ───────────────────────────
-                                  if (currentItem != null) ...[
-                                    _InfoSection(
-                                      title: s.auctionCondition,
-                                      content: _conditionLabel(
-                                        context,
-                                        currentItem.condition,
+                                    // ── Attribute chips ─────────────────────
+                                    if (currentItem != null &&
+                                        currentItem.attributes.isNotEmpty) ...[
+                                      _AttributeChipsRow(
+                                        attributes: currentItem.attributes,
                                       ),
+                                      SizedBox(
+                                        height: isTabletOrUp ? 12.0 : 12.h,
+                                      ),
+                                    ],
+
+                                    // ── Date range card ─────────────────────
+                                    _DateRangeCard(
+                                      startDate: displayDetail.startDate,
+                                      endDate: displayDetail.endDate,
                                     ),
                                     SizedBox(
                                       height: isTabletOrUp ? 16.0 : 16.h,
                                     ),
+
+                                    // ── Description ─────────────────────────
+                                    if (currentItem != null &&
+                                        currentItem.description
+                                            .trim()
+                                            .isNotEmpty) ...[
+                                      _InfoSection(
+                                        title: s.auctionLotDescription,
+                                        content: currentItem.description,
+                                      ),
+                                      SizedBox(
+                                        height: isTabletOrUp ? 12.0 : 12.h,
+                                      ),
+                                    ] else if (displayDetail.description
+                                        .trim()
+                                        .isNotEmpty) ...[
+                                      _InfoSection(
+                                        title: s.auctionLotDescription,
+                                        content: displayDetail.description,
+                                      ),
+                                      SizedBox(
+                                        height: isTabletOrUp ? 12.0 : 12.h,
+                                      ),
+                                    ],
+
+                                    // ── Warranty INFO ───────────────────────
+                                    if (currentItem != null &&
+                                        currentItem.warrantyInfo
+                                            .trim()
+                                            .isNotEmpty) ...[
+                                      _InfoSection(
+                                        title: s.auctionWarrantyInfo,
+                                        content: currentItem.warrantyInfo,
+                                      ),
+                                      SizedBox(
+                                        height: isTabletOrUp ? 12.0 : 12.h,
+                                      ),
+                                    ],
+
+                                    // ── Condition ───────────────────────────
+                                    if (currentItem != null) ...[
+                                      _InfoSection(
+                                        title: s.auctionCondition,
+                                        content: _conditionLabel(
+                                          context,
+                                          currentItem.condition,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: isTabletOrUp ? 16.0 : 16.h,
+                                      ),
+                                    ],
                                   ],
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
                         ),
                       ),
                     ),
@@ -431,70 +443,106 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
         detail?.startDate != null && detail!.startDate!.isAfter(now);
     final canEdit = isUpcoming && !isLoading;
 
-    return AppBar(
-      backgroundColor: Colors.transparent,
-      surfaceTintColor: Colors.transparent,
-      elevation: 0,
-      centerTitle: true,
-      leading: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: Icon(
-          Icons.arrow_back_ios_new,
-          color: scheme.primary,
-          size: 18.rSp(context),
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+
+    return PreferredSize(
+      preferredSize: Size.fromHeight(
+        kToolbarHeight + (isTabletOrUp ? 16.0 : 16.h),
+      ),
+      child: SafeArea(
+        child: Container(
+          margin: EdgeInsets.symmetric(
+            horizontal: isTabletOrUp ? 16.0 : 16.w,
+            vertical: isTabletOrUp ? 8.0 : 8.h,
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12.rSp(context)),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.white.withValues(alpha: 0.4)
+                      : const Color(0xFF1E1E1E).withValues(alpha: 0.4),
+                ),
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  elevation: 0,
+                  centerTitle: true,
+                  leading: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(
+                      Icons.arrow_back_ios_new,
+                      color: scheme.primary,
+                      size: 18.rSp(context),
+                    ),
+                  ),
+                  title: Text(
+                    itemLabel,
+                    style: TextStyles.semiBold16(
+                      context,
+                    ).copyWith(color: scheme.primary),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  actions: [
+                    if (canEdit) ...[
+                      IconButton(
+                        onPressed: () async {
+                          final fakeItem = HistoryItem(
+                            id: detail.id > 0
+                                ? detail.id
+                                : widget.args.auctionId,
+                            auctionId: detail.id > 0
+                                ? detail.id
+                                : widget.args.auctionId,
+                            lotNumber: '#${widget.args.auctionId}',
+                            title: detail.title,
+                            imageUrl: detail.image,
+                            price: detail.startingPrice,
+                            status: AuctionStatus.upcoming,
+                            bidsCount: 0,
+                            timeLeft: null,
+                            endDate: detail.endDate,
+                            mileage: null,
+                          );
+                          final result = await Navigator.pushNamed(
+                            context,
+                            EditAuctionView.routeName,
+                            arguments: LotDetailRouteArgs(item: fakeItem),
+                          );
+                          if (result == true && context.mounted) {
+                            await context
+                                .read<AuctionDetailViewModel>()
+                                .loadAuction(widget.args.auctionId);
+                          }
+                        },
+                        icon: Icon(
+                          Icons.edit_outlined,
+                          color: scheme.primary,
+                          size: 22.rSp(context),
+                        ),
+                        tooltip: s.kEdit,
+                      ),
+                      IconButton(
+                        onPressed: isDeleting
+                            ? null
+                            : () => _confirmDelete(detail),
+                        icon: Icon(
+                          Icons.delete_outline,
+                          color: isDeleting ? scheme.outline : Colors.red,
+                          size: 22.rSp(context),
+                        ),
+                        tooltip: s.auctionDeleteButton,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
-      title: Text(
-        itemLabel,
-        style: TextStyles.semiBold16(context).copyWith(color: scheme.primary),
-        overflow: TextOverflow.ellipsis,
-      ),
-      actions: [
-        if (canEdit) ...[
-          IconButton(
-            onPressed: () async {
-              final fakeItem = HistoryItem(
-                id: detail.id > 0 ? detail.id : widget.args.auctionId,
-                auctionId: detail.id > 0 ? detail.id : widget.args.auctionId,
-                lotNumber: '#${widget.args.auctionId}',
-                title: detail.title,
-                imageUrl: detail.image,
-                price: detail.startingPrice,
-                status: AuctionStatus.upcoming,
-                bidsCount: 0,
-                timeLeft: null,
-                endDate: detail.endDate,
-                mileage: null,
-              );
-              final result = await Navigator.pushNamed(
-                context,
-                EditAuctionView.routeName,
-                arguments: LotDetailRouteArgs(item: fakeItem),
-              );
-              if (result == true && context.mounted) {
-                await context.read<AuctionDetailViewModel>().loadAuction(
-                  widget.args.auctionId,
-                );
-              }
-            },
-            icon: Icon(
-              Icons.edit_outlined,
-              color: scheme.primary,
-              size: 22.rSp(context),
-            ),
-            tooltip: s.kEdit,
-          ),
-          IconButton(
-            onPressed: isDeleting ? null : () => _confirmDelete(detail),
-            icon: Icon(
-              Icons.delete_outline,
-              color: isDeleting ? scheme.outline : Colors.red,
-              size: 22.rSp(context),
-            ),
-            tooltip: s.auctionDeleteButton,
-          ),
-        ],
-      ],
     );
   }
 
