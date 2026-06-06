@@ -14,7 +14,14 @@ class AuctionRepository {
 
   AuctionRepository({required this.dioHelper});
 
+  List<CategoryModel>? _cachedCategories;
+  final Map<int, List<CategoryAttributeModel>> _cachedAttributes = {};
+
   Future<List<CategoryModel>> getCategories() async {
+    if (_cachedCategories != null) {
+      return _cachedCategories!;
+    }
+
     final response = await dioHelper.getData(
       endPoint: 'Auction/Get-Categories',
       requiresAuth: true,
@@ -22,12 +29,17 @@ class AuctionRepository {
     _requireSuccess(response);
 
     final data = _asList(response.data);
-    return data
+    _cachedCategories = data
         .map((item) => CategoryModel.fromJson(item as Map<String, dynamic>))
         .toList();
+    return _cachedCategories!;
   }
 
   Future<List<CategoryAttributeModel>> getAttributes(int categoryId) async {
+    if (_cachedAttributes.containsKey(categoryId)) {
+      return _cachedAttributes[categoryId]!;
+    }
+
     final response = await dioHelper.getData(
       endPoint: 'Auction/Get-Attributes/$categoryId',
       requiresAuth: true,
@@ -35,12 +47,14 @@ class AuctionRepository {
     _requireSuccess(response);
 
     final data = _asList(response.data);
-    return data
+    final attributes = data
         .map(
           (item) =>
               CategoryAttributeModel.fromJson(item as Map<String, dynamic>),
         )
         .toList();
+    _cachedAttributes[categoryId] = attributes;
+    return attributes;
   }
 
   Future<void> createAuction({

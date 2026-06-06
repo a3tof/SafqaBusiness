@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,7 +55,9 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
 
     if (homeState is HomeFailure) {
       final error = homeState.error.toLowerCase();
-      if (error.contains('seller not found') || error.contains('403') || error.contains('404')) {
+      if (error.contains('seller not found') ||
+          error.contains('403') ||
+          error.contains('404')) {
         return true;
       }
     }
@@ -75,10 +75,8 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
     showDialog<void>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => CompleteProfileDialog(
-        forcedMode: true,
-        onComplete: () {},
-      ),
+      builder: (_) =>
+          CompleteProfileDialog(forcedMode: true, onComplete: () {}),
     ).whenComplete(() => _dialogShown = false);
   }
 
@@ -144,169 +142,223 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
               final isTabletOrUp = Breakpoints.isTabletOrUp(context);
 
               return LayoutBuilder(
-                  builder: (context, constraints) => RefreshIndicator(
-                    onRefresh: _refreshHome,
-                    child: SingleChildScrollView(
-                      physics: const AlwaysScrollableScrollPhysics(),
-                      padding: EdgeInsets.only(bottom: isTabletOrUp ? 24.0 : 24.h),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          minHeight: constraints.maxHeight,
-                        ),
-                        child: Center(
-                          child: ResponsiveFormShell(
-                            enabled: isTabletOrUp,
-                            maxWidth: 700,
-                            child: ResponsiveFormSection(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
-                                  const Center(child: _SafqaBusinessLogo()),
-                                  SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
-                              child: _GreetingRow(
-                                storeName: storeName,
-                                logoBytes: logoBytes,
-                                isLoading: isLoading,
-                                onProfileTap: _openProfile,
-                                onNotificationTap: _openNotifications,
-                              ),
-                            ),
-                              if (state is HomeFailure &&
-                                  !_isProfileIncomplete(state)) ...[
-                                SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                builder: (context, constraints) => RefreshIndicator(
+                  onRefresh: _refreshHome,
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.only(
+                      bottom: isTabletOrUp ? 24.0 : 24.h,
+                    ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        minHeight: constraints.maxHeight,
+                      ),
+                      child: Center(
+                        child: ResponsiveFormShell(
+                          enabled: isTabletOrUp,
+                          maxWidth: 700,
+                          child: ResponsiveFormSection(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
+                                const Center(child: _SafqaBusinessLogo()),
+                                SizedBox(height: isTabletOrUp ? 24.0 : 24.h),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        state.error,
-                                        style: TextStyles.regular13(
-                                          context,
-                                        ).copyWith(color: Colors.red),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () => context
-                                          .read<HomeViewModel>()
-                                          .loadHomeData(),
-                                      child: Text(
-                                        'Retry',
-                                        style: TextStyles.semiBold13(context)
-                                            .copyWith(
-                                              color: Theme.of(context).colorScheme.primary,
-                                            ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              ],
-                              SizedBox(height: isTabletOrUp ? 32.0 : 32.h),
-                              // ── Action cards ─────────────────────────────────
-                              // When the profile is incomplete, overlay a dim
-                              // shield and absorb all taps so nothing is reachable.
-                              Stack(
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: isTabletOrUp ? 16.0 : 16.w),
-                                    child: Column(
-                                      children: [
-                                      HomeActionCard(
-                                        label: S.of(context).kNewLotAuction,
-                                        showAddIcon: true,
-                                        backgroundImage: Assets.imagesFrame1,
-                                        onTap: () async {
-                                          await Navigator.pushNamed(context, LotAuctionView.routeName);
-                                          await _refreshHome();
-                                        },
-                                      ),
-                                      SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
-                                      HomeActionCard(
-                                        label: S.of(context).kNewSingleAuction,
-                                        showAddIcon: true,
-                                        backgroundImage: Assets.imagesFrame1,
-                                        onTap: () async {
-                                          await Navigator.pushNamed(context, ItemAuctionView.routeName);
-                                          await _refreshHome();
-                                        },
-                                      ),
-                                      SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
-                                        Row(
-                                        children: [
-                                          Expanded(
-                                            child: HomeActionCard(
-                                              label: S.of(context).kHistory,
-                                              backgroundImage: Assets.imagesFrame1,
-                                              onTap: () {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  HistoryView.routeName,
-                                                );
-                                              },
-                                            ),
-                                            ),
-                                            SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
-                                            Expanded(
-                                            child: HomeActionCard(
-                                              label: S.of(context).kStatistics,
-                                              backgroundImage: Assets.imagesFrame2,
-                                              onTap: _openStatistics,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: isTabletOrUp ? 16.0 : 16.w,
+                                  ),
+                                  child: _GreetingRow(
+                                    storeName: storeName,
+                                    logoBytes: logoBytes,
+                                    isLoading: isLoading,
+                                    onProfileTap: _openProfile,
+                                    onNotificationTap: _openNotifications,
                                   ),
                                 ),
-                                // Translucent lock overlay — absorbs all taps
-                                // when profile completion is required.
-                                if (profileLocked)
-                                  Positioned.fill(
-                                    child: GestureDetector(
-                                      onTap: () => _maybeShowDialog(homeState: state),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Theme.of(context).brightness == Brightness.dark
-                                              ? Colors.black.withValues(alpha: 0.6)
-                                              : Colors.black.withValues(alpha: 0.45),
-                                          borderRadius: BorderRadius.circular(12.rSp(context)),
-                                        ),
-                                        child: Center(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Icon(
-                                                Icons.lock_rounded,
-                                                color: Colors.white,
-                                                size: 40.rSp(context),
-                                              ),
-                                              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
-                                              Text(
-                                                'Complete your profile to unlock',
-                                                style: TextStyles.semiBold14(context)
-                                                    .copyWith(color: Colors.white),
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ],
+                                if (state is HomeFailure &&
+                                    !_isProfileIncomplete(state)) ...[
+                                  SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: isTabletOrUp ? 16.0 : 16.w,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            state.error,
+                                            style: TextStyles.regular13(
+                                              context,
+                                            ).copyWith(color: Colors.red),
                                           ),
                                         ),
-                                      ),
+                                        TextButton(
+                                          onPressed: () => context
+                                              .read<HomeViewModel>()
+                                              .loadHomeData(),
+                                          child: Text(
+                                            'Retry',
+                                            style:
+                                                TextStyles.semiBold13(
+                                                  context,
+                                                ).copyWith(
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.primary,
+                                                ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
-                              ), // End Stack
-                            ],
-                          ), // End Column
-                        ), // End ResponsiveFormSection
-                      ), // End ResponsiveFormShell
-                    ), // End Center
-                  ), // End ConstrainedBox
-                ), // End SingleChildScrollView
-              ), // End RefreshIndicator
+                                SizedBox(height: isTabletOrUp ? 32.0 : 32.h),
+                                // ── Action cards ─────────────────────────────────
+                                // When the profile is incomplete, overlay a dim
+                                // shield and absorb all taps so nothing is reachable.
+                                Stack(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: isTabletOrUp ? 16.0 : 16.w,
+                                      ),
+                                      child: Column(
+                                        children: [
+                                          HomeActionCard(
+                                            label: S.of(context).kNewLotAuction,
+                                            showAddIcon: true,
+                                            backgroundImage:
+                                                Assets.imagesFrame1,
+                                            onTap: () async {
+                                              await Navigator.pushNamed(
+                                                context,
+                                                LotAuctionView.routeName,
+                                              );
+                                              await _refreshHome();
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: isTabletOrUp ? 16.0 : 16.h,
+                                          ),
+                                          //single auction card
+                                          HomeActionCard(
+                                            label: S
+                                                .of(context)
+                                                .kNewSingleAuction,
+                                            showAddIcon: true,
+                                            backgroundImage:
+                                                Assets.imagesFrame1,
+                                            onTap: () async {
+                                              await Navigator.pushNamed(
+                                                context,
+                                                ItemAuctionView.routeName,
+                                              );
+                                              await _refreshHome();
+                                            },
+                                          ),
+                                          SizedBox(
+                                            height: isTabletOrUp ? 16.0 : 16.h,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                child: HomeActionCard(
+                                                  label: S.of(context).kHistory,
+                                                  backgroundImage:
+                                                      Assets.imagesFrame1,
+                                                  onTap: () {
+                                                    Navigator.pushNamed(
+                                                      context,
+                                                      HistoryView.routeName,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: isTabletOrUp ? 8.0 : 8.w,
+                                              ),
+                                              Expanded(
+                                                child: HomeActionCard(
+                                                  label: S
+                                                      .of(context)
+                                                      .kStatistics,
+                                                  backgroundImage:
+                                                      Assets.imagesFrame2,
+                                                  onTap: _openStatistics,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    // Translucent lock overlay — absorbs all taps
+                                    // when profile completion is required.
+                                    if (profileLocked)
+                                      Positioned.fill(
+                                        child: GestureDetector(
+                                          onTap: () => _maybeShowDialog(
+                                            homeState: state,
+                                          ),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  Theme.of(
+                                                        context,
+                                                      ).brightness ==
+                                                      Brightness.dark
+                                                  ? Colors.black.withValues(
+                                                      alpha: 0.6,
+                                                    )
+                                                  : Colors.black.withValues(
+                                                      alpha: 0.45,
+                                                    ),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                    12.rSp(context),
+                                                  ),
+                                            ),
+                                            child: Center(
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(
+                                                    Icons.lock_rounded,
+                                                    color: Colors.white,
+                                                    size: 40.rSp(context),
+                                                  ),
+                                                  SizedBox(
+                                                    height: isTabletOrUp
+                                                        ? 8.0
+                                                        : 8.h,
+                                                  ),
+                                                  Text(
+                                                    'Complete your profile to unlock',
+                                                    style:
+                                                        TextStyles.semiBold14(
+                                                          context,
+                                                        ).copyWith(
+                                                          color: Colors.white,
+                                                        ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                                ), // End Stack
+                              ],
+                            ), // End Column
+                          ), // End ResponsiveFormSection
+                        ), // End ResponsiveFormShell
+                      ), // End Center
+                    ), // End ConstrainedBox
+                  ), // End SingleChildScrollView
+                ), // End RefreshIndicator
               ); // End LayoutBuilder
             },
           ),
@@ -385,70 +437,69 @@ class _GreetingRow extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-              GestureDetector(
-                onTap: onProfileTap,
-                child: Container(
-                  width: isTabletOrUp ? 70.0 : 70.w,
-                  height: isTabletOrUp ? 70.0 : 70.w,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Theme.of(context).colorScheme.secondary,
-                    border: Border.all(
-                      color: Theme.of(context).dividerColor,
-                      width: 1.5,
+                GestureDetector(
+                  onTap: onProfileTap,
+                  child: Container(
+                    width: isTabletOrUp ? 70.0 : 70.w,
+                    height: isTabletOrUp ? 70.0 : 70.w,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Theme.of(context).colorScheme.secondary,
+                      border: Border.all(
+                        color: Theme.of(context).dividerColor,
+                        width: 1.5,
+                      ),
+                    ),
+                    child: ClipOval(
+                      child: logoBytes != null
+                          ? Image.memory(logoBytes!, fit: BoxFit.cover)
+                          : Icon(
+                              Icons.store_rounded,
+                              color: Theme.of(context).colorScheme.primary,
+                              size: 38.rSp(context),
+                            ),
                     ),
                   ),
-                  child: ClipOval(
-                    child: logoBytes != null
-                        ? Image.memory(logoBytes!, fit: BoxFit.cover)
-                        : Icon(
-                            Icons.store_rounded,
-                            color: Theme.of(context).colorScheme.primary,
-                            size: 38.rSp(context),
+                ),
+                SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
+                Flexible(
+                  child: SizedBox(
+                    width: isTabletOrUp ? 103.0 : 103.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          S.of(context).homeWelcomeGreeting,
+                          style: TextStyles.regular18(context).copyWith(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white.withValues(alpha: 0.7)
+                                : Theme.of(context).colorScheme.onSurface
+                                      .withValues(alpha: 0.7),
                           ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
+                        Text(
+                          storeName,
+                          style: TextStyles.medium18(context).copyWith(
+                            color:
+                                Theme.of(context).brightness == Brightness.dark
+                                ? Colors.white
+                                : Theme.of(context).colorScheme.primary,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(width: isTabletOrUp ? 8.0 : 8.w),
-              Flexible(
-                child: SizedBox(
-                  width: isTabletOrUp ? 103.0 : 103.w,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        S.of(context).homeWelcomeGreeting,
-                        style: TextStyles.regular18(
-                          context,
-                        ).copyWith(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white.withValues(alpha: 0.7)
-                              : Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.7),
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
-                      Text(
-                        storeName,
-                        style: TextStyles.medium18(
-                          context,
-                        ).copyWith(
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.white
-                              : Theme.of(context).colorScheme.primary,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      Row(
+        Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             _NotificationBadgeIcon(onTap: onNotificationTap),
@@ -520,7 +571,11 @@ class _HeaderIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Icon(icon, color: Theme.of(context).colorScheme.primary, size: 28.rSp(context)),
+      child: Icon(
+        icon,
+        color: Theme.of(context).colorScheme.primary,
+        size: 28.rSp(context),
+      ),
     );
   }
 }

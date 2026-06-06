@@ -148,7 +148,18 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
   }
 
   void _addItem() {
-    setState(() => _items.add(_LotItemFormData()));
+    setState(() {
+      final newItem = _LotItemFormData()..categoryId = _lotCategoryId;
+      _items.add(newItem);
+    });
+
+    if (_lotCategoryId != null) {
+      final newIndex = _items.length - 1;
+      context.read<CreateAuctionViewModel>().loadAttributes(
+        itemIndex: newIndex,
+        categoryId: _lotCategoryId!,
+      );
+    }
   }
 
   void _removeItem(int itemIndex) {
