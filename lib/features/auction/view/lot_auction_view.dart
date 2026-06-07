@@ -53,7 +53,7 @@ class _LotAuctionViewBodyState extends State<_LotAuctionViewBody> {
         item.clearDynamicValues();
       }
     });
-    
+
     final cubit = context.read<CreateAuctionViewModel>();
     if (newCategoryId != null) {
       for (int i = 0; i < _items.length; i++) {
@@ -497,6 +497,10 @@ class _LotItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isTabletOrUp = Breakpoints.isTabletOrUp(context);
     final s = S.of(context);
+
+    final requiredAttributes = attributes.where((a) => a.isRequired).toList();
+    final optionalAttributes = attributes.where((a) => !a.isRequired).toList();
+
     return Container(
       padding: EdgeInsets.all(isTabletOrUp ? 12.0 : 12.w),
       decoration: BoxDecoration(
@@ -532,7 +536,22 @@ class _LotItemCard extends StatelessWidget {
             height: 82,
             onTap: onPickImages,
           ),
-          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+          if (optionalAttributes.isNotEmpty) ...[
+            SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
+            Wrap(
+              spacing: isTabletOrUp ? 8.0 : 8.w,
+              runSpacing: isTabletOrUp ? 8.0 : 8.h,
+              children: optionalAttributes.map((attribute) {
+                return _OptionalAttributeChip(
+                  attribute: attribute,
+                  item: item,
+                  onBooleanChanged: onBooleanChanged,
+                  onPickDate: () => onPickDate(attribute),
+                );
+              }).toList(),
+            ),
+          ],
+          SizedBox(height: isTabletOrUp ? 12.0 : 12.h),
           _FieldLabel(label: s.auctionTitle),
           SizedBox(height: isTabletOrUp ? 4.0 : 4.h),
           _AuctionTextField(controller: item.titleController),
@@ -562,11 +581,11 @@ class _LotItemCard extends StatelessWidget {
             selected: item.condition,
             onChanged: onConditionChanged,
           ),
-          if (attributes.isNotEmpty) ...[
+          if (requiredAttributes.isNotEmpty) ...[
             SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
             _FieldLabel(label: s.auctionAttributes),
             SizedBox(height: isTabletOrUp ? 6.0 : 6.h),
-            ...attributes.map(
+            ...requiredAttributes.map(
               (attribute) => Padding(
                 padding: EdgeInsets.only(bottom: isTabletOrUp ? 8.0 : 8.h),
                 child: _AttributeField(
@@ -682,9 +701,9 @@ class _AuctionTextField extends StatelessWidget {
       decoration: InputDecoration(
         isDense: true,
         hintText: hintText,
-        hintStyle: TextStyles.regular13(context).copyWith(
-          color: Theme.of(context).hintColor,
-        ),
+        hintStyle: TextStyles.regular13(
+          context,
+        ).copyWith(color: Theme.of(context).hintColor),
         contentPadding: EdgeInsets.symmetric(
           horizontal: isTabletOrUp ? 10.0 : 10.w,
           vertical: isTabletOrUp ? 10.0 : 10.h,
@@ -842,9 +861,10 @@ class _CategoryDropdown extends StatelessWidget {
           value: value,
           isExpanded: true,
           hint: Text(
-            hintText ?? (categories.isEmpty
-                ? S.of(context).auctionNoCategoriesFound
-                : S.of(context).auctionSelectCategoryHint),
+            hintText ??
+                (categories.isEmpty
+                    ? S.of(context).auctionNoCategoriesFound
+                    : S.of(context).auctionSelectCategoryHint),
             style: TextStyles.regular13(
               context,
             ).copyWith(color: Theme.of(context).hintColor),
@@ -1022,5 +1042,219 @@ class _LotItemFormData {
     descriptionController.dispose();
     warrantyController.dispose();
     clearDynamicValues();
+  }
+}
+
+IconData _getIconForAttribute(String name) {
+  final lowerName = name.toLowerCase();
+  if (lowerName.contains('weight') || lowerName.contains('وزن'))
+    return Icons.scale;
+  if (lowerName.contains('furnish') || lowerName.contains('مفروش'))
+    return Icons.chair;
+  if (lowerName.contains('floor') || lowerName.contains('طابق'))
+    return Icons.layers;
+  if (lowerName.contains('material') ||
+      lowerName.contains('مادة') ||
+      lowerName.contains('خام'))
+    return Icons.texture;
+  if (lowerName.contains('color') || lowerName.contains('لون'))
+    return Icons.color_lens;
+  if (lowerName.contains('age') || lowerName.contains('عمر'))
+    return Icons.child_care;
+  if (lowerName.contains('page') || lowerName.contains('صفح'))
+    return Icons.menu_book;
+  if (lowerName.contains('battery') || lowerName.contains('بطار'))
+    return Icons.battery_charging_full;
+  if (lowerName.contains('dimension') || lowerName.contains('أبعاد'))
+    return Icons.straighten;
+  if (lowerName.contains('location') || lowerName.contains('موقع'))
+    return Icons.public;
+  if (lowerName.contains('model') || lowerName.contains('موديل'))
+    return Icons.directions_car;
+  if (lowerName.contains('gear') ||
+      lowerName.contains('transmission') ||
+      lowerName.contains('ناقل'))
+    return Icons.settings;
+  if (lowerName.contains('fuel') ||
+      lowerName.contains('petrol') ||
+      lowerName.contains('وقود'))
+    return Icons.local_gas_station;
+  if (lowerName.contains('speed') ||
+      lowerName.contains('mileage') ||
+      lowerName.contains('سرع'))
+    return Icons.speed;
+  if (lowerName.contains('brand') || lowerName.contains('ماركة'))
+    return Icons.branding_watermark;
+  if (lowerName.contains('capacity') || lowerName.contains('سعة'))
+    return Icons.sd_storage;
+  if (lowerName.contains('screen') || lowerName.contains('شاش'))
+    return Icons.desktop_windows;
+  if (lowerName.contains('area') || lowerName.contains('مساح'))
+    return Icons.crop_square;
+  if (lowerName.contains('room') || lowerName.contains('غرف'))
+    return Icons.meeting_room;
+  if (lowerName.contains('size') || lowerName.contains('حجم'))
+    return Icons.photo_size_select_small;
+  if (lowerName.contains('author') || lowerName.contains('مؤلف'))
+    return Icons.person;
+  if (lowerName.contains('language') || lowerName.contains('لغ'))
+    return Icons.language;
+  if (lowerName.contains('publisher') || lowerName.contains('ناشر'))
+    return Icons.print;
+
+  return Icons.label_outline;
+}
+
+class _OptionalAttributeChip extends StatelessWidget {
+  const _OptionalAttributeChip({
+    required this.attribute,
+    required this.item,
+    required this.onBooleanChanged,
+    required this.onPickDate,
+  });
+
+  final CategoryAttributeModel attribute;
+  final _LotItemFormData item;
+  final void Function(int attributeId, bool? value) onBooleanChanged;
+  final VoidCallback onPickDate;
+
+  void _handleTap(BuildContext context) {
+    if (attribute.isDate || attribute.isDateTime) {
+      onPickDate();
+      return;
+    }
+
+    if (attribute.isBoolean) {
+      showDialog(
+        context: context,
+        builder: (context) => SimpleDialog(
+          title: Text(attribute.name, style: TextStyles.semiBold16(context)),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                onBooleanChanged(attribute.id, true);
+                Navigator.pop(context);
+              },
+              child: Text(
+                S.of(context).auctionTrue,
+                style: TextStyles.regular13(context),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                onBooleanChanged(attribute.id, false);
+                Navigator.pop(context);
+              },
+              child: Text(
+                S.of(context).auctionFalse,
+                style: TextStyles.regular13(context),
+              ),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    final controller = item.attributeControllers[attribute.id];
+    if (controller != null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text(attribute.name, style: TextStyles.semiBold16(context)),
+          content: TextField(
+            controller: controller,
+            keyboardType: attribute.isNumber
+                ? const TextInputType.numberWithOptions(decimal: true)
+                : TextInputType.text,
+            style: TextStyles.regular13(context),
+            decoration: InputDecoration(
+              hintText: attribute.name,
+              isDense: true,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(S.of(context).kSave),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+    final s = S.of(context);
+
+    Widget buildChip(bool hasValue, String displayValue) {
+      return InkWell(
+        onTap: () => _handleTap(context),
+        borderRadius: BorderRadius.circular(6.rSp(context)),
+        child: Container(
+          padding: EdgeInsets.symmetric(
+            horizontal: isTabletOrUp ? 10.0 : 10.w,
+            vertical: isTabletOrUp ? 6.0 : 6.h,
+          ),
+          decoration: BoxDecoration(
+            border: Border.all(color: const Color(0xFFE4E4E4)),
+            borderRadius: BorderRadius.circular(6.rSp(context)),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                _getIconForAttribute(attribute.name),
+                size: isTabletOrUp ? 16.0 : 16.rSp(context),
+                color: hasValue
+                    ? Theme.of(context).colorScheme.primary
+                    : const Color(0xFF8A8A8A),
+              ),
+              SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
+              Text(
+                displayValue,
+                style: TextStyles.regular12(context).copyWith(
+                  color: hasValue
+                      ? Theme.of(context).colorScheme.onSurface
+                      : const Color(0xFF8A8A8A),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (attribute.isBoolean) {
+      final val = item.booleanAttributes[attribute.id];
+      final hasValue = val != null;
+      final displayValue = hasValue
+          ? (val == true ? s.auctionTrue : s.auctionFalse)
+          : '${attribute.name} +';
+      return buildChip(hasValue, displayValue);
+    }
+
+    if (attribute.isDate || attribute.isDateTime) {
+      final val = item.dateTimeAttributes[attribute.id];
+      final hasValue = val?.isNotEmpty == true;
+      final displayValue = hasValue ? val! : '${attribute.name} +';
+      return buildChip(hasValue, displayValue);
+    }
+
+    final controller = item.attributeControllers[attribute.id];
+    if (controller != null) {
+      return ValueListenableBuilder<TextEditingValue>(
+        valueListenable: controller,
+        builder: (context, value, _) {
+          final hasValue = value.text.isNotEmpty;
+          final displayValue = hasValue ? value.text : '${attribute.name} +';
+          return buildChip(hasValue, displayValue);
+        },
+      );
+    }
+
+    return const SizedBox.shrink();
   }
 }
