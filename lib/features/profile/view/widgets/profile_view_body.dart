@@ -394,6 +394,9 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
           final activePlanId = profileState is ProfileLoaded
               ? profileState.activePlanId
               : null;
+          final verificationStatus = profileState is ProfileLoaded
+              ? profileState.verificationStatus
+              : null;
           final cityLabel = profileState is ProfileLoaded
               ? ((profileState.cityName?.trim().isNotEmpty ?? false)
                     ? profileState.cityName!
@@ -420,6 +423,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                       ProfileHeaderSection(
                         logoBytes: logoBytes,
                         activePlanId: activePlanId,
+                        verificationStatus: verificationStatus,
                       ),
                       SizedBox(height: isTabletOrUp ? 20.0 : 20.h),
 

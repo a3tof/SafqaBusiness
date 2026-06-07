@@ -36,6 +36,8 @@ class ProfileViewModel extends Cubit<ProfileViewModelState> {
             : null,
         auctionsCount: current is ProfileLoaded ? current.auctionsCount : null,
         activePlanId: _readActivePlanId(),
+        verificationStatus:
+            current is ProfileLoaded ? current.verificationStatus : null,
       ),
     );
   }
@@ -68,6 +70,7 @@ class ProfileViewModel extends Cubit<ProfileViewModelState> {
           followersCount: profile.followersCount,
           auctionsCount: profile.auctionsCount,
           activePlanId: profile.activePlanId,
+          verificationStatus: profile.verificationStatus,
         ),
       );
     } catch (e) {
@@ -104,6 +107,8 @@ class ProfileViewModel extends Cubit<ProfileViewModelState> {
             : null,
         auctionsCount: current is ProfileLoaded ? current.auctionsCount : null,
         activePlanId: current is ProfileLoaded ? current.activePlanId : null,
+        verificationStatus:
+            current is ProfileLoaded ? current.verificationStatus : null,
       ),
     );
   }

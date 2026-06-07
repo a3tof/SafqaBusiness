@@ -17,6 +17,7 @@ class ProfileModel {
   final String followersCount;
   final String auctionsCount;
   final String? upgradeType;
+  final int? verificationStatus;
 
   ProfileModel({
     this.fullName,
@@ -32,6 +33,7 @@ class ProfileModel {
     this.followersCount = '0',
     this.auctionsCount = '0',
     this.upgradeType,
+    this.verificationStatus,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -107,6 +109,9 @@ class ProfileModel {
                   json['planType'] ??
                   json['PlanType'])
               ?.toString(),
+      verificationStatus: _parseInt(
+        json['verificationStatus'] ?? json['VerificationStatus'],
+      ),
     );
   }
 

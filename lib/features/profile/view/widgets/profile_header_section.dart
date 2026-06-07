@@ -11,10 +11,16 @@ import 'package:safqaseller/features/subscription/view/subscription_view.dart';
 import 'package:safqaseller/generated/l10n.dart';
 
 class ProfileHeaderSection extends StatelessWidget {
-  const ProfileHeaderSection({super.key, this.logoBytes, this.activePlanId});
+  const ProfileHeaderSection({
+    super.key,
+    this.logoBytes,
+    this.activePlanId,
+    this.verificationStatus,
+  });
 
   final Uint8List? logoBytes;
   final String? activePlanId;
+  final int? verificationStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -122,24 +128,25 @@ class ProfileHeaderSection extends StatelessWidget {
                   ),
           ),
         ),
-        Positioned(
-          bottom: isTabletOrUp ? 2.0 : 2.h,
-          right: isTabletOrUp ? 2.0 : 2.w,
-          child: Container(
-            width: isTabletOrUp ? 24.0 : 24.w,
-            height: isTabletOrUp ? 24.0 : 24.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Theme.of(context).colorScheme.primary,
-              border: Border.all(color: Colors.white, width: 2),
-            ),
-            child: Icon(
-              Icons.check,
-              color: Colors.white,
-              size: 14.rSp(context),
+        if (verificationStatus == 2)
+          Positioned(
+            bottom: isTabletOrUp ? 2.0 : 2.h,
+            right: isTabletOrUp ? 2.0 : 2.w,
+            child: Container(
+              width: isTabletOrUp ? 24.0 : 24.w,
+              height: isTabletOrUp ? 24.0 : 24.w,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Theme.of(context).colorScheme.primary,
+                border: Border.all(color: Colors.white, width: 2),
+              ),
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+                size: 14.rSp(context),
+              ),
             ),
           ),
-        ),
       ],
     );
   }
