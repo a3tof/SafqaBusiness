@@ -34,11 +34,7 @@ class DioHelper {
           if (deviceId != null) {
             options.headers['DeviceId'] = deviceId;
           }
-          final language =
-              _cacheHelper.getData(key: CacheKeys.language) as String?;
-          if (language != null) {
-            options.headers['Accept-Language'] = language;
-          }
+          // Language header removed as requested
           // Skip refresh logic on the refresh call itself to prevent loops.
           if (options.extra['requiresAuth'] == true &&
               options.extra['_refreshing'] != true) {
