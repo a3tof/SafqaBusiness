@@ -569,6 +569,7 @@ class _ViewAuctionViewState extends State<ViewAuctionView> {
     bidIncrement: 0,
     startDate: DateTime.now().add(const Duration(days: 1)),
     endDate: DateTime.now().add(const Duration(days: 7)),
+    categoryId: 0,
     items: [
       AuctionDetailItemModel(
         id: 0,

@@ -12,6 +12,7 @@ class AuctionDetailModel {
   final int bidIncrement;
   final DateTime? startDate;
   final DateTime? endDate;
+  final int categoryId;
   final List<AuctionDetailItemModel> items;
 
   const AuctionDetailModel({
@@ -23,6 +24,7 @@ class AuctionDetailModel {
     required this.bidIncrement,
     required this.startDate,
     required this.endDate,
+    required this.categoryId,
     required this.items,
   });
 
@@ -38,6 +40,7 @@ class AuctionDetailModel {
       bidIncrement: _asInt(json['bidIncrement'] ?? json['BidIncrement']) ?? 0,
       startDate: _asDateTime(json['startDate'] ?? json['StartDate']),
       endDate: _asDateTime(json['endDate'] ?? json['EndDate']),
+      categoryId: _asInt(json['categoryId'] ?? json['CategoryId'] ?? json['category_id']) ?? 0,
       items: itemsRaw
           .whereType<Map>()
           .map(
@@ -84,7 +87,7 @@ class AuctionDetailItemModel {
       condition: _asInt(json['condition'] ?? json['Condition']) ?? 0,
       warrantyInfo:
           _asString(json['warrantyInfo'] ?? json['WarrantyInfo']) ?? '',
-      categoryId: _asInt(json['categoryId'] ?? json['CategoryId']) ?? 0,
+      categoryId: _asInt(json['categoryId'] ?? json['CategoryId'] ?? json['category_id']) ?? 0,
       attributes: attributesRaw
           .whereType<Map>()
           .map(

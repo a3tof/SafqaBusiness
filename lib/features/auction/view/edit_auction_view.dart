@@ -460,6 +460,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
     bidIncrement: 0,
     startDate: DateTime.now(),
     endDate: DateTime.now().add(Duration(days: 1)),
+    categoryId: 0,
     items: [
       AuctionDetailItemModel(
         id: 0,
