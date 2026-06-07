@@ -609,25 +609,17 @@ class LotDetailSidePanel extends StatelessWidget {
       ),
       child: SingleChildScrollView(
         child: Row(
-          mainAxisAlignment: isSplitLayout
-              ? MainAxisAlignment.start
-              : MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: Column(
-                crossAxisAlignment: isSplitLayout
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center,
-                mainAxisAlignment: isSplitLayout
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     s.auctionTimeLeft,
-                    textAlign: isSplitLayout
-                        ? TextAlign.start
-                        : TextAlign.center,
+                    textAlign: TextAlign.start,
                     style: TextStyles.regular11(
                       context,
                     ).copyWith(color: Theme.of(context).hintColor),
@@ -636,26 +628,20 @@ class LotDetailSidePanel extends StatelessWidget {
                   _LiveCountdown(
                     endDate: displayDetail.endDate ?? item.endDate,
                     fallbackTimeLeft: item.timeLeft,
-                    textAlign: isSplitLayout
-                        ? TextAlign.start
-                        : TextAlign.center,
+                    textAlign: TextAlign.start,
                   ),
                 ],
               ),
             ),
             Expanded(
               child: Column(
-                crossAxisAlignment: isSplitLayout
-                    ? CrossAxisAlignment.end
-                    : CrossAxisAlignment.center,
-                mainAxisAlignment: isSplitLayout
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
                     _priceLabel(context, item.status),
-                    textAlign: isSplitLayout ? TextAlign.end : TextAlign.center,
+                    textAlign: TextAlign.end,
                     style: TextStyles.regular11(
                       context,
                     ).copyWith(color: Theme.of(context).hintColor),
@@ -663,7 +649,7 @@ class LotDetailSidePanel extends StatelessWidget {
                   SizedBox(height: isTabletOrUp ? 2.0 : 2.h),
                   Text(
                     _formatPrice(displayPrice),
-                    textAlign: isSplitLayout ? TextAlign.end : TextAlign.center,
+                    textAlign: TextAlign.end,
                     style: TextStyles.bold16(
                       context,
                     ).copyWith(color: Theme.of(context).colorScheme.onSurface),
@@ -796,7 +782,11 @@ class _AuctionItemTile extends StatelessWidget {
                             child: Row(
                               children: [
                                 Icon(
-                                  _getCategoryIcon(item.categoryId > 0 ? item.categoryId : rootCategoryId),
+                                  _getCategoryIcon(
+                                    item.categoryId > 0
+                                        ? item.categoryId
+                                        : rootCategoryId,
+                                  ),
                                   size: isTabletOrUp ? 24.0 : 20.rSp(context),
                                   color: Theme.of(context).colorScheme.onSurface
                                       .withValues(alpha: 0.6),
@@ -804,7 +794,11 @@ class _AuctionItemTile extends StatelessWidget {
                                 SizedBox(width: 4.w),
                                 Flexible(
                                   child: Text(
-                                    _getCategoryName(item.categoryId > 0 ? item.categoryId : rootCategoryId),
+                                    _getCategoryName(
+                                      item.categoryId > 0
+                                          ? item.categoryId
+                                          : rootCategoryId,
+                                    ),
                                     style: TextStyles.regular14(context)
                                         .copyWith(
                                           color: Theme.of(context)
