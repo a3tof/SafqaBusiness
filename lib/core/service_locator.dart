@@ -92,7 +92,9 @@ Future<void> setupServiceLocator() async {
   getIt.registerLazySingleton(
     () => SubscriptionRepository(dioHelper: getIt(), cacheHelper: getIt()),
   );
-  getIt.registerLazySingleton(() => AuctionRepository(dioHelper: getIt()));
+  getIt.registerLazySingleton(
+    () => AuctionRepository(dioHelper: getIt(), cacheHelper: getIt()),
+  );
 
   getIt.registerLazySingleton(() => ThemeViewModel(getIt()));
   getIt.registerLazySingleton(() => AuthViewModel(getIt()));

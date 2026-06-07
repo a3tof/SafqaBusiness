@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:safqaseller/core/network/dio_client.dart';
+import 'package:safqaseller/core/storage/cache_helper.dart';
 import 'package:safqaseller/features/auction/model/models/auction_detail_model.dart';
 import 'package:safqaseller/features/auction/model/models/category_attribute_model.dart';
 import 'package:safqaseller/features/auction/model/models/category_model.dart';
@@ -11,8 +12,9 @@ import 'package:safqaseller/features/auction/model/models/create_auction_request
 
 class AuctionRepository {
   final DioHelper dioHelper;
+  final CacheHelper cacheHelper;
 
-  AuctionRepository({required this.dioHelper});
+  AuctionRepository({required this.dioHelper, required this.cacheHelper});
 
   List<CategoryModel>? _cachedCategories;
   final Map<int, List<CategoryAttributeModel>> _cachedAttributes = {};
@@ -40,6 +42,33 @@ class AuctionRepository {
       return _cachedAttributes[categoryId]!;
     }
 
+    final cacheKey = 'attributes_cache_$categoryId';
+    final cachedDataString = cacheHelper.getData(key: cacheKey);
+
+    if (cachedDataString != null && cachedDataString is String) {
+      try {
+        final cachedJson = jsonDecode(cachedDataString);
+        final timestamp = cachedJson['timestamp'] as int?;
+        if (timestamp != null) {
+          final cacheTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+          if (DateTime.now().difference(cacheTime).inHours < 24) {
+            final data = _asList(cachedJson['data']);
+            final attributes = data
+                .map(
+                  (item) => CategoryAttributeModel.fromJson(
+                    item as Map<String, dynamic>,
+                  ),
+                )
+                .toList();
+            _cachedAttributes[categoryId] = attributes;
+            return attributes;
+          }
+        }
+      } catch (_) {
+        // Fallback to fetch if cache is invalid
+      }
+    }
+
     final response = await dioHelper.getData(
       endPoint: 'Auction/Get-Attributes/$categoryId',
       requiresAuth: true,
@@ -53,7 +82,23 @@ class AuctionRepository {
               CategoryAttributeModel.fromJson(item as Map<String, dynamic>),
         )
         .toList();
+
     _cachedAttributes[categoryId] = attributes;
+
+    // Save to cache
+    try {
+      final cachePayload = {
+        'timestamp': DateTime.now().millisecondsSinceEpoch,
+        'data': data,
+      };
+      await cacheHelper.saveData(
+        key: cacheKey,
+        value: jsonEncode(cachePayload),
+      );
+    } catch (_) {
+      // Ignore cache save errors
+    }
+
     return attributes;
   }
 
