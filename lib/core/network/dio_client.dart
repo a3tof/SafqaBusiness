@@ -34,6 +34,11 @@ class DioHelper {
           if (deviceId != null) {
             options.headers['DeviceId'] = deviceId;
           }
+          final language =
+              _cacheHelper.getData(key: CacheKeys.language) as String?;
+          if (language != null) {
+            options.headers['Accept-Language'] = language;
+          }
           // Skip refresh logic on the refresh call itself to prevent loops.
           if (options.extra['requiresAuth'] == true &&
               options.extra['_refreshing'] != true) {
@@ -121,7 +126,9 @@ class DioHelper {
         );
       }
 
-      return _RefreshAttempt(rejected: _isRejectedRefreshStatus(response.statusCode));
+      return _RefreshAttempt(
+        rejected: _isRejectedRefreshStatus(response.statusCode),
+      );
     } catch (e) {
       if (kDebugMode) debugPrint('Token refresh failed: $e');
     }
@@ -184,7 +191,8 @@ class DioHelper {
   Future<bool> ensureSessionIsValid({bool redirectToLogin = false}) async {
     final token = await _getValidToken();
     if (token == null || token.isEmpty) {
-      final isLoggedIn = _cacheHelper.getData(key: CacheKeys.isLoggedIn) == true;
+      final isLoggedIn =
+          _cacheHelper.getData(key: CacheKeys.isLoggedIn) == true;
       if (isLoggedIn) {
         await _expireSession(redirectToLogin: redirectToLogin);
       }
@@ -219,7 +227,9 @@ class DioHelper {
         );
       }
 
-      return _RefreshAttempt(rejected: _isRejectedRefreshStatus(response.statusCode));
+      return _RefreshAttempt(
+        rejected: _isRejectedRefreshStatus(response.statusCode),
+      );
     } catch (e) {
       if (kDebugMode) debugPrint('Explicit token refresh failed: $e');
     }
