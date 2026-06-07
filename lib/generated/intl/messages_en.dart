@@ -181,10 +181,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage(
       "Lot Auction",
     ),
-    "auctionLotDescription": MessageLookupByLibrary.simpleMessage("Auction Description"),
+    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage(
+      "Lot Category",
+    ),
+    "auctionLotDescription": MessageLookupByLibrary.simpleMessage(
+      "Auction Description",
+    ),
     "auctionLotDetails": MessageLookupByLibrary.simpleMessage("Lot Details"),
     "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("Lot Title"),
-    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage("Lot Category"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("New"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("Next item"),
     "auctionNoCategoriesFound": MessageLookupByLibrary.simpleMessage(
@@ -255,6 +259,16 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "birthdate": MessageLookupByLibrary.simpleMessage("Birthdate"),
     "card": MessageLookupByLibrary.simpleMessage("Card"),
+    "categoryBooksAndMedia": MessageLookupByLibrary.simpleMessage(
+      "Books & Media",
+    ),
+    "categoryElectronics": MessageLookupByLibrary.simpleMessage("Electronics"),
+    "categoryRealEstate": MessageLookupByLibrary.simpleMessage("Real Estate"),
+    "categorySports": MessageLookupByLibrary.simpleMessage("Sports"),
+    "categoryToysAndHobbies": MessageLookupByLibrary.simpleMessage(
+      "Toys & Hobbies",
+    ),
+    "categoryVehicles": MessageLookupByLibrary.simpleMessage("Vehicles"),
     "chatNoConversations": MessageLookupByLibrary.simpleMessage(
       "No conversations yet",
     ),

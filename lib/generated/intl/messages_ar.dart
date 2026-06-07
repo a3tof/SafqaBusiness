@@ -179,10 +179,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage(
       "مزاد جماعي",
     ),
+    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage(
+      "فئة اللوت",
+    ),
     "auctionLotDescription": MessageLookupByLibrary.simpleMessage("وصف المزاد"),
     "auctionLotDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المزاد"),
     "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("عنوان اللوت"),
-    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage("فئة اللوت"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("جديد"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("العنصر التالي"),
     "auctionNoCategoriesFound": MessageLookupByLibrary.simpleMessage(
@@ -253,6 +255,14 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "birthdate": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
     "card": MessageLookupByLibrary.simpleMessage("بطاقة"),
+    "categoryBooksAndMedia": MessageLookupByLibrary.simpleMessage("كتب ووسائط"),
+    "categoryElectronics": MessageLookupByLibrary.simpleMessage("إلكترونيات"),
+    "categoryRealEstate": MessageLookupByLibrary.simpleMessage("عقارات"),
+    "categorySports": MessageLookupByLibrary.simpleMessage("رياضة"),
+    "categoryToysAndHobbies": MessageLookupByLibrary.simpleMessage(
+      "ألعاب وهوايات",
+    ),
+    "categoryVehicles": MessageLookupByLibrary.simpleMessage("مركبات"),
     "chatNoConversations": MessageLookupByLibrary.simpleMessage(
       "لا توجد محادثات بعد",
     ),

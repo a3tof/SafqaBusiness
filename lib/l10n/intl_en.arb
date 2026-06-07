@@ -1435,5 +1435,11 @@
   "addCardNumberError": "Card number must be 16 digits",
   "addCardExpiryFormatError": "Expiry date must be in MM/YY format",
   "addCardExpiryMonthError": "Enter a valid month",
-  "addCardCvvError": "CVV must be 3 digits"
+  "addCardCvvError": "CVV must be 3 digits",
+  "categoryElectronics": "Electronics",
+  "categoryVehicles": "Vehicles",
+  "categoryRealEstate": "Real Estate",
+  "categorySports": "Sports",
+  "categoryBooksAndMedia": "Books & Media",
+  "categoryToysAndHobbies": "Toys & Hobbies"
 }

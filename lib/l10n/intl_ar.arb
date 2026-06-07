@@ -1435,5 +1435,11 @@
   "addCardNumberError": "رقم البطاقة يجب أن يتكون من 16 رقماً",
   "addCardExpiryFormatError": "تاريخ الانتهاء يجب أن يكون بصيغة MM/YY",
   "addCardExpiryMonthError": "أدخل شهراً صحيحاً",
-  "addCardCvvError": "رمز التحقق (CVV) يجب أن يتكون من 3 أرقام"
+  "addCardCvvError": "رمز التحقق (CVV) يجب أن يتكون من 3 أرقام",
+  "categoryElectronics": "إلكترونيات",
+  "categoryVehicles": "مركبات",
+  "categoryRealEstate": "عقارات",
+  "categorySports": "رياضة",
+  "categoryBooksAndMedia": "كتب ووسائط",
+  "categoryToysAndHobbies": "ألعاب وهوايات"
 }

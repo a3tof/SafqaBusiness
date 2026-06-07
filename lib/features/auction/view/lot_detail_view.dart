@@ -795,6 +795,7 @@ class _AuctionItemTile extends StatelessWidget {
                                 Flexible(
                                   child: Text(
                                     _getCategoryName(
+                                      context,
                                       item.categoryId > 0
                                           ? item.categoryId
                                           : rootCategoryId,
@@ -995,20 +996,21 @@ class _LiveCountdownState extends State<_LiveCountdown> {
   }
 }
 
-String _getCategoryName(int categoryId) {
+String _getCategoryName(BuildContext context, int categoryId) {
+  final s = S.of(context);
   switch (categoryId) {
     case 1:
-      return 'Electronics';
+      return s.categoryElectronics;
     case 2:
-      return 'Vehicles';
+      return s.categoryVehicles;
     case 3:
-      return 'Real Estate';
+      return s.categoryRealEstate;
     case 4:
-      return 'Sports';
+      return s.categorySports;
     case 5:
-      return 'Books & Media';
+      return s.categoryBooksAndMedia;
     case 6:
-      return 'Toys & Hobbies';
+      return s.categoryToysAndHobbies;
     default:
       return 'Unknown Category';
   }

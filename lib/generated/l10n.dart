@@ -2561,7 +2561,7 @@ class S {
     );
   }
 
-  /// `Lot Description`
+  /// `Auction Description`
   String get auctionLotDescription {
     return Intl.message(
       'Auction Description',
@@ -3608,6 +3608,61 @@ class S {
     return Intl.message(
       'CVV must be 3 digits',
       name: 'addCardCvvError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Electronics`
+  String get categoryElectronics {
+    return Intl.message(
+      'Electronics',
+      name: 'categoryElectronics',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Vehicles`
+  String get categoryVehicles {
+    return Intl.message(
+      'Vehicles',
+      name: 'categoryVehicles',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real Estate`
+  String get categoryRealEstate {
+    return Intl.message(
+      'Real Estate',
+      name: 'categoryRealEstate',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sports`
+  String get categorySports {
+    return Intl.message('Sports', name: 'categorySports', desc: '', args: []);
+  }
+
+  /// `Books & Media`
+  String get categoryBooksAndMedia {
+    return Intl.message(
+      'Books & Media',
+      name: 'categoryBooksAndMedia',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toys & Hobbies`
+  String get categoryToysAndHobbies {
+    return Intl.message(
+      'Toys & Hobbies',
+      name: 'categoryToysAndHobbies',
       desc: '',
       args: [],
     );
