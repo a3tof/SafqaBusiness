@@ -248,7 +248,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                                 child: HomeActionCard(
                                                   label: S.of(context).kHistory,
                                                   backgroundImage:
-                                                      Assets.imagesFrame1,
+                                                      Assets.imagesFrame2,
                                                   onTap: () {
                                                     Navigator.pushNamed(
                                                       context,
@@ -266,7 +266,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                                       .of(context)
                                                       .kStatistics,
                                                   backgroundImage:
-                                                      Assets.imagesFrame2,
+                                                      Assets.imagesFrame1,
                                                   onTap: _openStatistics,
                                                 ),
                                               ),
