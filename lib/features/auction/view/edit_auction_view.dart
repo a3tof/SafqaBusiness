@@ -35,6 +35,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
   late final TextEditingController _lotTitleController;
   late final TextEditingController _descriptionController;
   final List<_EditableItemData> _items = [];
+  int? _lotCategoryId;
   XFile? _headImage;
   bool _didPrefill = false;
 
@@ -102,6 +103,11 @@ class _EditAuctionViewState extends State<EditAuctionView> {
   void _populateForm(AuctionDetailModel detail) {
     _lotTitleController.text = detail.title;
     _descriptionController.text = detail.description;
+    _lotCategoryId = detail.categoryId > 0
+        ? detail.categoryId
+        : (detail.items.isNotEmpty ? detail.items.first.categoryId : null);
+    if (_lotCategoryId == 0) _lotCategoryId = null;
+
     for (final item in _items) {
       item.dispose();
     }
@@ -111,7 +117,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
     _didPrefill = true;
     setState(() {});
     for (var index = 0; index < _items.length; index++) {
-      final categoryId = _items[index].categoryId;
+      final categoryId = _lotCategoryId ?? _items[index].categoryId;
       if (categoryId > 0) {
         _loadAttributesForItem(
           itemIndex: index,
@@ -153,6 +159,16 @@ class _EditAuctionViewState extends State<EditAuctionView> {
           cubit.attributeErrorForItem(itemIndex) ??
           'Could not load category attributes.';
       _showMessage(error);
+    }
+  }
+
+  void _onLotCategoryChanged(int? newCategoryId) {
+    if (newCategoryId == null) return;
+    setState(() => _lotCategoryId = newCategoryId);
+    for (var i = 0; i < _items.length; i++) {
+      _items[i].categoryId = newCategoryId;
+      _items[i].syncAttributes(const []);
+      _loadAttributesForItem(itemIndex: i, categoryId: newCategoryId);
     }
   }
 
@@ -372,6 +388,12 @@ class _EditAuctionViewState extends State<EditAuctionView> {
                             controller: _lotTitleController,
                             hintText: s.auctionTitle,
                           ),
+                          SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                          _CategoryDropdown(
+                            categories: categories,
+                            value: _lotCategoryId,
+                            onChanged: _onLotCategoryChanged,
+                          ),
                           SizedBox(height: isTabletOrUp ? 16.0 : 16.h),
                           ...List.generate(
                             _items.length,
@@ -382,22 +404,7 @@ class _EditAuctionViewState extends State<EditAuctionView> {
                               child: _EditItemCard(
                                 index: index + 1,
                                 data: _items[index],
-                                categories: categories,
                                 onPickImages: () => _pickItemImages(index),
-                                onCategoryChanged: (value) {
-                                  setState(() {
-                                    _items[index].categoryId = value ?? 0;
-                                    _items[index].syncAttributes(const []);
-                                  });
-                                  if (value != null) {
-                                    _loadAttributesForItem(
-                                      itemIndex: index,
-                                      categoryId: value,
-                                    );
-                                  } else {
-                                    cubit.clearItemAttributes(index);
-                                  }
-                                },
                                 imageUrl: _items[index].previewImages.isNotEmpty
                                     ? _items[index].previewImages.first
                                     : displayDetail.image ??
@@ -489,18 +496,14 @@ class _EditItemCard extends StatefulWidget {
   const _EditItemCard({
     required this.index,
     required this.data,
-    required this.categories,
     required this.imageUrl,
     required this.onPickImages,
-    required this.onCategoryChanged,
   });
 
   final int index;
   final _EditableItemData data;
-  final List<CategoryModel> categories;
   final String? imageUrl;
   final Future<void> Function() onPickImages;
-  final ValueChanged<int?> onCategoryChanged;
 
   @override
   State<_EditItemCard> createState() => _EditItemCardState();
@@ -594,25 +597,36 @@ class _EditItemCardState extends State<_EditItemCard> {
                   ).copyWith(color: Theme.of(context).colorScheme.primary),
                 ),
               ),
+              Builder(
+                builder: (context) {
+                  final optionalAttributes = widget.data.attributesMeta
+                      .where((a) => !a.isRequired)
+                      .toList();
+                  if (optionalAttributes.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+                  return Padding(
+                    padding: EdgeInsets.only(top: isTabletOrUp ? 12.0 : 12.h),
+                    child: Wrap(
+                      spacing: isTabletOrUp ? 8.0 : 8.w,
+                      runSpacing: isTabletOrUp ? 8.0 : 8.h,
+                      children: optionalAttributes.map((attribute) {
+                        final controller =
+                            widget.data.attributeControllers[attribute.id];
+                        if (controller == null) return const SizedBox.shrink();
+                        return _EditOptionalAttributeChip(
+                          attribute: attribute,
+                          controller: controller,
+                        );
+                      }).toList(),
+                    ),
+                  );
+                },
+              ),
               SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
               _AuctionTextField(
                 controller: widget.data.titleController,
                 hintText: s.auctionTitle,
-              ),
-              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
-              Text(
-                s.auctionCategory,
-                style: TextStyles.regular12(
-                  context,
-                ).copyWith(color: Theme.of(context).colorScheme.onSurface),
-              ),
-              SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
-              _CategoryDropdown(
-                categories: widget.categories,
-                value: widget.data.categoryId > 0
-                    ? widget.data.categoryId
-                    : null,
-                onChanged: widget.onCategoryChanged,
               ),
               SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
               _AuctionTextField(
@@ -687,18 +701,75 @@ class _EditItemCardState extends State<_EditItemCard> {
                   );
                 }).toList(),
               ),
-              if (widget.data.attributeControllers.isNotEmpty) ...[
-                SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
-                ...widget.data.attributeEntries.map(
-                  (entry) => Padding(
-                    padding: EdgeInsets.only(bottom: isTabletOrUp ? 8.0 : 8.h),
-                    child: _AuctionTextField(
-                      controller: entry.controller,
-                      hintText: entry.label,
-                    ),
-                  ),
-                ),
-              ],
+              Builder(
+                builder: (context) {
+                  if (widget.data.attributesMeta.isEmpty) {
+                    if (widget.data.attributeControllers.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                        ...widget.data.attributeEntries.map(
+                          (entry) => Padding(
+                            padding: EdgeInsets.only(
+                              bottom: isTabletOrUp ? 8.0 : 8.h,
+                            ),
+                            child: _AuctionTextField(
+                              controller: entry.controller,
+                              hintText: entry.label,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }
+
+                  final requiredAttributes = widget.data.attributesMeta
+                      .where((a) => a.isRequired)
+                      .toList();
+                  if (requiredAttributes.isEmpty) {
+                    return const SizedBox.shrink();
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: isTabletOrUp ? 10.0 : 10.h),
+                      Text(
+                        s.auctionAttributes,
+                        style: TextStyles.regular12(context).copyWith(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
+                      ),
+                      SizedBox(height: isTabletOrUp ? 8.0 : 8.h),
+                      ...requiredAttributes.map((attribute) {
+                        final controller =
+                            widget.data.attributeControllers[attribute.id];
+                        if (controller == null) return const SizedBox.shrink();
+                        final label = attribute.unitLabel.isEmpty
+                            ? attribute.name
+                            : '${attribute.name} (${attribute.unitLabel})';
+                        return Padding(
+                          padding: EdgeInsets.only(
+                            bottom: isTabletOrUp ? 8.0 : 8.h,
+                          ),
+                          child: _AuctionTextField(
+                            controller: controller,
+                            hintText: '$label *',
+                            keyboardType: attribute.isNumber
+                                ? const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  )
+                                : TextInputType.text,
+                          ),
+                        );
+                      }),
+                    ],
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -1080,6 +1151,223 @@ class _AuctionPreviewImage extends StatelessWidget {
       width: width,
       height: height,
       fit: BoxFit.cover,
+    );
+  }
+}
+
+IconData _getIconForAttribute(String name) {
+  final lowerName = name.toLowerCase();
+  if (lowerName.contains('weight') || lowerName.contains('وزن')) {
+    return Icons.scale;
+  }
+  if (lowerName.contains('furnish') || lowerName.contains('مفروش')) {
+    return Icons.chair;
+  }
+  if (lowerName.contains('floor') || lowerName.contains('طابق')) {
+    return Icons.layers;
+  }
+  if (lowerName.contains('material') ||
+      lowerName.contains('مادة') ||
+      lowerName.contains('خام')) {
+    return Icons.texture;
+  }
+  if (lowerName.contains('color') || lowerName.contains('لون')) {
+    return Icons.color_lens;
+  }
+  if (lowerName.contains('page') || lowerName.contains('صفح')) {
+    return Icons.auto_stories;
+  }
+  if (lowerName.contains(RegExp(r'\bage\b')) || lowerName.contains('عمر')) {
+    return Icons.supervisor_account;
+  }
+  if (lowerName.contains('battery') || lowerName.contains('بطار')) {
+    return Icons.battery_charging_full;
+  }
+  if (lowerName.contains('dimension') || lowerName.contains('أبعاد')) {
+    return Icons.straighten;
+  }
+  if (lowerName.contains('location') || lowerName.contains('موقع')) {
+    return Icons.public;
+  }
+  if (lowerName.contains('model') || lowerName.contains('موديل')) {
+    return Icons.directions_car;
+  }
+  if (lowerName.contains('gear') ||
+      lowerName.contains('transmission') ||
+      lowerName.contains('ناقل')) {
+    return Icons.settings;
+  }
+  if (lowerName.contains('fuel') ||
+      lowerName.contains('petrol') ||
+      lowerName.contains('وقود')) {
+    return Icons.local_gas_station;
+  }
+  if (lowerName.contains('speed') ||
+      lowerName.contains('mileage') ||
+      lowerName.contains('سرع')) {
+    return Icons.speed;
+  }
+  if (lowerName.contains('brand') || lowerName.contains('ماركة')) {
+    return Icons.branding_watermark;
+  }
+  if (lowerName.contains('capacity') || lowerName.contains('سعة')) {
+    return Icons.sd_storage;
+  }
+  if (lowerName.contains('screen') || lowerName.contains('شاش')) {
+    return Icons.desktop_windows;
+  }
+  if (lowerName.contains('area') || lowerName.contains('مساح')) {
+    return Icons.crop_square;
+  }
+  if (lowerName.contains('room') || lowerName.contains('غرف')) {
+    return Icons.meeting_room;
+  }
+  if (lowerName.contains('size') || lowerName.contains('حجم')) {
+    return Icons.photo_size_select_small;
+  }
+  if (lowerName.contains('author') || lowerName.contains('مؤلف')) {
+    return Icons.person;
+  }
+  if (lowerName.contains('language') || lowerName.contains('لغ')) {
+    return Icons.language;
+  }
+  if (lowerName.contains('publisher') || lowerName.contains('ناشر')) {
+    return Icons.print;
+  }
+
+  return Icons.label_outline;
+}
+
+class _EditOptionalAttributeChip extends StatelessWidget {
+  const _EditOptionalAttributeChip({
+    required this.attribute,
+    required this.controller,
+  });
+
+  final CategoryAttributeModel attribute;
+  final TextEditingController controller;
+
+  void _handleTap(BuildContext context) {
+    if (attribute.isBoolean) {
+      showDialog(
+        context: context,
+        builder: (context) => SimpleDialog(
+          title: Text(attribute.name, style: TextStyles.semiBold16(context)),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                controller.text = 'true';
+                Navigator.pop(context);
+              },
+              child: Text(
+                S.of(context).kYes,
+                style: TextStyles.regular13(context),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                controller.text = 'false';
+                Navigator.pop(context);
+              },
+              child: Text(
+                S.of(context).kNo,
+                style: TextStyles.regular13(context),
+              ),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (attribute.isDate || attribute.isDateTime) {
+      showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime(2100),
+      ).then((date) {
+        if (date != null) {
+          controller.text =
+              '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+        }
+      });
+      return;
+    }
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(attribute.name, style: TextStyles.semiBold16(context)),
+        content: TextField(
+          controller: controller,
+          keyboardType: attribute.isNumber
+              ? const TextInputType.numberWithOptions(decimal: true)
+              : TextInputType.text,
+          style: TextStyles.regular13(context),
+          decoration: InputDecoration(hintText: attribute.name, isDense: true),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(S.of(context).kSave),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isTabletOrUp = Breakpoints.isTabletOrUp(context);
+    final s = S.of(context);
+
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: controller,
+      builder: (context, value, _) {
+        final hasValue = value.text.isNotEmpty;
+        String displayValue = hasValue ? value.text : '${attribute.name} +';
+
+        if (attribute.isBoolean && hasValue) {
+          displayValue = value.text.toLowerCase() == 'true' ? s.kYes : s.kNo;
+        }
+
+        return InkWell(
+          onTap: () => _handleTap(context),
+          borderRadius: BorderRadius.circular(6.rSp(context)),
+          child: Container(
+            padding: EdgeInsets.symmetric(
+              horizontal: isTabletOrUp ? 10.0 : 10.w,
+              vertical: isTabletOrUp ? 6.0 : 6.h,
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xFFE4E4E4)),
+              borderRadius: BorderRadius.circular(6.rSp(context)),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  _getIconForAttribute(attribute.name),
+                  size: isTabletOrUp ? 16.0 : 16.rSp(context),
+                  color: hasValue
+                      ? Theme.of(context).colorScheme.primary
+                      : const Color(0xFF8A8A8A),
+                ),
+                SizedBox(width: isTabletOrUp ? 6.0 : 6.w),
+                Text(
+                  displayValue,
+                  style: TextStyles.regular12(context).copyWith(
+                    color: hasValue
+                        ? Theme.of(context).colorScheme.onSurface
+                        : const Color(0xFF8A8A8A),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

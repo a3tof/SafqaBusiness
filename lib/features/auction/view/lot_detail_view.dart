@@ -689,7 +689,7 @@ class _AuctionItemTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '${S.of(context).auctionItem} ${index}',
+          '${S.of(context).auctionItem} $index',
           style: TextStyles.semiBold14(
             context,
           ).copyWith(color: Theme.of(context).colorScheme.onSurface),

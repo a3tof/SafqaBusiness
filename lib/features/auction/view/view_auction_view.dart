@@ -830,10 +830,12 @@ class _AttributeChip extends StatelessWidget {
     if (colorWords.any((c) => v.contains(c))) return Icons.palette_outlined;
 
     // Condition
-    if (v.contains('new') || v.contains('جديد'))
+    if (v.contains('new') || v.contains('جديد')) {
       return Icons.fiber_new_outlined;
-    if (v.contains('used') || v.contains('مستعمل'))
+    }
+    if (v.contains('used') || v.contains('مستعمل')) {
       return Icons.history_outlined;
+    }
 
     return Icons.label_outline;
   }

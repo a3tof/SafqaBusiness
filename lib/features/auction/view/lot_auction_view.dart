@@ -1047,60 +1047,83 @@ class _LotItemFormData {
 
 IconData _getIconForAttribute(String name) {
   final lowerName = name.toLowerCase();
-  if (lowerName.contains('weight') || lowerName.contains('وزن'))
+  if (lowerName.contains('weight') || lowerName.contains('وزن')) {
     return Icons.scale;
-  if (lowerName.contains('furnish') || lowerName.contains('مفروش'))
+  }
+  if (lowerName.contains('furnish') || lowerName.contains('مفروش')) {
     return Icons.chair;
-  if (lowerName.contains('floor') || lowerName.contains('طابق'))
+  }
+  if (lowerName.contains('floor') || lowerName.contains('طابق')) {
     return Icons.layers;
+  }
   if (lowerName.contains('material') ||
       lowerName.contains('مادة') ||
-      lowerName.contains('خام'))
+      lowerName.contains('خام')) {
     return Icons.texture;
-  if (lowerName.contains('color') || lowerName.contains('لون'))
+  }
+  if (lowerName.contains('color') || lowerName.contains('لون')) {
     return Icons.color_lens;
-  if (lowerName.contains('age') || lowerName.contains('عمر'))
-    return Icons.child_care;
-  if (lowerName.contains('page') || lowerName.contains('صفح'))
-    return Icons.menu_book;
-  if (lowerName.contains('battery') || lowerName.contains('بطار'))
+  }
+  if (lowerName.contains('page') || lowerName.contains('صفح')) {
+    return Icons.auto_stories;
+  }
+  if (lowerName.contains(RegExp(r'\bage\b')) || lowerName.contains('عمر')) {
+    return Icons.supervisor_account;
+  }
+  if (lowerName.contains('battery') || lowerName.contains('بطار')) {
     return Icons.battery_charging_full;
-  if (lowerName.contains('dimension') || lowerName.contains('أبعاد'))
+  }
+  if (lowerName.contains('dimension') || lowerName.contains('أبعاد')) {
     return Icons.straighten;
-  if (lowerName.contains('location') || lowerName.contains('موقع'))
+  }
+  if (lowerName.contains('location') || lowerName.contains('موقع')) {
     return Icons.public;
-  if (lowerName.contains('model') || lowerName.contains('موديل'))
+  }
+  if (lowerName.contains('model') || lowerName.contains('موديل')) {
     return Icons.directions_car;
+  }
   if (lowerName.contains('gear') ||
       lowerName.contains('transmission') ||
-      lowerName.contains('ناقل'))
+      lowerName.contains('ناقل')) {
     return Icons.settings;
+  }
   if (lowerName.contains('fuel') ||
       lowerName.contains('petrol') ||
-      lowerName.contains('وقود'))
+      lowerName.contains('وقود')) {
     return Icons.local_gas_station;
+  }
   if (lowerName.contains('speed') ||
       lowerName.contains('mileage') ||
-      lowerName.contains('سرع'))
+      lowerName.contains('سرع')) {
     return Icons.speed;
-  if (lowerName.contains('brand') || lowerName.contains('ماركة'))
+  }
+  if (lowerName.contains('brand') || lowerName.contains('ماركة')) {
     return Icons.branding_watermark;
-  if (lowerName.contains('capacity') || lowerName.contains('سعة'))
+  }
+  if (lowerName.contains('capacity') || lowerName.contains('سعة')) {
     return Icons.sd_storage;
-  if (lowerName.contains('screen') || lowerName.contains('شاش'))
+  }
+  if (lowerName.contains('screen') || lowerName.contains('شاش')) {
     return Icons.desktop_windows;
-  if (lowerName.contains('area') || lowerName.contains('مساح'))
+  }
+  if (lowerName.contains('area') || lowerName.contains('مساح')) {
     return Icons.crop_square;
-  if (lowerName.contains('room') || lowerName.contains('غرف'))
+  }
+  if (lowerName.contains('room') || lowerName.contains('غرف')) {
     return Icons.meeting_room;
-  if (lowerName.contains('size') || lowerName.contains('حجم'))
+  }
+  if (lowerName.contains('size') || lowerName.contains('حجم')) {
     return Icons.photo_size_select_small;
-  if (lowerName.contains('author') || lowerName.contains('مؤلف'))
+  }
+  if (lowerName.contains('author') || lowerName.contains('مؤلف')) {
     return Icons.person;
-  if (lowerName.contains('language') || lowerName.contains('لغ'))
+  }
+  if (lowerName.contains('language') || lowerName.contains('لغ')) {
     return Icons.language;
-  if (lowerName.contains('publisher') || lowerName.contains('ناشر'))
+  }
+  if (lowerName.contains('publisher') || lowerName.contains('ناشر')) {
     return Icons.print;
+  }
 
   return Icons.label_outline;
 }
