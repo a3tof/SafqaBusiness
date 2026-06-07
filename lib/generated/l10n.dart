@@ -1414,10 +1414,10 @@ class S {
     );
   }
 
-  /// `New Lot Auction`
+  /// `New Auction`
   String get kNewLotAuction {
     return Intl.message(
-      'New Lot Auction',
+      'New Auction',
       name: 'kNewLotAuction',
       desc: 'Auto-generated',
       args: [],

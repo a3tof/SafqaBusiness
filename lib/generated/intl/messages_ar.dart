@@ -434,9 +434,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "kLogoOptional": MessageLookupByLibrary.simpleMessage("الشعار (اختياري)"),
     "kLogout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
-    "kNewLotAuction": MessageLookupByLibrary.simpleMessage(
-      "مزاد لمجموعة جديدة",
-    ),
+    "kNewLotAuction": MessageLookupByLibrary.simpleMessage("مزاد جديد"),
     "kNewPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "kNewSingleAuction": MessageLookupByLibrary.simpleMessage("مزاد فردي جديد"),
     "kNoPlanActive": MessageLookupByLibrary.simpleMessage("لا توجد باقة مفعلة"),

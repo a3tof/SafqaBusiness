@@ -458,7 +458,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "kLogoOptional": MessageLookupByLibrary.simpleMessage("Logo (Optional)"),
     "kLogout": MessageLookupByLibrary.simpleMessage("Logout"),
-    "kNewLotAuction": MessageLookupByLibrary.simpleMessage("New Lot Auction"),
+    "kNewLotAuction": MessageLookupByLibrary.simpleMessage("New Auction"),
     "kNewPassword": MessageLookupByLibrary.simpleMessage("New Password"),
     "kNewSingleAuction": MessageLookupByLibrary.simpleMessage(
       "New Single Auction",

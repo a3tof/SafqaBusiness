@@ -153,7 +153,8 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                       constraints: BoxConstraints(
                         minHeight: constraints.maxHeight,
                       ),
-                      child: Center(
+                      child: Align(
+                        alignment: Alignment.topCenter,
                         child: ResponsiveFormShell(
                           enabled: isTabletOrUp,
                           maxWidth: 700,
@@ -241,25 +242,7 @@ class _HomeScreenViewBodyState extends State<HomeScreenViewBody> {
                                           SizedBox(
                                             height: isTabletOrUp ? 16.0 : 16.h,
                                           ),
-                                          //single auction card
-                                          HomeActionCard(
-                                            label: S
-                                                .of(context)
-                                                .kNewSingleAuction,
-                                            showAddIcon: true,
-                                            backgroundImage:
-                                                Assets.imagesFrame1,
-                                            onTap: () async {
-                                              await Navigator.pushNamed(
-                                                context,
-                                                ItemAuctionView.routeName,
-                                              );
-                                              await _refreshHome();
-                                            },
-                                          ),
-                                          SizedBox(
-                                            height: isTabletOrUp ? 16.0 : 16.h,
-                                          ),
+
                                           Row(
                                             children: [
                                               Expanded(
