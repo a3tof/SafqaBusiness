@@ -137,7 +137,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "يرجى إدخال وصف المزاد.",
     ),
     "auctionEnterLotTitle": MessageLookupByLibrary.simpleMessage(
-      "يرجى إدخال عنوان اللوت.",
+      "يرجى إدخال العنوان.",
     ),
     "auctionEnterValidCountError": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال عدد صحيح.",
@@ -176,15 +176,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "auctionLoadingCategories": MessageLookupByLibrary.simpleMessage(
       "جاري تحميل الفئات...",
     ),
-    "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage(
-      "مزاد جماعي",
-    ),
-    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage(
-      "فئة اللوت",
-    ),
+    "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage("مزاد"),
+    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage("الفئة"),
     "auctionLotDescription": MessageLookupByLibrary.simpleMessage("وصف المزاد"),
     "auctionLotDetails": MessageLookupByLibrary.simpleMessage("تفاصيل المزاد"),
-    "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("عنوان اللوت"),
+    "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("العنوان"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("جديد"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("العنصر التالي"),
     "auctionNoCategoriesFound": MessageLookupByLibrary.simpleMessage(

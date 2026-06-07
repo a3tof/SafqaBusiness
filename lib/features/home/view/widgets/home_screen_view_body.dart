@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:safqaseller/core/service_locator.dart';
 import 'package:safqaseller/core/utils/app_images.dart';
 import 'package:safqaseller/core/utils/app_text_styles.dart';
-import 'package:safqaseller/features/auction/view/item_auction_view.dart';
 import 'package:safqaseller/features/auction/view/lot_auction_view.dart';
 import 'package:safqaseller/features/history/view/history_view.dart';
 import 'package:safqaseller/features/home/view/widgets/complete_profile_dialog.dart';

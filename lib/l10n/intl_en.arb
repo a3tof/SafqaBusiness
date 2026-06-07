@@ -920,15 +920,15 @@
   "@auctionUsed": {
     "description": "Used condition label"
   },
-  "auctionLotDetails": "Lot Details",
+  "auctionLotDetails": "Auction Details",
   "@auctionLotDetails": {
     "description": "Lot details section title"
   },
-  "auctionLotTitleField": "Lot Title",
+  "auctionLotTitleField": "Title",
   "@auctionLotTitleField": {
     "description": "Lot title field hint"
   },
-  "auctionLotCategoryField": "Lot Category",
+  "auctionLotCategoryField": "Category",
   "@auctionLotCategoryField": {
     "description": "Lot category field hint"
   },
@@ -1186,7 +1186,7 @@
       }
     }
   },
-  "auctionLotAuctionTitle": "Lot Auction",
+  "auctionLotAuctionTitle": "Auction",
   "@auctionLotAuctionTitle": {
     "description": "Lot auction creation screen title"
   },
@@ -1266,11 +1266,11 @@
   "@auctionSelectDateTime": {
     "description": "Auction date and time selection label"
   },
-  "auctionEnterLotTitle": "Please enter the lot title.",
+  "auctionEnterLotTitle": "Please enter the title.",
   "@auctionEnterLotTitle": {
     "description": "Validation when lot title is empty"
   },
-  "auctionEnterLotDescription": "Please enter the lot description.",
+  "auctionEnterLotDescription": "Please enter the description.",
   "@auctionEnterLotDescription": {
     "description": "Validation when lot description is empty"
   },

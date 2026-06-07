@@ -2461,30 +2461,30 @@ class S {
     );
   }
 
-  /// `Lot Details`
+  /// `Auction Details`
   String get auctionLotDetails {
     return Intl.message(
-      'Lot Details',
+      'Auction Details',
       name: 'auctionLotDetails',
       desc: 'Lot details section title',
       args: [],
     );
   }
 
-  /// `Lot Title`
+  /// `Title`
   String get auctionLotTitleField {
     return Intl.message(
-      'Lot Title',
+      'Title',
       name: 'auctionLotTitleField',
       desc: 'Lot title field hint',
       args: [],
     );
   }
 
-  /// `Lot Category`
+  /// `Category`
   String get auctionLotCategoryField {
     return Intl.message(
-      'Lot Category',
+      'Category',
       name: 'auctionLotCategoryField',
       desc: 'Lot category field hint',
       args: [],
@@ -3051,10 +3051,10 @@ class S {
     );
   }
 
-  /// `Lot Auction`
+  /// `Auction`
   String get auctionLotAuctionTitle {
     return Intl.message(
-      'Lot Auction',
+      'Auction',
       name: 'auctionLotAuctionTitle',
       desc: 'Lot auction creation screen title',
       args: [],
@@ -3231,20 +3231,20 @@ class S {
     );
   }
 
-  /// `Please enter the lot title.`
+  /// `Please enter the title.`
   String get auctionEnterLotTitle {
     return Intl.message(
-      'Please enter the lot title.',
+      'Please enter the title.',
       name: 'auctionEnterLotTitle',
       desc: 'Validation when lot title is empty',
       args: [],
     );
   }
 
-  /// `Please enter the lot description.`
+  /// `Please enter the description.`
   String get auctionEnterLotDescription {
     return Intl.message(
-      'Please enter the lot description.',
+      'Please enter the description.',
       name: 'auctionEnterLotDescription',
       desc: 'Validation when lot description is empty',
       args: [],

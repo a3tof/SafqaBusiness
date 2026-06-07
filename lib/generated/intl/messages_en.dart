@@ -138,10 +138,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "auctionEnterItemWarrantyInfo": m3,
     "auctionEnterLotDescription": MessageLookupByLibrary.simpleMessage(
-      "Please enter the lot description.",
+      "Please enter the description.",
     ),
     "auctionEnterLotTitle": MessageLookupByLibrary.simpleMessage(
-      "Please enter the lot title.",
+      "Please enter the title.",
     ),
     "auctionEnterValidCountError": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid count.",
@@ -178,17 +178,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "auctionLoadingCategories": MessageLookupByLibrary.simpleMessage(
       "Loading categories...",
     ),
-    "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage(
-      "Lot Auction",
-    ),
-    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage(
-      "Lot Category",
-    ),
+    "auctionLotAuctionTitle": MessageLookupByLibrary.simpleMessage("Auction"),
+    "auctionLotCategoryField": MessageLookupByLibrary.simpleMessage("Category"),
     "auctionLotDescription": MessageLookupByLibrary.simpleMessage(
       "Auction Description",
     ),
-    "auctionLotDetails": MessageLookupByLibrary.simpleMessage("Lot Details"),
-    "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("Lot Title"),
+    "auctionLotDetails": MessageLookupByLibrary.simpleMessage(
+      "Auction Details",
+    ),
+    "auctionLotTitleField": MessageLookupByLibrary.simpleMessage("Title"),
     "auctionNew": MessageLookupByLibrary.simpleMessage("New"),
     "auctionNextItem": MessageLookupByLibrary.simpleMessage("Next item"),
     "auctionNoCategoriesFound": MessageLookupByLibrary.simpleMessage(
