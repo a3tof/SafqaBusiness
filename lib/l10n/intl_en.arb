@@ -583,6 +583,10 @@
   "@kSave": {
     "description": "Auto-generated"
   },
+  "kYes": "Yes",
+  "@kYes": {},
+  "kNo": "No",
+  "@kNo": {},
   "kProfileUpdatedSuccessfully": "Profile updated successfully",
   "@kProfileUpdatedSuccessfully": {
     "description": "Auto-generated"

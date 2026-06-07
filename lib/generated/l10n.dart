@@ -1514,6 +1514,16 @@ class S {
     );
   }
 
+  /// `Yes`
+  String get kYes {
+    return Intl.message('Yes', name: 'kYes', desc: '', args: []);
+  }
+
+  /// `No`
+  String get kNo {
+    return Intl.message('No', name: 'kNo', desc: '', args: []);
+  }
+
   /// `Profile updated successfully`
   String get kProfileUpdatedSuccessfully {
     return Intl.message(

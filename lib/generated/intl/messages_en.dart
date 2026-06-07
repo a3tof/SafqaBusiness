@@ -461,6 +461,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "kNewSingleAuction": MessageLookupByLibrary.simpleMessage(
       "New Single Auction",
     ),
+    "kNo": MessageLookupByLibrary.simpleMessage("No"),
     "kNoPlanActive": MessageLookupByLibrary.simpleMessage("No active plan"),
     "kNoPreviousPageTo": MessageLookupByLibrary.simpleMessage(
       "No previous page to navigate back to",
@@ -567,6 +568,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "kWithdrawalSuccessfu": MessageLookupByLibrary.simpleMessage(
       "Withdrawal successful!",
     ),
+    "kYes": MessageLookupByLibrary.simpleMessage("Yes"),
     "logIn": MessageLookupByLibrary.simpleMessage("Log In"),
     "male": MessageLookupByLibrary.simpleMessage("Male"),
     "newPassword": MessageLookupByLibrary.simpleMessage("New Password"),

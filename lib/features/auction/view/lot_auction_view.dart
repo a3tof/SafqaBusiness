@@ -1136,7 +1136,7 @@ class _OptionalAttributeChip extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text(
-                S.of(context).auctionTrue,
+                S.of(context).kYes,
                 style: TextStyles.regular13(context),
               ),
             ),
@@ -1146,7 +1146,7 @@ class _OptionalAttributeChip extends StatelessWidget {
                 Navigator.pop(context);
               },
               child: Text(
-                S.of(context).auctionFalse,
+                S.of(context).kNo,
                 style: TextStyles.regular13(context),
               ),
             ),
@@ -1231,7 +1231,7 @@ class _OptionalAttributeChip extends StatelessWidget {
       final val = item.booleanAttributes[attribute.id];
       final hasValue = val != null;
       final displayValue = hasValue
-          ? (val == true ? s.auctionTrue : s.auctionFalse)
+          ? (val == true ? s.kYes : s.kNo)
           : '${attribute.name} +';
       return buildChip(hasValue, displayValue);
     }

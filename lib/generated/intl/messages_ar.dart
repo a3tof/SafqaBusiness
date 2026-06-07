@@ -433,6 +433,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "kNewLotAuction": MessageLookupByLibrary.simpleMessage("مزاد جديد"),
     "kNewPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
     "kNewSingleAuction": MessageLookupByLibrary.simpleMessage("مزاد فردي جديد"),
+    "kNo": MessageLookupByLibrary.simpleMessage("لا"),
     "kNoPlanActive": MessageLookupByLibrary.simpleMessage("لا توجد باقة مفعلة"),
     "kNoPreviousPageTo": MessageLookupByLibrary.simpleMessage(
       "لا توجد صفحة سابقة للرجوع إليها",
@@ -537,6 +538,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "kWithdrawalSuccessfu": MessageLookupByLibrary.simpleMessage(
       "تم السحب بنجاح!",
     ),
+    "kYes": MessageLookupByLibrary.simpleMessage("نعم"),
     "logIn": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "male": MessageLookupByLibrary.simpleMessage("ذكر"),
     "newPassword": MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
